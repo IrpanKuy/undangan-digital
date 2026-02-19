@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import { computed, onMounted, ref, watch } from "vue";
 
 const showSidebar = ref(window.innerWidth >= 768);
-const showSiswaDropdown = ref(false);
 
 const closeSidebar = () => {
     showSidebar.value = false;
@@ -28,7 +27,6 @@ watch(
     () => page.props.flash,
     (flash) => {
         if (flash?.success) {
-            Swal.fire("Berhasil!", flash.success, "success");
         }
         if (flash?.error) {
             Swal.fire("Gagal!", flash.error, "error");
@@ -57,15 +55,12 @@ const handleResize = () => {
     }
 };
 
-const downloadQrCode = () => {
-    window.open(route("profile-instansi.downloadQrCode"), "_blank");
-};
-
 const currentRouteName = computed(() => page.props.currentRoute.name);
 
 // pengkondisian route
 const isLinkActive = (routeName) => {
-    return currentRouteName.value === routeName;
+    // return currentRouteName.value === routeName;
+    return true;
 };
 </script>
 <template>
@@ -87,66 +82,76 @@ const isLinkActive = (routeName) => {
                     class="p-3! h-20 bg-white flex! justify-center! items-center! shadow-md shrink-0"
                 >
                     <img
-                        src="/assets/pkl-go.png"
+                        src="/assets/logo_up.png"
                         class="bg-cover w-48"
-                        alt="pkl-go"
+                        alt="logo-undangan-praktis"
                     />
                 </div>
 
-                <!-- User Greeting -->
-                <div class="bg-[#1E3A8A] p-4! border-b border-white/40!">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
-                        >
-                            <Icon
-                                icon="mdi:account"
-                                class="text-white"
-                                width="28"
-                            />
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-white/70 text-sm">Selamat Datang,</p>
-                            <p class="text-white font-semibold truncate">
-                                {{ $page.props.auth.user?.name || "User" }}
-                            </p>
-                            <v-chip
-                                size="x-small"
-                                color="white"
-                                variant="outlined"
-                                class="mt-1 text-capitalize"
+                <div class="bg-[#004D31] p-4! border-b border-white/40!">
+                    <div
+                        class="bg-linear-to-br from-emerald-600 to-emerald-800 rounded-lg p-3!"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
                             >
-                                {{
-                                    $page.props.auth.user?.role === "pendamping"
-                                        ? "Pendamping"
-                                        : $page.props.auth.user?.role ===
-                                            "pembimbing"
-                                          ? "Pembimbing"
-                                          : $page.props.auth.user?.role ===
-                                              "supervisors"
-                                            ? "Supervisor"
-                                            : $page.props.auth.user?.role ===
-                                                "siswa"
-                                              ? "Siswa"
-                                              : $page.props.auth.user?.role ||
-                                                "User"
-                                }}
-                            </v-chip>
+                                <Icon
+                                    icon="mdi:account"
+                                    class="text-white"
+                                    width="28"
+                                />
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white/70 text-sm">
+                                    Selamat Datang,
+                                </p>
+                                <p class="text-white font-semibold truncate">
+                                    User
+                                </p>
+                                <v-chip
+                                    size="x-small"
+                                    color="white"
+                                    variant="outlined"
+                                    class="mt-1 text-capitalize"
+                                >
+                                    Free
+                                </v-chip>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Scrollable Menu Area -->
                 <div
-                    class="bg-linear-to-b flex-1 overflow-y-auto from-[#1E3A8A] to-[#1a398f]"
+                    class="bg-linear-to-b flex-1 overflow-y-auto from-[#004D31] to-[#005033]"
                 >
-                    <div class="flex flex-col gap-4 p-5!">
+                    <div class="flex flex-col gap-4 py-5! pr-2!">
                         <slot name="sidebar-menu" />
+
+                        <Link
+                            :class="{
+                                'bg-[#F3F4F6]!': isLinkActive(
+                                    'mentor-request.index',
+                                ),
+                                'hover:bg-[#005400]! ': !isLinkActive(
+                                    'mentor-request.index',
+                                ),
+                            }"
+                            class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full"
+                        >
+                            <div class="flex items-center gap-3">
+                                <!-- <Icon icon="mdi:account-switch" width="24" /> -->
+                                <div class="font-bold text-lg">
+                                    Ganti Pembimbing
+                                </div>
+                            </div>
+                        </Link>
                     </div>
                 </div>
 
                 <!-- Fixed Logout Button -->
-                <div
+                <!-- <div
                     class="bg-[#1a398f] p-5! shrink-0 border-t-2 border-white/30"
                 >
                     <div
@@ -156,7 +161,7 @@ const isLinkActive = (routeName) => {
                         <Icon icon="mdi:logout" width="24" />
                         <div>Logout</div>
                     </div>
-                </div>
+                </div> -->
             </aside>
         </transition>
         <!-- header desktop -->
@@ -176,27 +181,16 @@ const isLinkActive = (routeName) => {
                             variant="text"
                             @click="showSidebar = !showSidebar"
                         >
-                            <Icon icon="ci:hamburger-lg" width="28" />
+                            <Icon
+                                style="color: #000000"
+                                icon="ci:hamburger-lg"
+                                width="28"
+                            />
                         </v-btn>
                         <div
                             class="text-xl flex items-center gap-1 font-medium"
                         >
                             <slot name="headerTitle" />
-                        </div>
-                    </div>
-                    <!-- Tombol Download QR Code (Khusus Supervisor) -->
-
-                    <div class="mr-8">
-                        <div
-                            v-if="$page.props.auth.user.role === 'supervisors'"
-                        >
-                            <v-btn
-                                color="primary"
-                                prepend-icon="mdi-qrcode-scan"
-                                @click="downloadQrCode"
-                            >
-                                Download QR Code
-                            </v-btn>
                         </div>
                     </div>
                 </div>
@@ -206,23 +200,16 @@ const isLinkActive = (routeName) => {
         <div class="h-20 z-49 md:hidden bg-white shadow-sm fixed w-screen px-6">
             <div class="flex justify-between items-center h-full">
                 <div class="flex items-center">
-                    <v-btn
+                    <!-- <v-btn
                         icon
                         variant="text"
                         @click="showSidebar = !showSidebar"
                     >
                         <Icon icon="ci:hamburger-lg" width="28" />
-                    </v-btn>
+                    </v-btn> -->
                     <h2 class="font-bold text-xl">
                         <slot name="headerTitle" />
                     </h2>
-                </div>
-                <div v-if="$page.props.auth.user.role === 'supervisors'">
-                    <div>
-                        <v-btn color="primary" @click="downloadQrCode">
-                            <Icon icon="mdi:qrcode-scan" width="24" />
-                        </v-btn>
-                    </div>
                 </div>
             </div>
         </div>

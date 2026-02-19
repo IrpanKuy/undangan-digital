@@ -1,8 +1,60 @@
 import "./bootstrap";
+import "vuetify/styles";
+import "../css/app.css";
+
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+
+import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-import "../css/app.css";
-import { ZiggyVue } from "../../vendor/tightenco/ziggy";
+import { Icon } from "@iconify/vue";
+
+const vuetify = createVuetify({
+    components,
+    directives,
+    // atur style bawaan
+    defaults: {
+        VBtn: {
+            color: "primary",
+            variant: "flat",
+            rounded: "lg",
+            class: "text-none font-bold",
+        },
+        VTextField: {
+            variant: "outlined",
+            density: "compact",
+            color: "primary",
+        },
+        VSelect: {
+            variant: "outlined",
+            density: "compact",
+            color: "primary",
+        },
+        VNumberInput: {
+            variant: "outlined",
+            density: "compact",
+            color: "primary",
+        },
+        VTextarea: {
+            variant: "outlined",
+            density: "compact",
+            color: "primary",
+        },
+    },
+    icons: {
+        // default icon
+        defaultSet: "iconify",
+
+        // definisikan icon
+        sets: {
+            iconify: {
+                component: (props) => h(Icon, { icon: props.icon, ...props }),
+            },
+        },
+    },
+});
 
 createInertiaApp({
     resolve: (name) => {
@@ -10,10 +62,12 @@ createInertiaApp({
         return pages[`./Pages/${name}.vue`];
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .mount(el)
-            .use(ZiggyVue, Ziggy);
+        const app = createApp({ render: () => h(App, props) });
+        app.use(plugin);
+        app.use(vuetify);
+        app.use(ZiggyVue, Ziggy);
+        app.component("Icon", Icon);
+        app.mount(el);
     },
 
     defaults: {
