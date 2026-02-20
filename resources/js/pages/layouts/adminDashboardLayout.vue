@@ -9,7 +9,6 @@ const currentRouteName = computed(() => page.props.currentRoute.name);
 // pengkondisian route
 const isLinkActive = (routeName) => {
     return currentRouteName.value === routeName;
-    // return false;
 };
 </script>
 
@@ -19,9 +18,8 @@ const isLinkActive = (routeName) => {
             <Link
                 :href="route('admin.kategori-undangan.index')"
                 :class="{
-                    'bg-[#F3F4F6]! rounded-r-full': isLinkActive(
-                        'admin.kategori-undangan.index',
-                    ),
+                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]!':
+                        isLinkActive('admin.kategori-undangan.index'),
                     'hover:bg-gray-200/20! text-white!': !isLinkActive(
                         'admin.kategori-undangan.index',
                     ),
@@ -36,10 +34,9 @@ const isLinkActive = (routeName) => {
             <Link
                 :href="route('admin.template-undangan.index')"
                 :class="{
-                    'bg-[#F3F4F6]!': isLinkActive(
-                        'admin.template-undangan.index',
-                    ),
-                    'hover:bg-gray-200/20!  text-white!': !isLinkActive(
+                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]!':
+                        isLinkActive('admin.template-undangan.index'),
+                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
                         'admin.template-undangan.index',
                     ),
                 }"
@@ -51,8 +48,13 @@ const isLinkActive = (routeName) => {
                 </div>
             </Link>
         </template>
+
+        <template #headerTitle>
+            <slot name="headerTitle" />
+        </template>
+
         <template #content>
-            <slot />
+            <slot name="content" />
         </template>
     </DashboardLayout>
 </template>
