@@ -14,6 +14,19 @@ import { Icon } from "@iconify/vue";
 const vuetify = createVuetify({
     components,
     directives,
+
+    theme: {
+        defaultTheme: "myTheme",
+        themes: {
+            myTheme: {
+                dark: false,
+                colors: {
+                    primary: "#004D31", // Hijau tua dashboard kamu
+                    secondary: "#D4AF37", // Warna Gold (opsional)
+                },
+            },
+        },
+    },
     // atur style bawaan
     defaults: {
         VBtn: {

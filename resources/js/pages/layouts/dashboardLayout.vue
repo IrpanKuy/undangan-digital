@@ -54,14 +54,6 @@ const handleResize = () => {
         showSidebar.value = false;
     }
 };
-
-const currentRouteName = computed(() => page.props.currentRoute.name);
-
-// pengkondisian route
-const isLinkActive = (routeName) => {
-    // return currentRouteName.value === routeName;
-    return true;
-};
 </script>
 <template>
     <body class="font-poppins">
@@ -128,25 +120,6 @@ const isLinkActive = (routeName) => {
                 >
                     <div class="flex flex-col gap-4 py-5! pr-2!">
                         <slot name="sidebar-menu" />
-
-                        <Link
-                            :class="{
-                                'bg-[#F3F4F6]!': isLinkActive(
-                                    'mentor-request.index',
-                                ),
-                                'hover:bg-[#005400]! ': !isLinkActive(
-                                    'mentor-request.index',
-                                ),
-                            }"
-                            class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full"
-                        >
-                            <div class="flex items-center gap-3">
-                                <!-- <Icon icon="mdi:account-switch" width="24" /> -->
-                                <div class="font-bold text-lg">
-                                    Ganti Pembimbing
-                                </div>
-                            </div>
-                        </Link>
                     </div>
                 </div>
 
