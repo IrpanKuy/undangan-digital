@@ -30,8 +30,8 @@ class TemplateUndangan extends Model
         return $this->belongsTo(KategoriUndangan::class, 'kategori_undangan_id');
     }
 
-    public function undangan()
+    public function undangans()
     {
-        return $this->hasOne(Undangan::class, 'undangan_id');
+        return $this->hasMany(Undangan::class, 'undangan_id');
     }
 }

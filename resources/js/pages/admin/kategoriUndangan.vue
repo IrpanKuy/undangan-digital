@@ -248,7 +248,7 @@ const confirmDelete = (item) => {
                     <v-sheet
                         color="#004D31"
                         rounded="t-xl"
-                        class="p-5 flex items-center gap-3"
+                        class="p-5! flex items-center gap-3"
                     >
                         <v-icon icon="mdi-tag-plus" color="white" size="24" />
                         <span class="text-white text-lg font-semibold">
