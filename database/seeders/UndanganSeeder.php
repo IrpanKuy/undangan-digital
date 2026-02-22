@@ -54,7 +54,7 @@ class UndanganSeeder extends Seeder
     private function seedUndanganDetails($undangan)
     {
         // Template Pernikahan
-        $tp = TemplateUndanganPernikahan::create([
+        TemplateUndanganPernikahan::create([
             'undangan_id' => $undangan->id,
             'tanggal_mulai_akad' => now()->addDays(30)->format('Y-m-d'),
             'waktu_mulai_akad' => '09:00:00',
@@ -65,7 +65,7 @@ class UndanganSeeder extends Seeder
 
         // Data Mempelai
         DataMempelai::create([
-            'template_undangan_pernikahan_id' => $tp->id,
+            'undangan_id' => $undangan->id,
             'nama_panggilan_pria' => 'Mempelai',
             'nama_lengkap_pria' => 'Mempelai Pria Lengkap',
             'nama_panggilan_wanita' => 'Mempelai',

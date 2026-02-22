@@ -17,10 +17,10 @@
 3. jika suatu komponen vuetify sudah kuatur dalam file app.js/createVuetify.defaults maka gunakan component tersebut tanpa menambah styling lagi
 4. untuk icon gunakan dari iconify
 5. pelajari styling dari kode lain agar styling konsisten, bisa di skip jika kamu sudah mempelajarinya
+6. desain fokus ke ux dan readibility dengan styling lebih flat
+   --Rules Alert
 
---Rules Alert
-
-1. Gunakan sweet alert modal jika suatu tindakan yang membutuhkan perhatian penuh atau konfirmasi berat seperti
+7. Gunakan sweet alert modal jika suatu tindakan yang membutuhkan perhatian penuh atau konfirmasi berat seperti
    contoh:
 
 - Konfirmasi Hapus (Destructive Action): "Apakah Anda yakin ingin menghapus data ini?" (Tombol merah/peringatan).

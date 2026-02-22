@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('data_mempelais', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('template_undangan_pernikahan_id')->constrained('template_undangan_pernikahans')->onDelete('cascade');
+            $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->string('foto_pria_path')->nullable();
             $table->string('nama_panggilan_pria');
             $table->string('nama_lengkap_pria');

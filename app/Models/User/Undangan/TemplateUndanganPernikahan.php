@@ -25,9 +25,4 @@ class TemplateUndanganPernikahan extends Model
     {
         return $this->belongsTo(Undangan::class, 'undangan_id');
     }
-
-    public function dataMempelai()
-    {
-        return $this->hasOne(DataMempelai::class, 'template_undangan_pernikahan_id');
-    }
 }

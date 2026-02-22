@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Models\User\Undangan;
-
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User\Undangan\TemplateUndanganPernikahan;
-
+    
 class DataMempelai extends Model
 {
     protected $fillable = [
-        'template_undangan_pernikahan_id',
+        'undangan_id',
         'foto_pria_path',
         'nama_panggilan_pria',
         'nama_lengkap_pria',
@@ -20,8 +18,8 @@ class DataMempelai extends Model
         'text_penutup',
     ];
 
-    public function templateUndanganPernikahan()
+    public function undangan()
     {
-        return $this->belongsTo(TemplateUndanganPernikahan::class, 'template_undangan_pernikahan_id');
+        return $this->belongsTo(Undangan::class, 'undangan_id');
     }
 }
