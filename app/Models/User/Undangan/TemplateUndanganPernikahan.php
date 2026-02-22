@@ -9,7 +9,6 @@ use App\Models\User\Undangan\DataMempelai;
 class TemplateUndanganPernikahan extends Model
 {
     protected $fillable = [
-        'template_undangan_id', // Foreign key ke master template jika diperlukan, tapi relasi utama di ERD lewat undangan_id
         'undangan_id',
         'prosesi',
         'tanggal_mulai_akad',

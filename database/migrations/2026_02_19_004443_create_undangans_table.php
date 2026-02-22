@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('undangans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('template_undangan_id')->nullable()->constrained('template_undangans');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('judul');
             $table->string('url')->unique();
@@ -21,6 +20,7 @@ return new class extends Migration
             $table->string('salam_pembuka')->nullable();
             $table->text('text_pembuka')->nullable();
             $table->string('video_youtube_url')->nullable();
+            $table->boolean('for_template')->default(false);
             $table->timestamps();
         });
     }

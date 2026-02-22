@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('template_undangan_pernikahans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('undangan_id')->nullable()->constrained('undangans')->onDelete('cascade');
+            $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->string('prosesi');
             $table->date('tanggal_mulai_akad');
             $table->time('waktu_mulai_akad');

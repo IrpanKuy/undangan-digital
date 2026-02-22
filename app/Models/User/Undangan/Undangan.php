@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 class Undangan extends Model
 {
     protected $fillable = [
-        'template_undangan_id',
         'user_id',
         'judul',
         'url',
@@ -26,14 +25,6 @@ class Undangan extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function templateUndangan()
-    {
-        return $this->belongsTo(TemplateUndangan::class, 'template_undangan_id');
-    }
-
-    /**
-     * Relasi ke Template Undangan Pernikahan (Detail Utama Pernikahan).
-     */
     public function templateUndanganPernikahan()
     {
         return $this->hasOne(TemplateUndanganPernikahan::class, 'undangan_id');
@@ -82,5 +73,10 @@ class Undangan extends Model
     public function kontaks()
     {
         return $this->hasMany(Kontak::class, 'undangan_id');
+    }
+
+    public function templateUndangan()
+    {
+        return $this->belongsTo(TemplateUndangan::class, 'template_undangan_id');
     }
 }

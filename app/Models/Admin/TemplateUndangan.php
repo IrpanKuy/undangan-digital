@@ -9,6 +9,7 @@ use App\Models\User\Undangan\Undangan;
 class TemplateUndangan extends Model
 {
     protected $fillable = [
+        'undangan_id',
         'thumbnail_template',
         'judul_undangan',
         'template_premium',
@@ -29,8 +30,8 @@ class TemplateUndangan extends Model
         return $this->belongsTo(KategoriUndangan::class, 'kategori_undangan_id');
     }
 
-    public function undangans()
+    public function undangan()
     {
-        return $this->hasMany(Undangan::class, 'template_undangan_id');
+        return $this->hasOne(Undangan::class, 'undangan_id');
     }
 }

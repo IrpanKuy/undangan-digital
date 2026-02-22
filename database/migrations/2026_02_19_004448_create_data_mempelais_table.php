@@ -10,18 +10,20 @@ return new class extends Migration
     {
         Schema::create('data_mempelais', function (Blueprint $table) {
             $table->id();
-            // Perbaikan: Menyesuaikan nama tabel menjadi jamak 'template_undangan_pernikahans'
-            $table->foreignId('template_undangan_pernikahan_id')
-                  ->constrained('template_undangan_pernikahans')
-                  ->onDelete('cascade');
-                  
+            $table->foreignId('template_undangan_pernikahan_id')->constrained('template_undangan_pernikahans')->onDelete('cascade');
             $table->string('foto_pria_path')->nullable();
             $table->string('nama_panggilan_pria');
             $table->string('nama_lengkap_pria');
+            $table->string('instagram_url_pria')->nullable();
+            $table->string('tiktok_url_pria')->nullable();
+            $table->string('x_url_pria')->nullable();
             $table->string('keterangan_keluarga_pria')->nullable();
             $table->string('foto_wanita_path')->nullable();
             $table->string('nama_panggilan_wanita');
             $table->string('nama_lengkap_wanita');
+            $table->string('instagram_url_wanita')->nullable();
+            $table->string('tiktok_url_wanita')->nullable();
+            $table->string('x_url_wanita')->nullable();
             $table->string('keterangan_keluarga_wanita')->nullable();
             $table->text('text_penutup')->nullable();
             $table->timestamps();
