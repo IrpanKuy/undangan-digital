@@ -12,8 +12,7 @@ class Acara extends Model
         'nama_acara',
         'waktu_acara',
         'detail_lokasi_acara',
-        'latitude_acara',
-        'longitude_acara',
+        'lokasi_acara',
     ];
 
     public function undangan()

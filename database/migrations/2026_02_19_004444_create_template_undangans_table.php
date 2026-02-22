@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->foreignId('kategori_undangan_id')->constrained('kategori_undangans');
-            $table->string('thumbnail_template')->nullable();
+            $table->string('thumbnail_template');
             $table->string('judul_undangan');
             $table->boolean('template_premium')->default(false);
             $table->string('file_name'); // Nama file view blade

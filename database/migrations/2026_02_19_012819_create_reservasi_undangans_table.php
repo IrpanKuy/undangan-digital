@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->string('nama');
             $table->integer('jumlah_hadir');
-            $table->enum('status_kehadiran', ['Hadir', 'Tidak', 'Ragu']);
+            $table->enum('status_kehadiran', ['Hadir', 'Tidak']);
             $table->timestamps();
         });
     }

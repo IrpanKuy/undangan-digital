@@ -15,12 +15,11 @@ class TemplateUndanganPernikahan extends Model
         'waktu_mulai_akad',
         'waktu_selesai_akad',
         'detail_lokasi_akad_nikah',
-        'latitude_akad_nikah',
-        'longitude_akad_nikah',
+        'lokasi_akad_nikah',
         'doa_pengantinn_pria',
         'doa_pengantin_wanita',
-        'kirim_angpao',
-        'kirim_kado',
+        'no_rek_amplop',
+        'lokasi_pengiriman_kado',
     ];
 
     public function undangan()
