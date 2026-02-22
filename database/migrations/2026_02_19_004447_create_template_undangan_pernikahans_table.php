@@ -19,12 +19,11 @@ return new class extends Migration
             $table->time('waktu_mulai_akad');
             $table->time('waktu_selesai_akad')->nullable();
             $table->text('detail_lokasi_akad_nikah');
-            $table->string('latitude_akad_nikah');
-            $table->string('longitude_akad_nikah');
+            $table->geography('lokasi_akad_nikah', 4326)->nullable();
             $table->text('doa_pengantinn_pria');
             $table->text('doa_pengantin_wanita');
-            $table->text('kirim_angpao')->nullable();
-            $table->text('kirim_kado')->nullable();
+            $table->text('no_rek_amplop')->nullable();
+            $table->text('lokasi_pengiriman_kado')->nullable();
             $table->timestamps();
         });
     }

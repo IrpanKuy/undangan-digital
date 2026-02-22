@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('judul');
             $table->string('url')->unique();
-            $table->string('thumbnail_path')->nullable();
-            $table->string('salam_pembuka')->nullable();
-            $table->text('text_pembuka')->nullable();
+            $table->string('thumbnail_path');
+            $table->string('salam_pembuka');
+            $table->text('text_pembuka');
             $table->string('video_youtube_url')->nullable();
             $table->boolean('for_template')->default(false);
             $table->timestamps();

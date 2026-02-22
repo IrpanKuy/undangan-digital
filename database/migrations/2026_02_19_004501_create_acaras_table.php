@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('nama_acara'); // Resepsi, Ngunduh Mantu
             $table->dateTime('waktu_acara');
             $table->text('detail_lokasi_acara');
-            $table->string('latitude_acara');
-            $table->string('longitude_acara');
+            $table->geography('lokasi_acara', 4326)->nullable();
             $table->timestamps();
         });
     }
