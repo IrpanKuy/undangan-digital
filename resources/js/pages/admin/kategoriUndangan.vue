@@ -123,16 +123,14 @@ const confirmDelete = (item) => {
 
         <!-- Slot: Content -->
         <template #content>
-            <v-container fluid class="pa-0">
+            <v-container fluid class="p-0">
                 <!-- Page Header -->
                 <v-row align="center" justify="space-between" class="mb-5">
                     <v-col cols="auto">
-                        <p
-                            class="text-h5 font-weight-bold text-grey-darken-3 mb-1"
-                        >
+                        <p class="text-xl font-bold text-gray-700 mb-1">
                             Kategori Undangan
                         </p>
-                        <p class="text-body-2 text-grey">
+                        <p class="text-sm text-gray-500">
                             Kelola daftar kategori undangan digital
                         </p>
                     </v-col>
@@ -153,16 +151,14 @@ const confirmDelete = (item) => {
                     >
                         <!-- No -->
                         <template #item.index="{ index }">
-                            <span class="text-body-2 text-grey">{{
+                            <span class="text-sm text-gray-500">{{
                                 index + 1
                             }}</span>
                         </template>
 
                         <!-- Nama -->
                         <template #item.name="{ item }">
-                            <span class="font-weight-medium">{{
-                                item.name
-                            }}</span>
+                            <span class="font-medium">{{ item.name }}</span>
                         </template>
 
                         <!-- Status -->
@@ -188,9 +184,7 @@ const confirmDelete = (item) => {
 
                         <!-- Aksi -->
                         <template #item.actions="{ item }">
-                            <div
-                                class="d-flex align-center justify-center ga-2"
-                            >
+                            <div class="flex items-center justify-center gap-2">
                                 <v-btn
                                     color="primary"
                                     variant="tonal"
@@ -228,17 +222,17 @@ const confirmDelete = (item) => {
                         <!-- Empty State -->
                         <template #no-data>
                             <div
-                                class="d-flex flex-column align-center py-12 text-medium-emphasis"
+                                class="flex flex-col items-center py-12 text-gray-500"
                             >
                                 <v-icon
                                     icon="mdi-tag-off-outline"
                                     size="56"
                                     class="mb-3 opacity-30"
                                 />
-                                <p class="text-subtitle-1 font-weight-medium">
+                                <p class="text-base font-medium">
                                     Belum ada kategori
                                 </p>
-                                <p class="text-body-2 mt-1">
+                                <p class="text-sm mt-1">
                                     Klik "Tambah Kategori" untuk memulai
                                 </p>
                             </div>
@@ -254,23 +248,23 @@ const confirmDelete = (item) => {
                     <v-sheet
                         color="#004D31"
                         rounded="t-xl"
-                        class="pa-5 d-flex align-center ga-3"
+                        class="p-5 flex items-center gap-3"
                     >
                         <v-icon icon="mdi-tag-plus" color="white" size="24" />
-                        <span class="text-white text-h6 font-weight-semibold">
+                        <span class="text-white text-lg font-semibold">
                             Tambah Kategori Undangan
                         </span>
                     </v-sheet>
 
-                    <v-card-text class="pa-6">
+                    <v-card-text class="p-6">
                         <v-row dense>
                             <!-- Nama Kategori -->
                             <v-col cols="12">
                                 <p
-                                    class="text-body-2 font-weight-medium text-grey-darken-2 mb-1"
+                                    class="text-sm font-medium text-gray-600 mb-1"
                                 >
                                     Nama Kategori
-                                    <span style="color: #e53935">*</span>
+                                    <span class="text-red-600">*</span>
                                 </p>
                                 <v-text-field
                                     v-model="formCreate.name"
@@ -284,9 +278,9 @@ const confirmDelete = (item) => {
                             <!-- Status -->
                             <v-col cols="12">
                                 <p
-                                    class="text-body-2 font-weight-medium text-grey-darken-2 mb-1"
+                                    class="text-sm font-medium text-gray-600 mb-1"
                                 >
-                                    Status <span style="color: #e53935">*</span>
+                                    Status <span class="text-red-600">*</span>
                                 </p>
                                 <v-select
                                     v-model="formCreate.status"
@@ -301,7 +295,7 @@ const confirmDelete = (item) => {
                     </v-card-text>
 
                     <v-divider />
-                    <v-card-actions class="pa-4 ga-2 justify-end">
+                    <v-card-actions class="p-4 gap-2 justify-end">
                         <v-btn
                             variant="outlined"
                             color="grey-darken-2"
@@ -328,27 +322,27 @@ const confirmDelete = (item) => {
                     <v-sheet
                         color="#004D31"
                         rounded="t-xl"
-                        class="pa-5 d-flex align-center ga-3"
+                        class="p-5 flex items-center gap-3"
                     >
                         <v-icon
                             icon="mdi-tag-edit-outline"
                             color="white"
                             size="24"
                         />
-                        <span class="text-white text-h6 font-weight-semibold">
+                        <span class="text-white text-lg font-semibold">
                             Edit Kategori Undangan
                         </span>
                     </v-sheet>
 
-                    <v-card-text class="pa-6">
+                    <v-card-text class="p-6">
                         <v-row dense>
                             <!-- Nama Kategori -->
                             <v-col cols="12">
                                 <p
-                                    class="text-body-2 font-weight-medium text-grey-darken-2 mb-1"
+                                    class="text-sm font-medium text-gray-600 mb-1"
                                 >
                                     Nama Kategori
-                                    <span style="color: #e53935">*</span>
+                                    <span class="text-red-600">*</span>
                                 </p>
                                 <v-text-field
                                     v-model="formEdit.name"
@@ -361,9 +355,9 @@ const confirmDelete = (item) => {
                             <!-- Status -->
                             <v-col cols="12">
                                 <p
-                                    class="text-body-2 font-weight-medium text-grey-darken-2 mb-1"
+                                    class="text-sm font-medium text-gray-600 mb-1"
                                 >
-                                    Status <span style="color: #e53935">*</span>
+                                    Status <span class="text-red-600">*</span>
                                 </p>
                                 <v-select
                                     v-model="formEdit.status"
@@ -378,7 +372,7 @@ const confirmDelete = (item) => {
                     </v-card-text>
 
                     <v-divider />
-                    <v-card-actions class="pa-4 ga-2 justify-end">
+                    <v-card-actions class="p-4 gap-2 justify-end">
                         <v-btn
                             variant="outlined"
                             color="grey-darken-2"

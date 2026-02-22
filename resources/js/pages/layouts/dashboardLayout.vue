@@ -71,7 +71,7 @@ const handleResize = () => {
             >
                 <!-- logo -->
                 <div
-                    class="p-3! h-20 bg-white flex! justify-center! items-center! shadow-md shrink-0"
+                    class="p-3 h-20 bg-white flex justify-center items-center shadow-md shrink-0"
                 >
                     <img
                         src="/assets/logo_up.png"

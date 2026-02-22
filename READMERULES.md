@@ -12,11 +12,11 @@
 
 --rules Design(UI/UX)
 
-1. selalu gunakan styling dari vuetify yang konsisten dengan project ini
-2. untuk styling selalu gunakan styling dari vuetify
-3. untuk component gunakan dari vuetify
-4. jika suatu komponen vuetify sudah kuatur dalam file app.js/createVuetify.defaults maka gunakan component tersebut tanpa menambah styling lagi
-5. untuk icon gunakan dari iconify
+1. selalu gunakan styling dari tailwind dan component dari vuetify yang konsisten dengan project ini
+2. untuk component gunakan dari vuetify
+3. jika suatu komponen vuetify sudah kuatur dalam file app.js/createVuetify.defaults maka gunakan component tersebut tanpa menambah styling lagi
+4. untuk icon gunakan dari iconify
+5. pelajari styling dari kode lain agar styling konsisten, bisa di skip jika kamu sudah mempelajarinya
 
 --Rules Alert
 

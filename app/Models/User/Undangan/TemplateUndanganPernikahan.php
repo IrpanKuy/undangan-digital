@@ -10,7 +10,6 @@ class TemplateUndanganPernikahan extends Model
 {
     protected $fillable = [
         'undangan_id',
-        'prosesi',
         'tanggal_mulai_akad',
         'waktu_mulai_akad',
         'waktu_selesai_akad',

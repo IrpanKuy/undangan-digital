@@ -1,9 +1,27 @@
+/* ============================================================
+   STRATEGI: Tailwind CSS v4 > Vuetify Utility Classes
+
+   Solusi (2 langkah):
+   1. Vite plugin `stripVuetifyImportant` menghapus semua
+      !important dari CSS Vuetify saat build
+   2. Vuetify styles di-import SEBELUM Tailwind di sini,
+      sehingga Tailwind utilities selalu menang via CSS cascade
+
+   Hasilnya: class Tailwind SELALU bekerja tanpa gangguan
+   dari Vuetify utility classes. Tidak perlu prefix `!`.
+   ============================================================ */
+
+/* 1. Import Vuetify styles PERTAMA (tanpa !important berkat plugin) */
+@import "vuetify/styles";
+
+/* 2. Import Tailwind CSS SETELAH Vuetify — otomatis menang di cascade */
 @import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+@source '../**/*.vue';
 
 @theme {
     --font-sans:
@@ -26,7 +44,7 @@
 
 @layer base {
     .v-btn {
-        @apply capitalize; /* Contoh: mengembalikan gaya jika tertimpa */
+        @apply capitalize;
     }
 
     /* Mencegah Tailwind Reset merusak elemen global yang digunakan Vuetify */
@@ -34,6 +52,6 @@
     [type="button"],
     [type="reset"],
     [type="submit"] {
-        background-color: transparent; /* Reset default tailwind */
+        background-color: transparent;
     }
 }
