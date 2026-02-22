@@ -109,7 +109,7 @@ const formatDate = (dateString) => {
                             @click="
                                 router.get(
                                     route(
-                                        'admin.template-content-undangan.create',
+                                        'admin.template-content-undangan.create-content',
                                     ),
                                 )
                             "
@@ -218,6 +218,14 @@ const formatDate = (dateString) => {
                                         size="x-small"
                                         class="grow font-bold text-xs"
                                         prepend-icon="mdi-pencil-box-multiple"
+                                        @click="
+                                            router.get(
+                                                route(
+                                                    'admin.template-content-undangan.edit-content',
+                                                    item.id,
+                                                ),
+                                            )
+                                        "
                                     >
                                         Edit Konten
                                     </v-btn>
@@ -227,6 +235,14 @@ const formatDate = (dateString) => {
                                         size="x-small"
                                         class="grow font-bold text-xs"
                                         prepend-icon="mdi-cog"
+                                        @click="
+                                            router.get(
+                                                route(
+                                                    'admin.template-content-undangan.edit-setting',
+                                                    item.id,
+                                                ),
+                                            )
+                                        "
                                     >
                                         Edit Setting
                                     </v-btn>
