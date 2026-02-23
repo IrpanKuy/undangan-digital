@@ -171,17 +171,20 @@ class TemplateContentUndanganController extends Controller
             // 5. Upsert Galleries (Add new, Remove specified)
             if ($request->remove_galleries) {
                 $toRemove = GalleryUndangan::whereIn('id', $request->remove_galleries)->get();
+                /** @var GalleryUndangan $item */
                 foreach ($toRemove as $item) {
-                    Storage::disk('public')->delete($item->image_path);
+                    if ($item->image_path) Storage::disk('public')->delete($item->image_path);
                     $item->delete();
                 }
             }
-            if ($request->hasFile('galleries')) {
-                foreach ($request->file('galleries') as $file) {
-                    $gallery = new GalleryUndangan();
-                    $gallery->undangan_id = $undangan->id;
-                    $gallery->image_path = $file->store('galleries', 'public');
-                    $gallery->save();
+            if ($request->galleries) {
+                foreach ($request->galleries as $index => $galleryData) {
+                    if ($request->hasFile("galleries.$index.file")) {
+                        $gallery = new GalleryUndangan();
+                        $gallery->undangan_id = $undangan->id;
+                        $gallery->image_path = $request->file("galleries.$index.file")->store('galleries', 'public');
+                        $gallery->save();
+                    }
                 }
             }
 

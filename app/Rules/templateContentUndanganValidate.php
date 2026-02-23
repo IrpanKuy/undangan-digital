@@ -49,7 +49,7 @@ class templateContentUndanganValidate
 
             // Gallery
             'galleries' => 'nullable|array',
-            'galleries.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'galleries.*.file' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
 
             // Kisah Cinta
             'kisah_cintas' => 'required|array|min:1',

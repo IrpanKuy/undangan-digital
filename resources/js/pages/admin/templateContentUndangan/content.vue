@@ -65,7 +65,13 @@ const form = useForm({
     ],
 
     // Gallery
-    galleries: [],
+    galleries: [
+        {
+            id: null,
+            file: null,
+            image_path: null,
+        },
+    ],
     remove_galleries: [], // To track deleted gallery images in edit mode
 
     // Kisah Cinta
@@ -125,6 +131,17 @@ onMounted(() => {
                     lat: -6.2088,
                     lng: 106.8456,
                 },
+            }));
+        }
+
+        if (
+            props.template.gallery_undangans &&
+            props.template.gallery_undangans.length > 0
+        ) {
+            form.galleries = props.template.gallery_undangans.map((g) => ({
+                id: g.id,
+                file: null,
+                image_path: g.image_path,
             }));
         }
 
