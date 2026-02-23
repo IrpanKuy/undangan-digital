@@ -1,5 +1,5 @@
 <script setup>
-import LeafletMap from "../../../../../components/LeafletMap.vue";
+import LeafletMap from "../../../../components/LeafletMap.vue";
 
 const props = defineProps({
     modelValue: Object,
@@ -68,11 +68,35 @@ const props = defineProps({
                     <div class="mb-2 text-sm font-medium">
                         Pilih Lokasi di Peta (Opsional)
                     </div>
+                    <v-row dense class="mb-2">
+                        <v-col cols="6">
+                            <v-text-field
+                                v-model.number="
+                                    modelValue.lokasi_akad_nikah.lat
+                                "
+                                label="Latitude"
+                                variant="outlined"
+                                density="compact"
+                                type="number"
+                                step="any"
+                                hide-details
+                            />
+                        </v-col>
+                        <v-col cols="6">
+                            <v-text-field
+                                v-model.number="
+                                    modelValue.lokasi_akad_nikah.lng
+                                "
+                                label="Longitude"
+                                variant="outlined"
+                                density="compact"
+                                type="number"
+                                step="any"
+                                hide-details
+                            />
+                        </v-col>
+                    </v-row>
                     <LeafletMap v-model="modelValue.lokasi_akad_nikah" />
-                    <div class="mt-2 text-xs text-gray-500">
-                        Lat: {{ modelValue.lokasi_akad_nikah.lat.toFixed(6) }},
-                        Lng: {{ modelValue.lokasi_akad_nikah.lng.toFixed(6) }}
-                    </div>
                 </v-col>
             </v-row>
         </v-card-text>

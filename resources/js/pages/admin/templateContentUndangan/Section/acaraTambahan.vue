@@ -1,5 +1,5 @@
 <script setup>
-import LeafletMap from "../../../../../components/LeafletMap.vue";
+import LeafletMap from "../../../../components/LeafletMap.vue";
 
 const props = defineProps({
     modelValue: Object,
@@ -96,6 +96,30 @@ const removeAcara = (index) => {
                         <div class="mb-2 text-sm font-medium">
                             Pilih Lokasi Acara (Opsional)
                         </div>
+                        <v-row dense class="mb-2">
+                            <v-col cols="6">
+                                <v-text-field
+                                    v-model.number="acara.lokasi_acara.lat"
+                                    label="Latitude"
+                                    variant="outlined"
+                                    density="compact"
+                                    type="number"
+                                    step="any"
+                                    hide-details
+                                />
+                            </v-col>
+                            <v-col cols="6">
+                                <v-text-field
+                                    v-model.number="acara.lokasi_acara.lng"
+                                    label="Longitude"
+                                    variant="outlined"
+                                    density="compact"
+                                    type="number"
+                                    step="any"
+                                    hide-details
+                                />
+                            </v-col>
+                        </v-row>
                         <LeafletMap v-model="acara.lokasi_acara" />
                     </v-col>
                 </v-row>

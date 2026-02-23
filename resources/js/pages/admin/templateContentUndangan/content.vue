@@ -1,21 +1,29 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import adminDashboardLayout from "../../../layouts/adminDashboardLayout.vue";
+import adminDashboardLayout from "../../layouts/adminDashboardLayout.vue";
 
 // Import Sections
-import InformasiDasar from "./createSection/informasiDasar.vue";
-import DataMempelai from "./createSection/dataMempelai.vue";
-import DetailAkad from "./createSection/detailAkad.vue";
-import AcaraTambahan from "./createSection/acaraTambahan.vue";
-import GalleryFoto from "./createSection/galleryFoto.vue";
-import KisahCinta from "./createSection/kisahCinta.vue";
-import HadiahAmplop from "./createSection/hadiahAmplop.vue";
+import InformasiDasar from "./Section/informasiDasar.vue";
+import DataMempelai from "./Section/dataMempelai.vue";
+import DetailAkad from "./Section/detailAkad.vue";
+import AcaraTambahan from "./Section/acaraTambahan.vue";
+import GalleryFoto from "./Section/galleryFoto.vue";
+import KisahCinta from "./Section/kisahCinta.vue";
+import HadiahAmplop from "./Section/hadiahAmplop.vue";
+
+const props = defineProps({
+    template: {
+        type: Object,
+        default: null,
+    },
+});
 
 const activeTab = ref("content");
 
 const form = useForm({
+    id: null,
     // Undangan
     judul: "",
     url: "",
@@ -58,6 +66,7 @@ const form = useForm({
 
     // Gallery
     galleries: [],
+    remove_galleries: [], // To track deleted gallery images in edit mode
 
     // Kisah Cinta
     kisah_cintas: [
@@ -69,13 +78,82 @@ const form = useForm({
     ],
 });
 
+onMounted(() => {
+    if (props.template) {
+        form.id = props.template.id;
+        form.judul = props.template.judul;
+        form.url = props.template.url;
+        form.salam_pembuka = props.template.salam_pembuka;
+        form.text_pembuka = props.template.text_pembuka;
+        form.video_youtube_url = props.template.video_youtube_url;
+
+        if (props.template.data_mempelai) {
+            const m = props.template.data_mempelai;
+            form.nama_panggilan_pria = m.nama_panggilan_pria;
+            form.nama_lengkap_pria = m.nama_lengkap_pria;
+            form.keterangan_keluarga_pria = m.keterangan_keluarga_pria;
+            form.nama_panggilan_wanita = m.nama_panggilan_wanita;
+            form.nama_lengkap_wanita = m.nama_lengkap_wanita;
+            form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
+            form.text_penutup = m.text_penutup;
+        }
+
+        if (props.template.template_undangan_pernikahan) {
+            const p = props.template.template_undangan_pernikahan;
+            form.tanggal_mulai_akad = p.tanggal_mulai_akad;
+            form.waktu_mulai_akad = p.waktu_mulai_akad;
+            form.waktu_selesai_akad = p.waktu_selesai_akad;
+            form.detail_lokasi_akad_nikah = p.detail_lokasi_akad_nikah;
+            form.doa_pengantinn_pria = p.doa_pengantinn_pria;
+            form.doa_pengantin_wanita = p.doa_pengantin_wanita;
+            form.no_rek_amplop = p.no_rek_amplop;
+            form.lokasi_pengiriman_kado = p.lokasi_pengiriman_kado;
+
+            // Handle Geography point if needed, or simple lat/lng from backend
+            if (p.lokasi_akad_nikah_decoded) {
+                form.lokasi_akad_nikah = p.lokasi_akad_nikah_decoded;
+            }
+        }
+
+        if (props.template.acaras && props.template.acaras.length > 0) {
+            form.acaras = props.template.acaras.map((a) => ({
+                id: a.id,
+                nama_acara: a.nama_acara,
+                waktu_acara: a.waktu_acara,
+                detail_lokasi_acara: a.detail_lokasi_acara,
+                lokasi_acara: a.lokasi_acara_decoded || {
+                    lat: -6.2088,
+                    lng: 106.8456,
+                },
+            }));
+        }
+
+        if (
+            props.template.kisah_cintas &&
+            props.template.kisah_cintas.length > 0
+        ) {
+            form.kisah_cintas = props.template.kisah_cintas.map((k) => ({
+                id: k.id,
+                tanggal: k.tanggal,
+                peristiwa: k.peristiwa,
+                foto: null, // Reset for new upload
+                foto_path: k.foto_kisah_cinta_path, // To show existing preview
+            }));
+        }
+    }
+});
+
 const submit = () => {
+    // If editing, use update (via POST with _method PUT if needed by Laravel, or just POST to store which handles update)
+    // Actually, our consolidated store() handles ID, so we can always POST
     form.post(route("admin.template-content-undangan.store"), {
         onSuccess: () => {
             Swal.fire({
                 icon: "success",
                 title: "Berhasil!",
-                text: "Konten template berhasil disimpan.",
+                text: form.id
+                    ? "Konten template berhasil diperbarui."
+                    : "Konten template berhasil disimpan.",
                 timer: 2000,
                 showConfirmButton: false,
                 toast: true,
@@ -106,11 +184,13 @@ const submit = () => {
     <adminDashboardLayout>
         <template #headerTitle>
             <v-icon
-                icon="mdi-pencil-plus-outline"
+                :icon="
+                    form.id ? 'mdi-pencil-outline' : 'mdi-pencil-plus-outline'
+                "
                 class="mr-2"
                 color="primary"
             />
-            Buat Konten Template
+            {{ form.id ? "Edit" : "Buat" }} Konten Template
         </template>
 
         <template #content>
@@ -128,11 +208,18 @@ const submit = () => {
                     <v-tab
                         value="setting"
                         @click="
-                            router.get(
-                                route(
-                                    'admin.template-content-undangan.create-setting',
-                                ),
-                            )
+                            form.id
+                                ? router.get(
+                                      route(
+                                          'admin.template-content-undangan.edit-setting',
+                                          form.id,
+                                      ),
+                                  )
+                                : router.get(
+                                      route(
+                                          'admin.template-content-undangan.create-setting',
+                                      ),
+                                  )
                         "
                     >
                         <v-icon start icon="mdi-cog" />
@@ -197,7 +284,7 @@ const submit = () => {
                             size="large"
                             :loading="form.processing"
                         >
-                            Simpan Konten
+                            {{ form.id ? "Perbarui" : "Simpan" }} Konten
                         </v-btn>
                     </div>
                 </form>
