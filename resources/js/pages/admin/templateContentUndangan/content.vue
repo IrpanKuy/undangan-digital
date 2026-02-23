@@ -161,8 +161,6 @@ onMounted(() => {
 });
 
 const submit = () => {
-    // If editing, use update (via POST with _method PUT if needed by Laravel, or just POST to store which handles update)
-    // Actually, our consolidated store() handles ID, so we can always POST
     form.post(route("admin.template-content-undangan.store"), {
         onSuccess: () => {
             Swal.fire({
@@ -178,20 +176,24 @@ const submit = () => {
             });
         },
         onError: (errors) => {
-            console.log(errors);
+            console.error("Validation Errors:", errors);
             Swal.fire({
                 icon: "error",
                 title: "Gagal!",
-                text: "Silakan periksa kembali inputan Anda.",
-                timer: 3000,
+                text: "Silakan periksa kembali inputan Anda. Beberapa bidang wajib diisi atau formatnya salah.",
+                timer: 4000,
             });
-            const errorElement = document.querySelector(".v-input--error");
-            if (errorElement) {
-                errorElement.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                });
-            }
+
+            // Scroll to the first error
+            setTimeout(() => {
+                const firstError = document.querySelector(".v-input--error");
+                if (firstError) {
+                    firstError.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                    });
+                }
+            }, 100);
         },
     });
 };
@@ -243,6 +245,19 @@ const submit = () => {
                         Pengaturan
                     </v-tab>
                 </v-tabs>
+
+                <v-alert
+                    v-if="Object.keys(form.errors).length > 0"
+                    type="error"
+                    variant="tonal"
+                    closable
+                    class="mb-6 rounded-xl"
+                    title="Ditemukan Kesalahan Validasi"
+                >
+                    Ada {{ Object.keys(form.errors).length }} kolom yang perlu
+                    diperbaiki. Pastikan semua file yang wajib diunggah sudah
+                    terpilih.
+                </v-alert>
 
                 <form @submit.prevent="submit">
                     <!-- Section 1: Informasi Dasar -->

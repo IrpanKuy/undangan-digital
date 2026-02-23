@@ -63,6 +63,7 @@ const props = defineProps({
                         :error-messages="modelValue.errors.foto_pria"
                         density="compact"
                         variant="outlined"
+                        hide-details="auto"
                     />
                 </v-col>
 
@@ -109,6 +110,7 @@ const props = defineProps({
                         :error-messages="modelValue.errors.foto_wanita"
                         density="compact"
                         variant="outlined"
+                        hide-details="auto"
                     />
                 </v-col>
                 <v-col cols="12" md="6">

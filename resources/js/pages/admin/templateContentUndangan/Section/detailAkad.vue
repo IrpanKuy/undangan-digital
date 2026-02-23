@@ -79,7 +79,10 @@ const props = defineProps({
                                 density="compact"
                                 type="number"
                                 step="any"
-                                hide-details
+                                hide-details="auto"
+                                :error-messages="
+                                    modelValue.errors['lokasi_akad_nikah.lat']
+                                "
                             />
                         </v-col>
                         <v-col cols="6">
@@ -92,7 +95,10 @@ const props = defineProps({
                                 density="compact"
                                 type="number"
                                 step="any"
-                                hide-details
+                                hide-details="auto"
+                                :error-messages="
+                                    modelValue.errors['lokasi_akad_nikah.lng']
+                                "
                             />
                         </v-col>
                     </v-row>

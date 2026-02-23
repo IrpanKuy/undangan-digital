@@ -220,9 +220,12 @@ class TemplateContentUndanganController extends Controller
             }
 
             DB::commit();
+            if($request->id){
+                return redirect()->route('admin.template-content-undangan.edit', $request->id)
+                    ->with('success', 'Template berhasil diperbarui.');
+            }
 
-            return redirect()->route('admin.template-content-undangan.index')
-                ->with('success', $request->id ? 'Template berhasil diperbarui.' : 'Konten template undangan berhasil dibuat.');
+            return $this->editContent($undangan->id)->with('success', 'Template berhasil dibuat.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -255,7 +258,7 @@ class TemplateContentUndanganController extends Controller
     {
         $template = Undangan::with('pengaturanUndangan')->findOrFail($id);
 
-        return Inertia::render('admin/templateContentUndangan/edit/setting', [
+        return Inertia::render('admin/templateContentUndangan/setting', [
             'template' => $template,
         ]);
     }

@@ -105,7 +105,12 @@ const removeAcara = (index) => {
                                     density="compact"
                                     type="number"
                                     step="any"
-                                    hide-details
+                                    hide-details="auto"
+                                    :error-messages="
+                                        modelValue.errors[
+                                            `acaras.${index}.lokasi_acara.lat`
+                                        ]
+                                    "
                                 />
                             </v-col>
                             <v-col cols="6">
@@ -116,7 +121,12 @@ const removeAcara = (index) => {
                                     density="compact"
                                     type="number"
                                     step="any"
-                                    hide-details
+                                    hide-details="auto"
+                                    :error-messages="
+                                        modelValue.errors[
+                                            `acaras.${index}.lokasi_acara.lng`
+                                        ]
+                                    "
                                 />
                             </v-col>
                         </v-row>

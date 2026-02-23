@@ -98,6 +98,7 @@ const removeKisahCinta = (index) => {
                             "
                             density="compact"
                             variant="outlined"
+                            hide-details="auto"
                         />
                     </v-col>
                 </v-row>

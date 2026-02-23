@@ -90,17 +90,18 @@ const checkUrl = async () => {
                 </v-col>
                 <v-col cols="12" md="6">
                     <!-- Thumbnail using v-file-upload -->
-                    <v-file-upload
-                        v-model="modelValue.thumbnail"
-                        title="Pilih Gambar Thumbnail"
-                        accept="image/*"
-                        :error-messages="modelValue.errors.thumbnail"
-                        density="compact"
-                        variant="outlined"
-                        class="mb-2"
-                        hint="Rekomendasi 1200x630"
-                        persistent-hint
-                    />
+                    <v-input :error-messages="modelValue.errors.thumbnail">
+                        <v-file-upload
+                            v-model="modelValue.thumbnail"
+                            title="Pilih Gambar Thumbnail"
+                            accept="image/*"
+                            density="compact"
+                            variant="outlined"
+                            class="mb-2"
+                            hint="Rekomendasi 1200x630"
+                            persistent-hint
+                        />
+                    </v-input>
                 </v-col>
                 <v-col cols="12" md="6">
                     <v-text-field

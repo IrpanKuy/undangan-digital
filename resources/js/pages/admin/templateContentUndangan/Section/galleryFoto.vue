@@ -112,7 +112,6 @@ const removeGallery = (index) => {
                             title="Upload Foto"
                             density="compact"
                             variant="outlined"
-                            hide-details
                             :error-messages="
                                 modelValue.errors[`galleries.${index}.file`]
                             "

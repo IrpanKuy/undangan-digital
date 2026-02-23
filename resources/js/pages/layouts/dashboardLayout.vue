@@ -173,13 +173,13 @@ const handleResize = () => {
         <div class="h-20 z-49 md:hidden bg-white shadow-sm fixed w-screen px-6">
             <div class="flex justify-between items-center h-full">
                 <div class="flex items-center">
-                    <!-- <v-btn
+                    <v-btn
                         icon
                         variant="text"
                         @click="showSidebar = !showSidebar"
                     >
                         <Icon icon="ci:hamburger-lg" width="28" />
-                    </v-btn> -->
+                    </v-btn>
                     <h2 class="font-bold text-xl">
                         <slot name="headerTitle" />
                     </h2>
