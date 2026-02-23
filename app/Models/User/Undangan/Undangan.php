@@ -84,4 +84,9 @@ class Undangan extends Model
     {
         return $this->hasOne(DataMempelai::class, 'undangan_id');
     }
+
+    public function templateUndangans()
+    {
+        return $this->hasMany(TemplateUndangan::class, 'undangan_id');
+    }
 }

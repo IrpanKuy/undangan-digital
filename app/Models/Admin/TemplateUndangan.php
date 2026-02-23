@@ -32,6 +32,6 @@ class TemplateUndangan extends Model
 
     public function undangans()
     {
-        return $this->hasMany(Undangan::class, 'undangan_id');
+        return $this->belongsTo(Undangan::class, 'undangan_id');
     }
 }
