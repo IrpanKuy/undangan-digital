@@ -98,8 +98,7 @@ const formatDate = (dateString) => {
                             Konten Template Undangan
                         </p>
                         <p class="text-sm text-gray-500">
-                            Kelola daftar konten awal yang akan digunakan pada
-                            setiap template undangan
+                            kelola daftar konten dengan benar dan baik
                         </p>
                     </v-col>
                     <v-col cols="12" md="auto">

@@ -10,6 +10,9 @@ use App\Models\User\Undangan\Acara;
 use App\Models\User\Undangan\GalleryUndangan;
 use App\Models\User\Undangan\KisahCinta;
 use App\Models\User\Undangan\PengaturanUndangan;
+use App\Http\Requests\Admin\TemplateContentUndangan\StoreRequest;
+use App\Http\Requests\Admin\TemplateContentUndangan\UpdateRequest;
+use App\Rules\templateContentUndanganValidate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
@@ -66,65 +69,9 @@ class TemplateContentUndanganController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        $request->validate([
-            // Undangan
-            'judul' => 'required|string|max:255',
-            'url' => 'required|string|unique:undangans,url|max:255',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'salam_pembuka' => 'required|string',
-            'text_pembuka' => 'required|string',
-            'video_youtube_url' => 'required|url',
-
-            // Data Mempelai
-            'nama_panggilan_pria' => 'required|string|max:255',
-            'nama_lengkap_pria' => 'required|string|max:255',
-            'keterangan_keluarga_pria' => 'required|string',
-            'foto_pria' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'nama_panggilan_wanita' => 'required|string|max:255',
-            'nama_lengkap_wanita' => 'required|string|max:255',
-            'keterangan_keluarga_wanita' => 'required|string',
-            'foto_wanita' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'text_penutup' => 'required|string',
-
-            // Template Undangan Pernikahan
-            'tanggal_mulai_akad' => 'required|date',
-            'waktu_mulai_akad' => 'required',
-            'waktu_selesai_akad' => 'required',
-            'detail_lokasi_akad_nikah' => 'required|string',
-            'lokasi_akad_nikah' => 'required|array',
-            'doa_pengantinn_pria' => 'required|string',
-            'doa_pengantin_wanita' => 'required|string',
-            'no_rek_amplop' => 'required|string',
-            'lokasi_pengiriman_kado' => 'required|string',
-
-            // Acara
-            'acaras' => 'required|array|min:1',
-            'acaras.*.nama_acara' => 'required|string',
-            'acaras.*.waktu_acara' => 'required',
-            'acaras.*.detail_lokasi_acara' => 'required|string',
-            'acaras.*.lokasi_acara' => 'required|array',
-
-            // Gallery
-            'galleries' => 'required|array|min:1',
-            'galleries.*' => 'image|mimes:jpeg,png,jpg|max:2048',
-
-            // Kisah Cinta
-            'kisah_cintas' => 'required|array|min:1',
-            'kisah_cintas.*.tanggal' => 'required|date',
-            'kisah_cintas.*.peristiwa' => 'required|string',
-            'kisah_cintas.*.foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ], [
-            'required' => ':attribute wajib diisi.',
-            'unique' => ':attribute sudah digunakan.',
-            'image' => ':attribute harus berupa gambar.',
-            'mimes' => ':attribute harus berformat jpeg, png, atau jpg.',
-            'max' => ':attribute maksimal :max KB.',
-            'url' => ':attribute harus berupa URL yang valid.',
-            'date' => ':attribute harus berupa tanggal yang valid.',
-        ]);
-
+        dd($request);
         DB::beginTransaction();
         try {
             // 1. Create Undangan
@@ -269,44 +216,10 @@ class TemplateContentUndanganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
         $undangan = Undangan::findOrFail($id);
         
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'url' => 'required|string|max:255|unique:undangans,url,' . $id,
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'salam_pembuka' => 'required|string',
-            'text_pembuka' => 'required|string',
-            'video_youtube_url' => 'required|url',
-
-            // Data Mempelai
-            'nama_panggilan_pria' => 'required|string|max:255',
-            'nama_lengkap_pria' => 'required|string|max:255',
-            'keterangan_keluarga_pria' => 'required|string',
-            'foto_pria' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'nama_panggilan_wanita' => 'required|string|max:255',
-            'nama_lengkap_wanita' => 'required|string|max:255',
-            'keterangan_keluarga_wanita' => 'required|string',
-            'foto_wanita' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'text_penutup' => 'required|string',
-
-            // Template Undangan Pernikahan
-            'tanggal_mulai_akad' => 'required|date',
-            'waktu_mulai_akad' => 'required',
-            'waktu_selesai_akad' => 'required',
-            'detail_lokasi_akad_nikah' => 'required|string',
-            'lokasi_akad_nikah' => 'required|array',
-            
-            // Acara
-            'acaras' => 'required|array|min:1',
-            'acaras.*.nama_acara' => 'required|string',
-            'acaras.*.waktu_acara' => 'required',
-            'acaras.*.detail_lokasi_acara' => 'required|string',
-            'acaras.*.lokasi_acara' => 'required|array',
-        ]);
-
         DB::beginTransaction();
         try {
             // 1. Update Undangan

@@ -183,10 +183,11 @@ const submit = () => {
 
                                 <v-text-field
                                     v-model="form.music_url"
-                                    label="Background Music URL"
+                                    label="Background Music URL (Opsional)"
                                     placeholder="https://example.com/music.mp3"
+                                    variant="outlined"
                                     prepend-inner-icon="mdi-music-note"
-                                    hint="Masukkan URL file audio atau link YouTube (jika didukung template)"
+                                    hint="Masukkan URL file audio atau link YouTube"
                                     persistent-hint
                                     class="mt-4"
                                 />
