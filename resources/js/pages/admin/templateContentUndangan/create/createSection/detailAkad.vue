@@ -75,28 +75,6 @@ const props = defineProps({
                     </div>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col cols="12" md="6">
-                    <v-textarea
-                        v-model="modelValue.doa_pengantinn_pria"
-                        label="Doa untuk Pengantin Pria"
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="modelValue.errors.doa_pengantinn_pria"
-                        required
-                    />
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-textarea
-                        v-model="modelValue.doa_pengantin_wanita"
-                        label="Doa untuk Pengantin Wanita"
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="modelValue.errors.doa_pengantin_wanita"
-                        required
-                    />
-                </v-col>
-            </v-row>
         </v-card-text>
     </v-card>
 </template>

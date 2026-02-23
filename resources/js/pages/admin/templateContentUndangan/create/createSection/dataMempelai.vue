@@ -48,7 +48,7 @@ const props = defineProps({
                     />
                     <v-textarea
                         v-model="modelValue.keterangan_keluarga_pria"
-                        label="Keterangan Keluarga Pria (Opsional)"
+                        label="Keterangan Keluarga Pria"
                         placeholder="Putra dari Bapak... & Ibu..."
                         variant="outlined"
                         rows="2"
@@ -56,13 +56,10 @@ const props = defineProps({
                             modelValue.errors.keterangan_keluarga_pria
                         "
                     />
-                    <div class="mb-2 text-sm font-medium text-gray-700">
-                        Foto Mempelai Pria (Opsional)
-                    </div>
                     <v-file-upload
                         v-model="modelValue.foto_pria"
                         accept="image/*"
-                        label="Pilih atau Drag Foto Pria"
+                        title="Foto Mempelai Pria"
                         :error-messages="modelValue.errors.foto_pria"
                         density="compact"
                         variant="outlined"
@@ -97,7 +94,7 @@ const props = defineProps({
                     />
                     <v-textarea
                         v-model="modelValue.keterangan_keluarga_wanita"
-                        label="Keterangan Keluarga Wanita (Opsional)"
+                        label="Keterangan Keluarga Wanita"
                         placeholder="Putri dari Bapak... & Ibu..."
                         variant="outlined"
                         rows="2"
@@ -105,23 +102,42 @@ const props = defineProps({
                             modelValue.errors.keterangan_keluarga_wanita
                         "
                     />
-                    <div class="mb-2 text-sm font-medium text-gray-700">
-                        Foto Mempelai Wanita (Opsional)
-                    </div>
                     <v-file-upload
                         v-model="modelValue.foto_wanita"
                         accept="image/*"
-                        label="Pilih atau Drag Foto Wanita"
+                        title="Foto Mempelai Wanita"
                         :error-messages="modelValue.errors.foto_wanita"
                         density="compact"
                         variant="outlined"
                     />
                 </v-col>
+                <v-col cols="12" md="6">
+                    <v-textarea
+                        v-model="modelValue.doa_pengantinn_pria"
+                        label="Doa untuk Pengantin Pria"
+                        model-value="Semoga menjadi imam yang saleh, bijaksana, dan senantiasa membimbing keluarga di jalan Allah SWT. Menjadi pelindung yang penuh kasih sayang serta pembawa keberkahan bagi istri dan anak-anak kelak."
+                        variant="outlined"
+                        rows="2"
+                        :error-messages="modelValue.errors.doa_pengantinn_pria"
+                        required
+                    />
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-textarea
+                        v-model="modelValue.doa_pengantin_wanita"
+                        label="Doa untuk Pengantin Wanita"
+                        model-value="Semoga menjadi istri yang salehah, penyejuk hati bagi suami, serta madrasah pertama yang penuh kearifan bagi anak-anak. Semoga Allah senantiasa melimpahkan kesabaran dan kemuliaan dalam menjaga rumah tangga."
+                        variant="outlined"
+                        rows="2"
+                        :error-messages="modelValue.errors.doa_pengantin_wanita"
+                        required
+                    />
+                </v-col>
                 <v-col cols="12">
                     <v-textarea
                         v-model="modelValue.text_penutup"
-                        label="Text Penutup (Opsional)"
-                        placeholder="Tiada kesan tanpa kehadiran Anda..."
+                        label="Text Penutup"
+                        model-value="Atas kehadiran dan doa restu Bapak/Ibu/Saudara/i, kami ucapkan jazakumullahu khairan katsiran (semoga Allah membalas kebaikan kalian dengan kebaikan yang banyak)."
                         variant="outlined"
                         rows="2"
                         :error-messages="modelValue.errors.text_penutup"

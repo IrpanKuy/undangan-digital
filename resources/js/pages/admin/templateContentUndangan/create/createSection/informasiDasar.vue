@@ -90,15 +90,9 @@ const checkUrl = async () => {
                 </v-col>
                 <v-col cols="12" md="6">
                     <!-- Thumbnail using v-file-upload -->
-                    <label
-                        for="thumbnail-input"
-                        class="mb-2 d-block text-sm font-medium text-gray-700"
-                    >
-                        Thumbnail Undangan
-                    </label>
                     <v-file-upload
                         v-model="modelValue.thumbnail"
-                        label="Pilih atau Drag Gambar Thumbnail"
+                        title="Pilih Gambar Thumbnail"
                         accept="image/*"
                         :error-messages="modelValue.errors.thumbnail"
                         density="compact"
@@ -122,7 +116,7 @@ const checkUrl = async () => {
                     <v-textarea
                         v-model="modelValue.salam_pembuka"
                         label="Salam Pembuka"
-                        placeholder="Contoh: Assalamu'alaikum Wr. Wb."
+                        model-value="Assalamu'alaikum Wr. Wb."
                         variant="outlined"
                         rows="2"
                         :error-messages="modelValue.errors.salam_pembuka"
@@ -133,7 +127,7 @@ const checkUrl = async () => {
                     <v-textarea
                         v-model="modelValue.text_pembuka"
                         label="Text Pembuka"
-                        placeholder="Maha suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan..."
+                        model-value="Maha suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan syukuran pernikahan putra-putri kami:"
                         variant="outlined"
                         rows="2"
                         :error-messages="modelValue.errors.text_pembuka"
