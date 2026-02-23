@@ -5,10 +5,24 @@ use Inertia\Inertia;
 use App\Http\Controllers\Admin\KategoriUndangan;
 use App\Http\Controllers\Admin\TemplateUndangan;
 use App\Http\Controllers\Admin\TemplateContentUndanganController;
+use App\Http\Controllers\Auth\AuthController;
 
 Route::get('/', function () {
     return Inertia::render('welcome'); // 'Welcome' merujuk ke Welcome.vue
+})->name('home');
+
+// Auth Routes
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('register', [AuthController::class, 'register']);
+    
+    // Google Login Placeholder
+    Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
 });
+
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('kategori-undangan', KategoriUndangan::class);
