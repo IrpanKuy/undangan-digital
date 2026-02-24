@@ -1,150 +1,216 @@
 <script setup>
+import { Icon } from "@iconify/vue";
+
+// --- FilePond Imports ---
+import vueFilePond from "vue-filepond";
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+
+// Inisialisasi komponen FilePond
+const FilePond = vueFilePond(
+    FilePondPluginFileValidateType,
+    FilePondPluginImagePreview,
+);
+
 const props = defineProps({
     modelValue: Object,
 });
+
+const emit = defineEmits(["update:modelValue"]);
+
+// Handlers untuk FilePond
+const handleFotoPriaUpdate = (fileItems) => {
+    if (fileItems && fileItems.length > 0) {
+        props.modelValue.foto_pria = fileItems[0].file;
+    } else {
+        props.modelValue.foto_pria = null;
+    }
+};
+
+const handleFotoWanitaUpdate = (fileItems) => {
+    if (fileItems && fileItems.length > 0) {
+        props.modelValue.foto_wanita = fileItems[0].file;
+    } else {
+        props.modelValue.foto_wanita = null;
+    }
+};
 </script>
 
 <template>
-    <v-card
-        variant="outlined"
-        class="mb-6 rounded-xl overflow-hidden border-gray-200"
-    >
-        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <v-icon
-                    icon="mdi-account-heart-outline"
-                    color="pink"
-                    size="24"
-                />
+    <div class="bg-white border border-gray-300 rounded-sm">
+        <div
+            class="bg-gray-100 border-b border-gray-300 px-5 py-3 flex items-center gap-2"
+        >
+            <Icon
+                icon="mdi:account-heart-outline"
+                width="20"
+                class="text-gray-700"
+            />
+            <h3
+                class="font-bold text-gray-800 uppercase tracking-tight text-sm"
+            >
                 Data Mempelai
-            </h2>
+            </h3>
         </div>
-        <v-card-text class="p-6">
-            <v-row>
+        <div class="p-6 space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Mempelai Pria -->
-                <v-col cols="12" md="6">
-                    <h3
-                        class="text-md font-bold text-primary mb-4 flex items-center gap-2"
+                <div
+                    class="space-y-4 p-5 border border-gray-200 bg-gray-50 rounded-sm relative overflow-hidden"
+                >
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-blue-600"
+                    ></div>
+                    <h4
+                        class="font-bold text-sm text-blue-800 uppercase border-b border-gray-300 pb-2 mb-3 flex items-center gap-2"
                     >
-                        <v-icon icon="mdi-face-man" />
-                        Mempelai Pria
-                    </h3>
-                    <v-text-field
-                        v-model="modelValue.nama_lengkap_pria"
-                        label="Nama Lengkap Pria"
-                        variant="outlined"
-                        prepend-inner-icon="mdi-account"
-                        :error-messages="modelValue.errors.nama_lengkap_pria"
-                        required
-                    />
-                    <v-text-field
-                        v-model="modelValue.nama_panggilan_pria"
-                        label="Nama Panggilan Pria"
-                        variant="outlined"
-                        prepend-inner-icon="mdi-account-outline"
-                        :error-messages="modelValue.errors.nama_panggilan_pria"
-                        required
-                    />
-                    <v-textarea
-                        v-model="modelValue.keterangan_keluarga_pria"
-                        label="Keterangan Keluarga Pria"
-                        placeholder="Putra dari Bapak... & Ibu..."
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="
-                            modelValue.errors.keterangan_keluarga_pria
-                        "
-                    />
-                    <v-file-upload
-                        v-model="modelValue.foto_pria"
-                        accept="image/*"
-                        title="Foto Mempelai Pria"
-                        :error-messages="modelValue.errors.foto_pria"
-                        density="compact"
-                        variant="outlined"
-                        hide-details="auto"
-                    />
-                </v-col>
+                        <Icon icon="mdi:gender-male" /> Mempelai Pria
+                    </h4>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Nama Panggilan</label
+                        >
+                        <input
+                            v-model="modelValue.nama_panggilan_pria"
+                            type="text"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Nama Lengkap</label
+                        >
+                        <input
+                            v-model="modelValue.nama_lengkap_pria"
+                            type="text"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Keterangan Keluarga</label
+                        >
+                        <textarea
+                            v-model="modelValue.keterangan_keluarga_pria"
+                            rows="2"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
+                            placeholder="Putra pertama dari Bapak..."
+                        ></textarea>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                        >
+                            Foto Pria
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
+                            >
+                        </label>
+                        <FilePond
+                            name="foto_pria"
+                            label-idle="Tarik & Lepas gambar atau <span class='filepond--label-action'>Telusuri</span>"
+                            accepted-file-types="image/jpeg, image/png, image/jpg"
+                            @updatefiles="handleFotoPriaUpdate"
+                            class="mb-0 custom-filepond"
+                        />
+                    </div>
+                </div>
 
                 <!-- Mempelai Wanita -->
-                <v-col cols="12" md="6">
-                    <h3
-                        class="text-md font-bold text-pink-700 mb-4 flex items-center gap-2"
+                <div
+                    class="space-y-4 p-5 border border-gray-200 bg-gray-50 rounded-sm relative overflow-hidden"
+                >
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-pink-500"
+                    ></div>
+                    <h4
+                        class="font-bold text-sm text-pink-700 uppercase border-b border-gray-300 pb-2 mb-3 flex items-center gap-2"
                     >
-                        <v-icon icon="mdi-face-woman" />
-                        Mempelai Wanita
-                    </h3>
-                    <v-text-field
-                        v-model="modelValue.nama_lengkap_wanita"
-                        label="Nama Lengkap Wanita"
-                        variant="outlined"
-                        prepend-inner-icon="mdi-account"
-                        :error-messages="modelValue.errors.nama_lengkap_wanita"
-                        required
-                    />
-                    <v-text-field
-                        v-model="modelValue.nama_panggilan_wanita"
-                        label="Nama Panggilan Wanita"
-                        variant="outlined"
-                        prepend-inner-icon="mdi-account-outline"
-                        :error-messages="
-                            modelValue.errors.nama_panggilan_wanita
-                        "
-                        required
-                    />
-                    <v-textarea
-                        v-model="modelValue.keterangan_keluarga_wanita"
-                        label="Keterangan Keluarga Wanita"
-                        placeholder="Putri dari Bapak... & Ibu..."
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="
-                            modelValue.errors.keterangan_keluarga_wanita
-                        "
-                    />
-                    <v-file-upload
-                        v-model="modelValue.foto_wanita"
-                        accept="image/*"
-                        title="Foto Mempelai Wanita"
-                        :error-messages="modelValue.errors.foto_wanita"
-                        density="compact"
-                        variant="outlined"
-                        hide-details="auto"
-                    />
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-textarea
-                        v-model="modelValue.doa_pengantinn_pria"
-                        label="Doa untuk Pengantin Pria"
-                        model-value="Semoga menjadi imam yang saleh, bijaksana, dan senantiasa membimbing keluarga di jalan Allah SWT. Menjadi pelindung yang penuh kasih sayang serta pembawa keberkahan bagi istri dan anak-anak kelak."
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="modelValue.errors.doa_pengantinn_pria"
-                        required
-                    />
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-textarea
-                        v-model="modelValue.doa_pengantin_wanita"
-                        label="Doa untuk Pengantin Wanita"
-                        model-value="Semoga menjadi istri yang salehah, penyejuk hati bagi suami, serta madrasah pertama yang penuh kearifan bagi anak-anak. Semoga Allah senantiasa melimpahkan kesabaran dan kemuliaan dalam menjaga rumah tangga."
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="modelValue.errors.doa_pengantin_wanita"
-                        required
-                    />
-                </v-col>
-                <v-col cols="12">
-                    <v-textarea
-                        v-model="modelValue.text_penutup"
-                        label="Text Penutup"
-                        model-value="Atas kehadiran dan doa restu Bapak/Ibu/Saudara/i, kami ucapkan jazakumullahu khairan katsiran (semoga Allah membalas kebaikan kalian dengan kebaikan yang banyak)."
-                        variant="outlined"
-                        rows="2"
-                        :error-messages="modelValue.errors.text_penutup"
-                    />
-                </v-col>
-            </v-row>
-        </v-card-text>
-    </v-card>
+                        <Icon icon="mdi:gender-female" /> Mempelai Wanita
+                    </h4>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Nama Panggilan</label
+                        >
+                        <input
+                            v-model="modelValue.nama_panggilan_wanita"
+                            type="text"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Nama Lengkap</label
+                        >
+                        <input
+                            v-model="modelValue.nama_lengkap_wanita"
+                            type="text"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Keterangan Keluarga</label
+                        >
+                        <textarea
+                            v-model="modelValue.keterangan_keluarga_wanita"
+                            rows="2"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
+                            placeholder="Putri bungsu dari Bapak..."
+                        ></textarea>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                        >
+                            Foto Wanita
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
+                            >
+                        </label>
+                        <FilePond
+                            name="foto_wanita"
+                            label-idle="Tarik & Lepas gambar atau <span class='filepond--label-action'>Telusuri</span>"
+                            accepted-file-types="image/jpeg, image/png, image/jpg"
+                            @updatefiles="handleFotoWanitaUpdate"
+                            class="mb-0 custom-filepond"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label
+                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                    >Teks Penutup</label
+                >
+                <textarea
+                    v-model="modelValue.text_penutup"
+                    rows="3"
+                    class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                    placeholder="Merupakan suatu kehormatan dan kebahagiaan bagi kami..."
+                ></textarea>
+            </div>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+/* Opsional: Menyesuaikan FilePond agar sudutnya sedikit lebih flat (rounded-sm) */
+:deep(.filepond--panel-root) {
+    border-radius: 0.125rem; /* setara dengan rounded-sm di tailwind */
+    background-color: #ffffff;
+    border: 1px solid #9ca3af; /* setara dengan border-gray-400 */
+}
+:deep(.filepond--drop-label) {
+    color: #4b5563; /* setara dengan text-gray-600 */
+}
+</style>

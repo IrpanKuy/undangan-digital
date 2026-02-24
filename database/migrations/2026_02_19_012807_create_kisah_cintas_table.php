@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kisah_cintas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
-            $table->date('tanggal');
+            $table->string('tanggal');
             $table->string('peristiwa'); // Ex: Pertama Bertemu
             $table->string('foto_kisah_cinta_path')->nullable();
             $table->timestamps();

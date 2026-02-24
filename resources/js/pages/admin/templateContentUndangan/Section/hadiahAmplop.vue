@@ -1,45 +1,63 @@
 <script setup>
+import { Icon } from "@iconify/vue";
+
 const props = defineProps({
     modelValue: Object,
 });
+
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-    <v-card
-        variant="outlined"
-        class="mt-6 mb-6 rounded-xl overflow-hidden border-gray-200"
-    >
-        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <v-icon icon="mdi-gift-outline" color="teal" size="24" />
+    <div class="bg-white border border-gray-300 rounded-sm">
+        <div
+            class="bg-gray-100 border-b border-gray-300 px-5 py-3 flex items-center gap-2"
+        >
+            <Icon icon="mdi:wallet-giftcard" width="20" class="text-gray-700" />
+            <h3
+                class="font-bold text-gray-800 uppercase tracking-tight text-sm"
+            >
                 Hadiah & Amplop Digital
-            </h2>
+            </h3>
         </div>
-        <v-card-text class="p-6">
-            <v-row>
-                <v-col cols="12" md="6">
-                    <v-textarea
+        <div class="p-6 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Rekening Bank -->
+                <div>
+                    <label
+                        class="text-xs font-bold text-gray-700 uppercase mb-1 flex items-center gap-1"
+                    >
+                        <Icon icon="mdi:bank-outline" /> Nomor Rekening /
+                        E-Wallet
+                    </label>
+                    <textarea
                         v-model="modelValue.no_rek_amplop"
-                        label="Daftar No. Rekening / E-Wallet (Opsional)"
-                        placeholder="Contoh:&#10;BCA: 12345678 a/n Budi&#10;Dana: 0812345678 a/n Budi"
                         rows="4"
-                        variant="outlined"
-                        :error-messages="modelValue.errors.no_rek_amplop"
-                    />
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-textarea
+                        class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                        placeholder="Contoh:&#10;BCA 123456789 a/n Nama&#10;Dana 0812345678 a/n Nama"
+                    ></textarea>
+                    <p class="text-[10px] text-gray-500 mt-1">
+                        Gunakan baris baru (Enter) untuk menambahkan rekening
+                        lebih dari satu.
+                    </p>
+                </div>
+
+                <!-- Alamat Kado -->
+                <div>
+                    <label
+                        class="text-xs font-bold text-gray-700 uppercase mb-1 flex items-center gap-1"
+                    >
+                        <Icon icon="mdi:package-variant-closed" /> Alamat
+                        Pengiriman Kado Fisik
+                    </label>
+                    <textarea
                         v-model="modelValue.lokasi_pengiriman_kado"
-                        label="Alamat Pengiriman Kado (Opsional)"
-                        placeholder="Contoh:&#10;Jl. Mawar No. 123, Jakarta Selatan"
                         rows="4"
-                        variant="outlined"
-                        :error-messages="
-                            modelValue.errors.lokasi_pengiriman_kado
-                        "
-                    />
-                </v-col>
-            </v-row>
-        </v-card-text>
-    </v-card>
+                        class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                        placeholder="Alamat lengkap penerima kado..."
+                    ></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>

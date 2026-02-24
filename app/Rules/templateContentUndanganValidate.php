@@ -53,7 +53,7 @@ class templateContentUndanganValidate
 
             // Kisah Cinta
             'kisah_cintas' => 'required|array|min:1',
-            'kisah_cintas.*.tanggal' => 'required|date',
+            'kisah_cintas.*.tanggal' => 'required|string',
             'kisah_cintas.*.peristiwa' => 'required|string',
             'kisah_cintas.*.foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];

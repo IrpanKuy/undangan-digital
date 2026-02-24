@@ -168,7 +168,7 @@ const isDesktopAndSidebarOpen = computed(() => {
                                             }}
                                         </p>
                                         <!-- Role Badge (Murni Tailwind CSS) -->
-                                        <span
+                                        <!-- <span
                                             class="inline-block mt-1 px-2 py-[2px] border border-white/50 rounded-full text-[10px] text-white font-medium uppercase tracking-wider bg-white/10"
                                         >
                                             {{
@@ -180,7 +180,7 @@ const isDesktopAndSidebarOpen = computed(() => {
                                                           ?.nama_paket ??
                                                       "Member")
                                             }}
-                                        </span>
+                                        </span> -->
                                     </div>
                                 </div>
                             </div>

@@ -1,7 +1,24 @@
 <script setup>
+import { Icon } from "@iconify/vue";
+
+// --- FilePond Imports ---
+import vueFilePond from "vue-filepond";
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+
+// Inisialisasi komponen FilePond
+const FilePond = vueFilePond(
+    FilePondPluginFileValidateType,
+    FilePondPluginImagePreview,
+);
+
 const props = defineProps({
     modelValue: Object,
 });
+
+const emit = defineEmits(["update:modelValue"]);
 
 const addGallery = () => {
     props.modelValue.galleries.push({
@@ -18,116 +35,110 @@ const removeGallery = (index) => {
     }
     props.modelValue.galleries.splice(index, 1);
 };
+
+// Menerima fileItems dari event FilePond dan index dari loop
+const handleFileChange = (fileItems, index) => {
+    if (fileItems && fileItems.length > 0) {
+        props.modelValue.galleries[index].file = fileItems[0].file;
+    } else {
+        props.modelValue.galleries[index].file = null;
+    }
+};
 </script>
 
 <template>
-    <v-card
-        variant="outlined"
-        class="h-full rounded-xl overflow-hidden border-gray-200 mb-6"
+    <div
+        class="bg-white border border-gray-300 rounded-sm h-full flex flex-col"
     >
+        <!-- Header Section -->
         <div
-            class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center"
+            class="bg-gray-100 border-b border-gray-300 px-5 py-3 flex items-center justify-between shrink-0"
         >
-            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                <v-icon icon="mdi-camera-outline" color="purple" size="24" />
-                Gallery Foto
-            </h2>
-            <v-btn
-                color="purple"
-                size="small"
-                variant="text"
-                prepend-icon="mdi-plus"
+            <div class="flex items-center gap-2">
+                <Icon
+                    icon="mdi:image-multiple-outline"
+                    width="20"
+                    class="text-gray-700"
+                />
+                <h3
+                    class="font-bold text-gray-800 uppercase tracking-tight text-sm"
+                >
+                    Galeri Foto
+                </h3>
+            </div>
+            <button
+                type="button"
                 @click="addGallery"
+                class="cursor-pointer text-xs font-bold text-[#004D31] bg-[#004D31]/10 hover:bg-[#004D31]/20 px-3 py-1.5 rounded-sm transition-colors border border-[#004D31]/30 flex items-center gap-1"
             >
-                Tambah Foto
-            </v-btn>
+                <Icon icon="mdi:plus" /> Tambah Foto
+            </button>
         </div>
-        <v-card-text class="p-6">
+
+        <div class="p-6 flex-1">
             <div
                 v-if="modelValue.galleries.length === 0"
-                class="text-center py-8"
+                class="text-center py-6 border border-dashed border-gray-300 rounded-sm bg-gray-50 text-gray-500 text-sm"
             >
-                <v-icon
-                    icon="mdi-image-plus"
-                    size="48"
-                    color="grey-lighten-1"
-                />
-                <div class="text-grey-darken-1 mt-2">
-                    Belum ada foto gallery.
-                </div>
-                <v-btn
-                    variant="tonal"
-                    color="purple"
-                    size="small"
-                    class="mt-4"
-                    prepend-icon="mdi-plus"
-                    @click="addGallery"
-                >
-                    Tambah Pertama
-                </v-btn>
+                Belum ada foto galeri.
             </div>
 
-            <v-row v-else>
-                <v-col
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div
                     v-for="(item, index) in modelValue.galleries"
-                    :key="index"
-                    cols="12"
-                    sm="12"
-                    md="12"
+                    :key="item"
+                    class="p-3 border border-gray-200 bg-gray-50 rounded-sm relative flex flex-col gap-3 pt-8"
                 >
-                    <div class="relative p-4! border rounded-xl bg-gray-50">
-                        <div class="flex justify-between items-center mb-2">
-                            <span
-                                class="text-xs font-bold text-gray-500 uppercase"
-                                >Foto #{{ index + 1 }}</span
-                            >
-                            <v-btn
-                                icon="mdi-close"
-                                variant="text"
-                                color="error"
-                                density="comfortable"
-                                @click="removeGallery(index)"
-                            />
-                        </div>
+                    <!-- Tombol Hapus (Silang) -->
+                    <button
+                        @click="removeGallery(index)"
+                        type="button"
+                        class="absolute top-2 right-2 text-red-500 hover:text-white bg-red-100 hover:bg-red-600 p-1 rounded-sm cursor-pointer transition-colors z-10 shadow-sm"
+                    >
+                        <Icon icon="mdi:close" width="14" />
+                    </button>
 
-                        <!-- Existing Image Preview -->
-                        <div v-if="item.image_path && !item.file" class="mb-3">
-                            <v-img
-                                :src="`/storage/${item.image_path}`"
-                                height="120"
-                                cover
-                                class="rounded-lg border shadow-sm"
-                            />
-                            <div
-                                class="text-[10px] text-center mt-1 text-gray-400"
-                            >
-                                Ganti foto dengan upload baru
-                            </div>
-                        </div>
-
-                        <v-file-upload
-                            v-model="item.file"
-                            accept="image/*"
-                            title="Upload Foto"
-                            density="compact"
-                            variant="outlined"
-                            :error-messages="
-                                modelValue.errors[`galleries.${index}.file`]
-                            "
+                    <!-- Preview Gambar dari Database (Jika Ada) -->
+                    <div
+                        v-if="item.image_path && !item.file"
+                        class="w-full h-32 bg-gray-200 border border-gray-300 rounded-sm flex items-center justify-center overflow-hidden"
+                    >
+                        <img
+                            :src="`/storage/${item.image_path}`"
+                            class="w-full h-full object-cover"
                         />
                     </div>
-                </v-col>
-            </v-row>
 
-            <v-alert
-                v-if="modelValue.errors.galleries"
-                type="error"
-                variant="tonal"
-                density="compact"
-                class="mt-4"
-            >
-                {{ modelValue.errors.galleries }}
-            </v-alert>
-        </v-card-text>
-    </v-card>
+                    <!-- Input FilePond -->
+                    <div class="flex-1">
+                        <FilePond
+                            :name="'gallery_foto_' + index"
+                            label-idle="Tarik & Lepas foto <br/> atau <span class='filepond--label-action'>Telusuri</span>"
+                            accepted-file-types="image/jpeg, image/png, image/jpg"
+                            @updatefiles="
+                                (files) => handleFileChange(files, index)
+                            "
+                            class="mb-0 custom-filepond"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+/* Menyesuaikan FilePond dengan Flat UI Tailwind */
+:deep(.filepond--panel-root) {
+    border-radius: 0.125rem; /* rounded-sm */
+    background-color: #ffffff;
+    border: 1px solid #9ca3af; /* border-gray-400 */
+}
+:deep(.filepond--drop-label) {
+    color: #4b5563; /* text-gray-600 */
+    font-size: 0.875rem; /* text-sm */
+}
+:deep(.filepond--root) {
+    margin-bottom: 0 !important;
+}
+</style>

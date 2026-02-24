@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import adminDashboardLayout from "../../layouts/adminDashboardLayout.vue";
+import { Icon } from "@iconify/vue";
 
 // Import Sections
 import InformasiDasar from "./Section/informasiDasar.vue";
@@ -115,7 +116,6 @@ onMounted(() => {
             form.no_rek_amplop = p.no_rek_amplop;
             form.lokasi_pengiriman_kado = p.lokasi_pengiriman_kado;
 
-            // Handle Geography point if needed, or simple lat/lng from backend
             if (p.lokasi_akad_nikah_decoded) {
                 form.lokasi_akad_nikah = p.lokasi_akad_nikah_decoded;
             }
@@ -153,8 +153,8 @@ onMounted(() => {
                 id: k.id,
                 tanggal: k.tanggal,
                 peristiwa: k.peristiwa,
-                foto: null, // Reset for new upload
-                foto_path: k.foto_kisah_cinta_path, // To show existing preview
+                foto: null,
+                foto_path: k.foto_kisah_cinta_path,
             }));
         }
     }
@@ -184,9 +184,11 @@ const submit = () => {
                 timer: 4000,
             });
 
-            // Scroll to the first error
+            // Scroll to the first error (Mendukung Vuetify lama & Tailwind baru)
             setTimeout(() => {
-                const firstError = document.querySelector(".v-input--error");
+                const firstError = document.querySelector(
+                    ".v-input--error, .border-red-500, .text-red-600",
+                );
                 if (firstError) {
                     firstError.scrollIntoView({
                         behavior: "smooth",
@@ -201,31 +203,44 @@ const submit = () => {
 
 <template>
     <adminDashboardLayout>
+        <!-- Slot Header -->
         <template #headerTitle>
-            <v-icon
-                :icon="
-                    form.id ? 'mdi-pencil-outline' : 'mdi-pencil-plus-outline'
-                "
-                class="mr-2"
-                color="primary"
-            />
-            {{ form.id ? "Edit" : "Buat" }} Konten Template
+            <div class="flex items-center gap-2">
+                <Icon
+                    :icon="
+                        form.id
+                            ? 'mdi:pencil-outline'
+                            : 'mdi:pencil-plus-outline'
+                    "
+                    width="22"
+                    class="text-[#004D31]"
+                />
+                <span class="font-semibold text-gray-800">
+                    {{ form.id ? "Edit" : "Buat" }} Konten Template
+                </span>
+            </div>
         </template>
 
+        <!-- Slot Content -->
         <template #content>
-            <v-container fluid class="max-w-7xl">
-                <!-- Tabs Navigation -->
-                <v-tabs
-                    v-model="activeTab"
-                    color="primary"
-                    class="mb-6 border-b"
-                >
-                    <v-tab value="content">
-                        <v-icon start icon="mdi-book-open-variant" />
+            <div class="w-full max-w-7xl pb-10">
+                <!-- Navigation Tabs (Flat UI) -->
+                <div class="flex border-b border-gray-300 mb-6">
+                    <button
+                        type="button"
+                        @click="activeTab = 'content'"
+                        :class="[
+                            'cursor-pointer flex items-center gap-2 px-6 py-3 font-medium text-sm transition-colors border-b-2 outline-none',
+                            activeTab === 'content'
+                                ? 'border-[#004D31] text-[#004D31]'
+                                : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300',
+                        ]"
+                    >
+                        <Icon icon="mdi:book-open-variant" width="18" />
                         Konten Undangan
-                    </v-tab>
-                    <v-tab
-                        value="setting"
+                    </button>
+                    <button
+                        type="button"
                         @click="
                             form.id
                                 ? router.get(
@@ -237,26 +252,47 @@ const submit = () => {
                                 : null
                         "
                         :disabled="!form.id"
+                        :class="[
+                            'flex items-center gap-2 px-6 py-3 font-medium text-sm transition-colors border-b-2 outline-none',
+                            activeTab === 'setting'
+                                ? 'border-[#004D31] text-[#004D31]'
+                                : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300',
+                            !form.id
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer',
+                        ]"
                     >
-                        <v-icon start icon="mdi-cog" />
+                        <Icon icon="mdi:cog" width="18" />
                         Pengaturan
-                    </v-tab>
-                </v-tabs>
+                    </button>
+                </div>
 
-                <v-alert
+                <!-- Error Alert Box -->
+                <div
                     v-if="Object.keys(form.errors).length > 0"
-                    type="error"
-                    variant="tonal"
-                    closable
-                    class="mb-6 rounded-xl"
-                    title="Ditemukan Kesalahan Validasi"
+                    class="mb-6 bg-red-50 border border-red-200 rounded-sm p-4 flex items-start gap-3 shadow-sm"
                 >
-                    Ada {{ Object.keys(form.errors).length }} kolom yang perlu
-                    diperbaiki. Pastikan semua file yang wajib diunggah sudah
-                    terpilih.
-                </v-alert>
+                    <Icon
+                        icon="mdi:alert-circle-outline"
+                        class="text-red-600 mt-0.5"
+                        width="22"
+                    />
+                    <div>
+                        <h4
+                            class="text-sm font-bold text-red-800 uppercase tracking-tight"
+                        >
+                            Ditemukan Kesalahan Validasi
+                        </h4>
+                        <p class="text-xs font-medium text-red-700 mt-1">
+                            Ada {{ Object.keys(form.errors).length }} kolom yang
+                            perlu diperbaiki. Pastikan semua file yang wajib
+                            diunggah sudah terpilih.
+                        </p>
+                    </div>
+                </div>
 
-                <form @submit.prevent="submit">
+                <!-- Main Form Wrapper -->
+                <form @submit.prevent="submit" class="space-y-8">
                     <!-- Section 1: Informasi Dasar -->
                     <InformasiDasar v-model="form" />
 
@@ -270,33 +306,24 @@ const submit = () => {
                     <AcaraTambahan v-model="form" />
 
                     <!-- Section 5: Gallery & Kisah Cinta -->
-                    <v-row>
-                        <v-col cols="12" md="6">
-                            <v-card
-                                variant="flat"
-                                class="bg-transparent h-full"
-                            >
-                                <GalleryFoto v-model="form" />
-                            </v-card>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-card
-                                variant="flat"
-                                class="bg-transparent h-full"
-                            >
-                                <KisahCinta v-model="form" />
-                            </v-card>
-                        </v-col>
-                    </v-row>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="h-full bg-transparent">
+                            <GalleryFoto v-model="form" />
+                        </div>
+                        <div class="h-full bg-transparent">
+                            <KisahCinta v-model="form" />
+                        </div>
+                    </div>
 
                     <!-- Section 6: Hadiah & Amplop Digital -->
                     <HadiahAmplop v-model="form" />
 
-                    <!-- Actions -->
-                    <div class="flex justify-end gap-3 mt-8 pb-10">
-                        <v-btn
-                            variant="outlined"
-                            color="gray-500"
+                    <!-- Form Actions / Buttons -->
+                    <div
+                        class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-gray-200"
+                    >
+                        <button
+                            type="button"
                             @click="
                                 router.get(
                                     route(
@@ -304,26 +331,31 @@ const submit = () => {
                                     ),
                                 )
                             "
+                            class="cursor-pointer px-6 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-400 rounded-sm hover:bg-gray-100 transition-colors uppercase tracking-tighter"
                         >
                             Batal
-                        </v-btn>
-                        <v-btn
+                        </button>
+                        <button
                             type="submit"
-                            color="primary"
-                            size="large"
-                            :loading="form.processing"
+                            :disabled="form.processing"
+                            class="cursor-pointer inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-[#004D31] border border-[#004D31] rounded-sm hover:bg-[#003824] transition-colors uppercase tracking-tighter disabled:opacity-50"
                         >
+                            <Icon
+                                v-if="form.processing"
+                                icon="mdi:loading"
+                                class="animate-spin"
+                                width="18"
+                            />
+                            <Icon
+                                v-else
+                                icon="mdi:content-save-outline"
+                                width="18"
+                            />
                             {{ form.id ? "Perbarui" : "Simpan" }} Konten
-                        </v-btn>
+                        </button>
                     </div>
                 </form>
-            </v-container>
+            </div>
         </template>
     </adminDashboardLayout>
 </template>
-
-<style scoped>
-.v-container {
-    padding-bottom: 50px;
-}
-</style>

@@ -98,7 +98,7 @@ class UndanganSeeder extends Seeder
         // Kisah Cinta
         KisahCinta::create([
             'undangan_id' => $undangan->id,
-            'tanggal' => now()->subYears(2)->format('Y-m-d'),
+            'tanggal' => '14 Februari 2020',
             'peristiwa' => 'Awal Bertemu',
         ]);
 

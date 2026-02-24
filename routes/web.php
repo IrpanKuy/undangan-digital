@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\AuthController;
 use Laravel\Socialite\Socialite;
 
 Route::get('/', function () {
-    return Inertia::render('layouts/adminDashboardLayout'); // 'Welcome' merujuk ke Welcome.vue
+    return Inertia::render('templateUndangan/undanganPernikahan/template1'); // 'Welcome' merujuk ke Welcome.vue
 })->name('home');
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogleRegister'])->name('google.login');
