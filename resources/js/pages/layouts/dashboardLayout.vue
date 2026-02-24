@@ -86,20 +86,31 @@ const handleResize = () => {
                     >
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
+                                class="w-12 h-12 rounded-full flex items-center justify-center"
                             >
-                                <Icon
+                                <img
+                                    :src="
+                                        $page.props.auth.user.profile_path
+                                            ? '/storage/' +
+                                              $page.props.auth.user.profile_path
+                                            : 'https://ui-avatars.com/api/?name=' +
+                                              $page.props.auth.user.name
+                                    "
+                                    alt="Profile"
+                                    class="w-full h-full object-cover rounded-full"
+                                />
+                                <!-- <Icon
                                     icon="mdi:account"
                                     class="text-white"
                                     width="28"
-                                />
+                                /> -->
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-white/70 text-sm">
                                     Selamat Datang,
                                 </p>
                                 <p class="text-white font-semibold truncate">
-                                    User
+                                    {{ $page.props.auth.user.name ?? "User" }}
                                 </p>
                                 <v-chip
                                     size="x-small"
@@ -107,7 +118,12 @@ const handleResize = () => {
                                     variant="outlined"
                                     class="mt-1 text-capitalize"
                                 >
-                                    Free
+                                    {{
+                                        $page.props.auth.user.role === "admin"
+                                            ? "Admin"
+                                            : $page.props.auth.user.langganan
+                                                  .nama_paket
+                                    }}
                                 </v-chip>
                             </div>
                         </div>
@@ -124,8 +140,8 @@ const handleResize = () => {
                 </div>
 
                 <!-- Fixed Logout Button -->
-                <!-- <div
-                    class="bg-[#1a398f] p-5! shrink-0 border-t-2 border-white/30"
+                <div
+                    class="bg-[#004D31] p-5! shrink-0 border-t-2 border-white/30"
                 >
                     <div
                         @click="logout"
@@ -134,7 +150,7 @@ const handleResize = () => {
                         <Icon icon="mdi:logout" width="24" />
                         <div>Logout</div>
                     </div>
-                </div> -->
+                </div>
             </aside>
         </transition>
         <!-- header desktop -->

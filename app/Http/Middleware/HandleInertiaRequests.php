@@ -41,6 +41,9 @@ class HandleInertiaRequests extends Middleware
             'currentRoute' => [
                 'name' => Route::currentRouteName(),
             ],
+            'auth' => [
+                'user' => $request->user(),
+            ],
         ];
     }
 }
