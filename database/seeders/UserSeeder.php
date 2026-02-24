@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@antigravity.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'subscription' => 'premium',
+            'langganan_id' => 1,
             'no_hp' => '081111111111',
         ]);
 
@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             'email' => 'support@antigravity.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'subscription' => 'free',
+            'langganan_id' => 1,
             'no_hp' => '082222222222',
         ]);
 
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                 'email' => "user.free$i@example.com",
                 'password' => Hash::make('password'),
                 'role' => 'user',
-                'subscription' => 'free',
+                'langganan_id' => 1,
                 'no_hp' => '0812345678' . $i,
             ]);
 
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
                 'email' => "user.premium$i@example.com",
                 'password' => Hash::make('password'),
                 'role' => 'user',
-                'subscription' => 'premium',
+                'langganan_id' => 2,
                 'no_hp' => '0898765432' . $i,
             ]);
         }

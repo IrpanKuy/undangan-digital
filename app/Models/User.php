@@ -21,12 +21,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'profile_path',
         'email',
         'password',
         'role',
-        'subscription',
-        'no_hp',
         'langganan_id',
+        'no_hp',
+        'provider',
+        'provider_id',
     ];
 
     protected $hidden = [

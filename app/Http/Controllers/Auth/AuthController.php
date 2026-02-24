@@ -7,8 +7,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Laravel\Socialite\Socialite;
+use Illuminate\Support\Str;
+
+use function Symfony\Component\Translation\t;
 
 class AuthController extends Controller
 {
@@ -20,7 +25,56 @@ class AuthController extends Controller
         return Inertia::render('auth/login');
     }
 
-    /**
+    public function redirectToGoogleRegister()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try{
+        $user = Socialite::driver('google')->user();
+
+        $avatarPath = null; // Default null jika tidak ada foto atau gagal download
+
+        if ($user->avatar) {
+            try {
+                // 1. Ambil data mentah gambar dari URL Google
+                $fileContents = file_get_contents($user->avatar);
+
+                // 2. Buat nama file unik (menggunakan ID Google agar tidak ganda kalau dia login lagi)
+            $avatarName = 'avatars/google_' . $user->id . '.jpg';
+
+            // 3. Simpan ke folder storage/app/public/avatars
+            Storage::disk('public')->put($avatarName, $fileContents);
+
+            // 4. Set path untuk disimpan ke database
+            $avatarPath = $avatarName;
+        } catch (\Exception $e) {
+            // Jika Google menolak atau koneksi gagal, biarkan avatarPath tetap null
+            $avatarPath = null;
+        }
+        }
+        $newUser = User::updateOrCreate([
+            'email' => $user->email,
+        ], [
+            'name' => $user->name,
+            'password' => Hash::make(Str::random(12)), // password acak
+            'provider' => 'google',
+            'provider_id' => $user->id,
+            'langganan_id' => 1,
+            'profile_path' => $avatarPath,
+        ]);
+
+        Auth::login($newUser);
+
+        return redirect()->route('admin.kategori-undangan.index');
+
+    }catch (\Exception $e){
+        return dd($e->getMessage());
+    }
+    }
+    /** 
      * Proses login user.
      */
     public function login(Request $request)

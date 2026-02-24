@@ -6,10 +6,14 @@ use App\Http\Controllers\Admin\KategoriUndangan;
 use App\Http\Controllers\Admin\TemplateUndangan;
 use App\Http\Controllers\Admin\TemplateContentUndanganController;
 use App\Http\Controllers\Auth\AuthController;
+use Laravel\Socialite\Socialite;
 
 Route::get('/', function () {
     return Inertia::render('welcome'); // 'Welcome' merujuk ke Welcome.vue
 })->name('home');
+
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogleRegister'])->name('google.login');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // Auth Routes
 Route::middleware('guest')->group(function () {
@@ -19,7 +23,7 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     
     // Google Login Placeholder
-    Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
+    // Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
 });
 
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
