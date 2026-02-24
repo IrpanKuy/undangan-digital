@@ -1,38 +1,78 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
+import { Icon } from "@iconify/vue";
 import Swal from "sweetalert2";
 import adminDashboardLayout from "../../layouts/adminDashboardLayout.vue";
+
+const props = defineProps({
+    template: Object,
+});
 
 const activeTab = ref("setting");
 
 const form = useForm({
-    reservation_form: true,
-    komentar_undangan: true,
-    jumlah_kehadiran: true,
-    music_url: "",
+    id: props.template.id,
+    reservation_form:
+        props.template.pengaturan_undangan?.reservation_form ?? true,
+    komentar_undangan:
+        props.template.pengaturan_undangan?.komentar_undangan ?? true,
+    jumlah_kehadiran:
+        props.template.pengaturan_undangan?.jumlah_kehadiran ?? true,
+    music_url: props.template.pengaturan_undangan?.music_url ?? "",
 });
 
 const submit = () => {
-    // This would typically save defaults or be part of a larger store process
-    // For now, we'll just show a success message as this is a "Template" setting
-    Swal.fire({
-        icon: "success",
-        title: "Pengaturan Disimpan",
-        text: "Pengaturan awal untuk template berhasil diatur.",
-        timer: 2000,
-        showConfirmButton: false,
-        toast: true,
-        position: "top-end",
-    });
+    form.put(
+        route(
+            "admin.template-content-undangan.update-setting",
+            props.template.id,
+        ),
+        {
+            onSuccess: () => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Berhasil!",
+                    text: "Pengaturan template berhasil diperbarui.",
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: "top-end",
+                });
+            },
+            onError: (errors) => {
+                console.error("Validation Errors:", errors);
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal!",
+                    text: "Silakan periksa kembali inputan Anda. Beberapa bidang wajib diisi atau formatnya salah.",
+                    timer: 4000,
+                });
+
+                // Scroll to the first error
+                setTimeout(() => {
+                    const firstError =
+                        document.querySelector(".v-input--error");
+                    if (firstError) {
+                        firstError.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                        });
+                    }
+                }, 100);
+            },
+        },
+    );
 };
 </script>
 
 <template>
     <adminDashboardLayout>
         <template #headerTitle>
-            <Icon icon="mdi:cog-outline" width="22" color="#004D31" />
-            Pengaturan Template
+            <div class="flex items-center gap-2">
+                <Icon icon="mdi:cog-outline" width="24" class="text-primary" />
+                <span>Pengaturan Template</span>
+            </div>
         </template>
 
         <template #content>
@@ -48,7 +88,8 @@ const submit = () => {
                         @click="
                             router.get(
                                 route(
-                                    'admin.template-content-undangan.create-content',
+                                    'admin.template-content-undangan.edit-content',
+                                    props.template.id,
                                 ),
                             )
                         "
@@ -181,7 +222,8 @@ const submit = () => {
                     <div class="flex justify-end gap-3 mt-8">
                         <v-btn
                             variant="outlined"
-                            color="gray-500"
+                            color="secondary"
+                            class="rounded-lg text-none"
                             @click="
                                 router.get(
                                     route(
@@ -189,15 +231,18 @@ const submit = () => {
                                     ),
                                 )
                             "
-                            >Batal</v-btn
                         >
+                            Batal
+                        </v-btn>
                         <v-btn
                             type="submit"
                             color="primary"
                             size="large"
+                            class="rounded-lg text-none"
                             :loading="form.processing"
-                            >Simpan Pengaturan</v-btn
                         >
+                            Simpan Pengaturan
+                        </v-btn>
                     </div>
                 </form>
             </v-container>

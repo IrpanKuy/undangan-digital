@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\AuthController;
 use Laravel\Socialite\Socialite;
 
 Route::get('/', function () {
-    return Inertia::render('welcome'); // 'Welcome' merujuk ke Welcome.vue
+    return Inertia::render('layouts/adminDashboardLayout'); // 'Welcome' merujuk ke Welcome.vue
 })->name('home');
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogleRegister'])->name('google.login');
@@ -55,4 +55,6 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
     Route::post('template-content-undangan/check-url', [TemplateContentUndanganController::class, 'checkUrl'])
         ->name('template-content-undangan.check-url');
 });
+
+
 

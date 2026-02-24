@@ -1,19 +1,30 @@
 <script setup>
-import { ref } from "vue";
-import { Link, useForm, router } from "@inertiajs/vue3";
-import Swal from "sweetalert2";
+import { ref, computed } from "vue";
+import { router } from "@inertiajs/vue3";
 import adminDashboardLayout from "../../layouts/adminDashboardLayout.vue";
+import { Icon } from "@iconify/vue";
+import Swal from "sweetalert2";
 
 const props = defineProps({
-    templates: Array,
+    templates: {
+        type: Array,
+        default: () => [],
+    },
 });
 
+const search = ref("");
 const loadingDeleteId = ref(null);
 
-/**
- * Toast Helper
- * Menggunakan SweetAlert Toast untuk memberikan feedback sukses/error
- */
+// ─── Filtered Data (Pengganti Search v-data-table) ───────────────────────────
+const filteredTemplates = computed(() => {
+    if (!search.value) return props.templates;
+    const s = search.value.toLowerCase();
+    return props.templates.filter((item) =>
+        item.judul?.toLowerCase().includes(s),
+    );
+});
+
+// ─── Toast Helper ────────────────────────────────────────────────────────────
 const toast = (type, message) => {
     Swal.fire({
         icon: type,
@@ -26,10 +37,7 @@ const toast = (type, message) => {
     });
 };
 
-/**
- * Konfirmasi Hapus
- * Menampilkan SweetAlert Modal untuk konfirmasi penghapusan data
- */
+// ─── Konfirmasi Hapus ────────────────────────────────────────────────────────
 const confirmDelete = (item) => {
     Swal.fire({
         title: "Hapus Konten Template?",
@@ -44,8 +52,7 @@ const confirmDelete = (item) => {
         if (!result.isConfirmed) return;
 
         loadingDeleteId.value = item.id;
-        const deleteForm = useForm({});
-        deleteForm.delete(
+        router.delete(
             route("admin.template-content-undangan.destroy", item.id),
             {
                 preserveScroll: true,
@@ -61,10 +68,7 @@ const confirmDelete = (item) => {
     });
 };
 
-/**
- * Format Tanggal
- * Mengubah string tanggal menjadi format bahasa Indonesia yang lebih terbaca
- */
+// ─── Format Tanggal ──────────────────────────────────────────────────────────
 const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -78,33 +82,53 @@ const formatDate = (dateString) => {
 
 <template>
     <adminDashboardLayout>
-        <!-- Slot: Header Title -->
+        <!-- Header Title -->
         <template #headerTitle>
-            <Icon
-                icon="mdi:book-open-page-variant-outline"
-                width="22"
-                color="#004D31"
-            />
-            Konten Template Undangan
+            <div class="flex items-center gap-2">
+                <Icon
+                    icon="mdi:book-open-page-variant-outline"
+                    width="22"
+                    class="text-[#004D31]"
+                />
+                <span class="font-semibold text-gray-800"
+                    >Konten Template Undangan</span
+                >
+            </div>
         </template>
 
-        <!-- Slot: Content -->
+        <!-- Main Content -->
         <template #content>
-            <v-container fluid class="p-0">
+            <div class="w-full">
                 <!-- Page Header -->
-                <v-row align="center" justify="space-between" class="mb-5 px-3">
-                    <v-col cols="12" md="auto">
-                        <p class="text-xl font-bold text-gray-700 mb-1">
+                <div
+                    class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6"
+                >
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800 mb-1">
                             Konten Template Undangan
+                        </h1>
+                        <p class="text-sm text-gray-600">
+                            Kelola informasi dan detail untuk masing-masing
+                            template.
                         </p>
-                        <p class="text-sm text-gray-500">
-                            kelola daftar konten dengan benar dan baik
-                        </p>
-                    </v-col>
-                    <v-col cols="12" md="auto">
-                        <v-btn
-                            color="primary"
-                            prepend-icon="mdi-plus"
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <!-- Search Bar -->
+                        <div class="relative min-w-[240px]">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"
+                            >
+                                <Icon icon="mdi:magnify" width="18" />
+                            </span>
+                            <input
+                                v-model="search"
+                                type="text"
+                                placeholder="Cari Judul Konten..."
+                                class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors"
+                            />
+                        </div>
+                        <!-- Create Button -->
+                        <button
                             @click="
                                 router.get(
                                     route(
@@ -112,183 +136,212 @@ const formatDate = (dateString) => {
                                     ),
                                 )
                             "
+                            class="cursor-pointer inline-flex items-center justify-center gap-2 bg-[#004D31] hover:bg-[#003824] text-white px-4 py-2 rounded-sm font-medium transition-colors border border-[#004D31]"
                         >
-                            Buat Template
-                        </v-btn>
-                    </v-col>
-                </v-row>
-
-                <!-- Grid Template (Responsive) -->
-                <!-- Menggunakan Vuetify Grid (v-row & v-col) untuk tampilan responsif di Mobile, Tablet, & Desktop -->
-                <v-row v-if="templates && templates.length > 0" class="px-1">
-                    <v-col
-                        v-for="item in templates"
-                        :key="item.id"
-                        cols="12"
-                        sm="6"
-                        md="4"
-                        lg="3"
-                    >
-                        <v-card
-                            elevation="2"
-                            rounded="lg"
-                            class="h-full flex flex-col hover:shadow-lg transition-shadow duration-300"
-                        >
-                            <!-- Thumbnail Paling Atas -->
-                            <v-img
-                                src="https://placehold.co/600x400?text=No+Image"
-                                height="220"
-                                cover
-                                class="bg-gray-100 rounded-t-lg"
-                            >
-                                <template #placeholder>
-                                    <div
-                                        class="flex items-center justify-center h-full"
-                                    >
-                                        <v-progress-circular
-                                            indeterminate
-                                            color="primary"
-                                        />
-                                    </div>
-                                </template>
-                            </v-img>
-
-                            <v-card-item class="pb-0 pt-4">
-                                <!-- Judul Undangan -->
-                                <v-card-title
-                                    class="text-base font-bold text-gray-800 leading-tight"
-                                >
-                                    {{ item.judul }}
-                                </v-card-title>
-                            </v-card-item>
-
-                            <v-card-text class="grow pt-2">
-                                <!-- Waktu Akad Nikah dari Relasi -->
-                                <div
-                                    class="flex items-center gap-2 text-sm text-gray-600 mb-1"
-                                >
-                                    <v-icon
-                                        icon="mdi-calendar-heart"
-                                        size="18"
-                                        color="indigo"
-                                    />
-                                    <span class="font-medium">
-                                        {{
-                                            formatDate(
-                                                item
-                                                    .template_undangan_pernikahan
-                                                    ?.tanggal_mulai_akad,
-                                            )
-                                        }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="flex items-center gap-2 text-sm text-gray-600"
-                                    v-if="
-                                        item.template_undangan_pernikahan
-                                            ?.waktu_mulai_akad
-                                    "
-                                >
-                                    <v-icon
-                                        icon="mdi-clock-time-four-outline"
-                                        size="18"
-                                        color="indigo"
-                                    />
-                                    <span>
-                                        {{
-                                            item.template_undangan_pernikahan?.waktu_mulai_akad.substring(
-                                                0,
-                                                5,
-                                            )
-                                        }}
-                                        WIB
-                                    </span>
-                                </div>
-                            </v-card-text>
-
-                            <v-divider class="mx-4" />
-
-                            <!-- Tombol Aksi -->
-                            <v-card-actions class="p-4 gap-2 flex flex-col">
-                                <div class="w-full flex gap-2">
-                                    <v-btn
-                                        variant="flat"
-                                        color="primary"
-                                        size="x-small"
-                                        class="grow font-bold text-xs"
-                                        prepend-icon="mdi-pencil-box-multiple"
-                                        @click="
-                                            router.get(
-                                                route(
-                                                    'admin.template-content-undangan.edit-content',
-                                                    item.id,
-                                                ),
-                                            )
-                                        "
-                                    >
-                                        Edit Konten
-                                    </v-btn>
-                                    <v-btn
-                                        variant="flat"
-                                        color="secondary"
-                                        size="x-small"
-                                        class="grow font-bold text-xs"
-                                        prepend-icon="mdi-cog"
-                                        @click="
-                                            router.get(
-                                                route(
-                                                    'admin.template-content-undangan.edit-setting',
-                                                    item.id,
-                                                ),
-                                            )
-                                        "
-                                    >
-                                        Edit Setting
-                                    </v-btn>
-                                </div>
-                                <v-btn
-                                    variant="flat"
-                                    color="error"
-                                    size="x-small"
-                                    block
-                                    class="font-bold text-xs"
-                                    prepend-icon="mdi-trash-can-outline"
-                                    :loading="loadingDeleteId === item.id"
-                                    @click="confirmDelete(item)"
-                                >
-                                    Hapus
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-col>
-                </v-row>
-
-                <!-- Empty State (Jika Data Kosong) -->
-                <div
-                    v-else
-                    class="flex flex-col items-center justify-center py-32 text-gray-400"
-                >
-                    <v-icon
-                        icon="mdi-book-open-blank-variant"
-                        size="100"
-                        class="mb-4 opacity-10"
-                    />
-                    <p class="text-xl font-bold">Belum ada konten template</p>
-                    <p class="text-sm mt-1">
-                        Gunakan tombol di sidebar untuk mulai membuat template
-                        baru
-                    </p>
+                            <Icon icon="mdi:plus" width="18" />
+                            <span>Buat Konten Baru</span>
+                        </button>
+                    </div>
                 </div>
-            </v-container>
+
+                <!-- Table Area (Flat Design) -->
+                <div class="bg-white border border-gray-300 rounded-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-100 border-b-2 border-gray-300 text-sm font-semibold text-gray-700 uppercase tracking-wider"
+                                >
+                                    <th
+                                        class="py-3 px-4 w-16 text-center border-r border-gray-200"
+                                    >
+                                        No
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 border-r border-gray-200"
+                                    >
+                                        Judul Konten
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 border-r border-gray-200"
+                                    >
+                                        Jadwal Akad
+                                    </th>
+                                    <th
+                                        class="py-3 px-4 w-48 border-r border-gray-200"
+                                    >
+                                        Terakhir Diubah
+                                    </th>
+                                    <th class="py-3 px-4 w-36 text-center">
+                                        Aksi
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Empty State -->
+                                <tr v-if="filteredTemplates.length === 0">
+                                    <td
+                                        colspan="5"
+                                        class="py-12 text-center text-gray-500"
+                                    >
+                                        <div class="flex flex-col items-center">
+                                            <Icon
+                                                icon="mdi:book-open-blank-variant"
+                                                class="text-gray-300 mb-2"
+                                                width="48"
+                                            />
+                                            <p
+                                                class="text-sm font-medium text-gray-700"
+                                            >
+                                                Belum ada konten template
+                                            </p>
+                                            <p class="text-xs mt-1">
+                                                Klik "Buat Konten Baru" untuk
+                                                memulai
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Data Rows -->
+                                <tr
+                                    v-for="(item, index) in filteredTemplates"
+                                    :key="item.id"
+                                    class="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                                >
+                                    <td
+                                        class="py-3 px-4 text-sm text-gray-700 text-center border-r border-gray-200"
+                                    >
+                                        {{ index + 1 }}
+                                    </td>
+                                    <td
+                                        class="py-3 px-4 text-sm font-bold text-gray-800 border-r border-gray-200"
+                                    >
+                                        {{ item.judul }}
+                                    </td>
+                                    <td
+                                        class="py-3 px-4 border-r border-gray-200"
+                                    >
+                                        <div class="flex flex-col gap-0.5">
+                                            <div
+                                                class="flex items-center gap-1.5 text-sm text-gray-700 font-medium"
+                                            >
+                                                <Icon
+                                                    icon="mdi:calendar-heart"
+                                                    class="text-[#004D31]"
+                                                    width="16"
+                                                />
+                                                <span>{{
+                                                    formatDate(
+                                                        item
+                                                            .template_undangan_pernikahan
+                                                            ?.tanggal_mulai_akad,
+                                                    )
+                                                }}</span>
+                                            </div>
+                                            <div
+                                                v-if="
+                                                    item
+                                                        .template_undangan_pernikahan
+                                                        ?.waktu_mulai_akad
+                                                "
+                                                class="flex items-center gap-1.5 text-xs text-gray-500"
+                                            >
+                                                <Icon
+                                                    icon="mdi:clock-outline"
+                                                    width="14"
+                                                />
+                                                <span
+                                                    >{{
+                                                        item.template_undangan_pernikahan.waktu_mulai_akad.substring(
+                                                            0,
+                                                            5,
+                                                        )
+                                                    }}
+                                                    WIB</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        class="py-3 px-4 text-sm text-gray-600 border-r border-gray-200"
+                                    >
+                                        {{ formatDate(item.updated_at) }}
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <div
+                                            class="flex items-center justify-center gap-1.5"
+                                        >
+                                            <!-- Edit Content Button -->
+                                            <button
+                                                @click="
+                                                    router.get(
+                                                        route(
+                                                            'admin.template-content-undangan.edit-content',
+                                                            item.id,
+                                                        ),
+                                                    )
+                                                "
+                                                class="cursor-pointer p-1.5 text-blue-700 bg-blue-50 hover:bg-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 rounded-sm transition-colors"
+                                                title="Edit Konten"
+                                            >
+                                                <Icon
+                                                    icon="mdi:pencil-box-multiple-outline"
+                                                    width="16"
+                                                />
+                                            </button>
+
+                                            <!-- Edit Setting Button -->
+                                            <button
+                                                @click="
+                                                    router.get(
+                                                        route(
+                                                            'admin.template-content-undangan.edit-setting',
+                                                            item.id,
+                                                        ),
+                                                    )
+                                                "
+                                                class="cursor-pointer p-1.5 text-slate-700 bg-slate-100 hover:bg-slate-700 hover:text-white border border-slate-300 hover:border-slate-700 rounded-sm transition-colors"
+                                                title="Edit Pengaturan"
+                                            >
+                                                <Icon
+                                                    icon="mdi:cog-outline"
+                                                    width="16"
+                                                />
+                                            </button>
+
+                                            <!-- Delete Button -->
+                                            <button
+                                                @click="confirmDelete(item)"
+                                                :disabled="
+                                                    loadingDeleteId === item.id
+                                                "
+                                                class="cursor-pointer p-1.5 text-red-700 bg-red-50 hover:bg-red-600 hover:text-white border border-red-200 hover:border-red-600 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                title="Hapus Konten"
+                                            >
+                                                <Icon
+                                                    v-if="
+                                                        loadingDeleteId ===
+                                                        item.id
+                                                    "
+                                                    icon="mdi:loading"
+                                                    class="animate-spin"
+                                                    width="16"
+                                                />
+                                                <Icon
+                                                    v-else
+                                                    icon="mdi:trash-can-outline"
+                                                    width="16"
+                                                />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </template>
     </adminDashboardLayout>
 </template>
-
-<style scoped>
-/* Transisi halus saat hover card */
-.hover\:shadow-lg:hover {
-    box-shadow:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-}
-</style>

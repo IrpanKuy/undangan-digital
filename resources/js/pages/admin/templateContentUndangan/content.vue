@@ -234,12 +234,9 @@ const submit = () => {
                                           form.id,
                                       ),
                                   )
-                                : router.get(
-                                      route(
-                                          'admin.template-content-undangan.create-setting',
-                                      ),
-                                  )
+                                : null
                         "
+                        :disabled="!form.id"
                     >
                         <v-icon start icon="mdi-cog" />
                         Pengaturan

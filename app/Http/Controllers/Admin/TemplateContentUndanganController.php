@@ -218,12 +218,11 @@ class TemplateContentUndanganController extends Controller
             }
 
             DB::commit();
-            if($request->id){
-                return redirect()->route('admin.template-content-undangan.edit', $request->id)
-                    ->with('success', 'Template berhasil diperbarui.');
+            if ($request->id) {
+                return $this->editContent($undangan->id)->with('success', 'Konten template berhasil diperbarui.');
             }
 
-            return $this->editContent($undangan->id)->with('success', 'Template berhasil dibuat.');
+            return $this->editSetting($undangan->id)->with('success', 'Konten template berhasil dibuat. Silakan atur fitur tambahan.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -287,7 +286,7 @@ class TemplateContentUndanganController extends Controller
             $request->only(['reservation_form', 'komentar_undangan', 'jumlah_kehadiran', 'music_url'])
         );
 
-        return back()->with('success', 'Pengaturan berhasil diperbarui.');
+        return redirect()->route('admin.template-content-undangan.index')->with('success', 'Pengaturan berhasil diperbarui.');
     }
 
     /**

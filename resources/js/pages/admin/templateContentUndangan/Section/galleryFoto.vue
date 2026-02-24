@@ -1,5 +1,4 @@
 <script setup>
-import { VFileUpload } from "vuetify/labs/VFileUpload";
 const props = defineProps({
     modelValue: Object,
 });

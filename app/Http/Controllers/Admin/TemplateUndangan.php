@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class TemplateUndangan extends Controller
@@ -29,39 +30,57 @@ class TemplateUndangan extends Controller
      */
     public function store(Request $request)
     {
+
+// ... di dalam method store atau update ...
+
         $request->validate([
             'id' => 'nullable|exists:template_undangans,id',
             'undangan_id' => 'required|exists:undangans,id',
             'judul_undangan' => 'required|string|max:255',
             'kategori_undangan_id' => 'required|exists:kategori_undangans,id',
             'file_name' => 'required|string|max:255',
+            // Untuk update, thumbnail dibuat nullable agar tidak wajib upload ulang
             'thumbnail_template' => $request->id ? 'nullable|image|mimes:jpeg,png,jpg|max:2048' : 'required|image|mimes:jpeg,png,jpg|max:2048',
             'template_premium' => 'required|boolean',
             'is_active' => 'required|boolean',
             'music_url' => 'nullable|url',
         ]);
 
-        $template = \App\Models\Admin\TemplateUndangan::updateOrCreate(
-            ['id' => $request->id],
-            [
-                'undangan_id' => $request->undangan_id,
-                'judul_undangan' => $request->judul_undangan,
-                'kategori_undangan_id' => $request->kategori_undangan_id,
-                'file_name' => $request->file_name,
-                'template_premium' => $request->template_premium,
-                'is_active' => $request->is_active,
-                'music_url' => $request->music_url,
-                'usage' => $request->id ? \App\Models\Admin\TemplateUndangan::find($request->id)->usage : 0,
-            ]
-        );
+        // 1. Cari data lama jika ini proses Update
+        $template = \App\Models\Admin\TemplateUndangan::find($request->id);
 
+        // 2. Siapkan data untuk disimpan
+        $data = [
+            'undangan_id'          => $request->undangan_id,
+            'judul_undangan'       => $request->judul_undangan,
+            'kategori_undangan_id' => $request->kategori_undangan_id,
+            'file_name'            => $request->file_name,
+            'template_premium'     => $request->template_premium,
+            'is_active'            => $request->is_active,
+            'music_url'            => $request->music_url,
+            'usage'                => $template ? $template->usage : 0,
+        ];
+
+        // 3. Proses Upload File jika ada file yang diunggah
         if ($request->hasFile('thumbnail_template')) {
-            if ($template->thumbnail_template) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($template->thumbnail_template);
+            // Hapus foto lama jika ada (saat update)
+            if ($template && $template->thumbnail_template) {
+                Storage::disk('public')->delete($template->thumbnail_template);
             }
-            $path = $request->file('thumbnail_template')->store('template_thumbnails', 'public');
-            $template->update(['thumbnail_template' => $path]);
+
+            // Simpan file baru ke folder 'templates/thumbnails' di disk 'public'
+            $path = $request->file('thumbnail_template')->store('templates/thumbnails', 'public');
+            
+            // Masukkan path file ke dalam array data (Pastikan nama kolom di DB benar: thumbnail_template)
+            $data['thumbnail_template'] = $path;
         }
+
+        // 4. Eksekusi Update atau Create
+        $save = \App\Models\Admin\TemplateUndangan::updateOrCreate(
+            ['id' => $request->id],
+            $data
+        );
+        
 
         return redirect()->back()->with('success', $request->id ? 'Template berhasil diperbarui.' : 'Template berhasil ditambahkan.');
     }
