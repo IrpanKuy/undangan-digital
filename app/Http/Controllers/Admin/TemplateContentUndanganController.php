@@ -10,8 +10,6 @@ use App\Models\User\Undangan\Acara;
 use App\Models\User\Undangan\GalleryUndangan;
 use App\Models\User\Undangan\KisahCinta;
 use App\Models\User\Undangan\PengaturanUndangan;
-use App\Http\Requests\Admin\TemplateContentUndangan\StoreRequest;
-use App\Http\Requests\Admin\TemplateContentUndangan\UpdateRequest;
 use App\Rules\templateContentUndanganValidate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -266,7 +264,7 @@ class TemplateContentUndanganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $request->merge(['id' => $id]);
         return $this->store($request);

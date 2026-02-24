@@ -33,7 +33,7 @@ class AuthController extends Controller
     public function handleGoogleCallback()
     {
         try{
-        $user = Socialite::driver('google')->user();
+        $user = Socialite::driver('google')->stateless()->user();
 
         $avatarPath = null; // Default null jika tidak ada foto atau gagal download
 
@@ -71,7 +71,7 @@ class AuthController extends Controller
         return redirect()->route('admin.kategori-undangan.index');
 
     }catch (\Exception $e){
-        return dd($e->getMessage());
+        return dd($e);
     }
     }
     /** 

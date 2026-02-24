@@ -19,10 +19,10 @@ class notAuth
         
         if (Auth::check()) {
             if (Auth::user()->role == 'admin') {
-                // return redirect()->route("admin.kategori-undangan.index");
+                return redirect()->route("admin.kategori-undangan.index");
             }
 
-            // return redirect()->route("admin.kategori-undangan.index");
+            return redirect()->route("admin.kategori-undangan.index");
         }
         return $next($request);
     }

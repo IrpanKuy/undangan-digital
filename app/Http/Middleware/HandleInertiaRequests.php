@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
                 'name' => Route::currentRouteName(),
             ],
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()->load('langganan'),
             ],
         ];
     }

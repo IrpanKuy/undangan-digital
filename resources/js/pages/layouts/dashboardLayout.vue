@@ -122,7 +122,7 @@ const handleResize = () => {
                                         $page.props.auth.user.role === "admin"
                                             ? "Admin"
                                             : $page.props.auth.user.langganan
-                                                  .nama_paket
+                                                  ?.nama_paket
                                     }}
                                 </v-chip>
                             </div>
@@ -176,11 +176,6 @@ const handleResize = () => {
                                 width="28"
                             />
                         </v-btn>
-                        <div
-                            class="text-xl flex items-center gap-1 font-medium"
-                        >
-                            <slot name="headerTitle" />
-                        </div>
                     </div>
                 </div>
             </header>
@@ -196,9 +191,6 @@ const handleResize = () => {
                     >
                         <Icon icon="ci:hamburger-lg" width="28" />
                     </v-btn>
-                    <h2 class="font-bold text-xl">
-                        <slot name="headerTitle" />
-                    </h2>
                 </div>
             </div>
         </div>

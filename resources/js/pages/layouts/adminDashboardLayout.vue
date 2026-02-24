@@ -61,7 +61,10 @@ const isLinkActive = (routeName) => {
                 class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
             >
                 <div class="flex items-center gap-3">
-                    <Icon icon="ic:round-book" width="24" />
+                    <Icon
+                        icon="mdi:book-open-page-variant-outline"
+                        width="24"
+                    />
                     <div class="font-bold text-lg">Template Content</div>
                 </div>
             </Link>
