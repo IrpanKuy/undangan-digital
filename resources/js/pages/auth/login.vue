@@ -15,9 +15,9 @@ const submit = () => {
     form.post(route("login"), {
         onFinish: () => form.reset("password"),
         onError: () => {
-            // Scroll to first error as per READMERULES.md
+            // Scroll to first error
             setTimeout(() => {
-                const firstError = document.querySelector(".v-input--error");
+                const firstError = document.querySelector(".error-input");
                 if (firstError) {
                     firstError.scrollIntoView({
                         behavior: "smooth",
@@ -30,28 +30,25 @@ const submit = () => {
 };
 
 const loginWithGoogle = () => {
-    // Logic for Google OAuth
     window.location.href = route("google.login");
 };
 </script>
 
 <template>
     <div
-        class="min-h-screen flex items-center justify-center bg-gray-50 font-sans"
+        class="min-h-screen flex items-center justify-center bg-gray-50 font-sans p-4"
     >
-        <v-card
-            class="max-w-6xl w-full mx-4 shadow-2xl rounded-3xl overflow-hidden flex! flex-col! md:flex-row!"
+        <div
+            class="max-w-6xl w-full bg-white shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row"
         >
-            <!-- Left Side: Promotional Image (Desktop Only) -->
             <div
-                class="hidden md:flex! md:w-1/2! relative bg-primary items-center justify-center p-12! overflow-hidden"
+                class="hidden md:flex md:w-1/2 relative bg-primary items-center justify-center p-12 overflow-hidden"
             >
                 <div class="absolute inset-0 z-0">
-                    <v-img
+                    <img
                         src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop"
-                        cover
-                        height="100%"
-                        class="opacity-60 grayscale-20"
+                        class="object-cover w-full h-full opacity-60 grayscale-[20%]"
+                        alt="Wedding Background"
                     />
                     <div
                         class="absolute inset-0 bg-linear-to-tr from-primary/80 to-transparent"
@@ -86,17 +83,14 @@ const loginWithGoogle = () => {
                 </div>
             </div>
 
-            <!-- Right Side: Login Form -->
             <div
-                class="w-full md:w-1/2 p-8! md:p-16 bg-white flex flex-col justify-center"
+                class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center"
             >
-                <!-- Logo -->
                 <div class="flex justify-center md:justify-start mb-10">
-                    <v-img
+                    <img
                         src="/assets/logo_up.png"
-                        width="160"
-                        max-width="180"
-                        contain
+                        alt="Logo"
+                        class="w-40 object-contain"
                     />
                 </div>
 
@@ -109,45 +103,98 @@ const loginWithGoogle = () => {
                     </p>
                 </div>
 
-                <v-form @submit.prevent="submit" class="space-y-4!">
-                    <v-text-field
-                        v-model="form.email"
-                        label="Alamat Email"
-                        placeholder="nama@email.com"
-                        type="email"
-                        variant="outlined"
-                        density="comfortable"
-                        prepend-inner-icon="mdi-email-outline"
-                        :error-messages="form.errors.email"
-                        rounded="lg"
-                        hide-details="auto"
-                    />
+                <form @submit.prevent="submit" class="space-y-5">
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Alamat Email</label
+                        >
+                        <div class="relative">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                            >
+                                <Icon
+                                    icon="mdi:email-outline"
+                                    class="text-gray-400 text-xl"
+                                />
+                            </div>
+                            <input
+                                v-model="form.email"
+                                type="email"
+                                placeholder="nama@email.com"
+                                :class="[
+                                    'w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                    form.errors.email
+                                        ? 'border-red-500 focus:ring-red-200 error-input'
+                                        : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                ]"
+                            />
+                        </div>
+                        <p
+                            v-if="form.errors.email"
+                            class="text-red-500 text-xs mt-1"
+                        >
+                            {{ form.errors.email }}
+                        </p>
+                    </div>
 
-                    <v-text-field
-                        v-model="form.password"
-                        label="Kata Sandi"
-                        placeholder="••••••••"
-                        :type="showPassword ? 'text' : 'password'"
-                        variant="outlined"
-                        density="comfortable"
-                        prepend-inner-icon="mdi-lock-outline"
-                        :append-inner-icon="
-                            showPassword ? 'mdi-eye-off' : 'mdi-eye'
-                        "
-                        @click:append-inner="showPassword = !showPassword"
-                        :error-messages="form.errors.password"
-                        rounded="lg"
-                        hide-details="auto"
-                    />
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Kata Sandi</label
+                        >
+                        <div class="relative">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                            >
+                                <Icon
+                                    icon="mdi:lock-outline"
+                                    class="text-gray-400 text-xl"
+                                />
+                            </div>
+                            <input
+                                v-model="form.password"
+                                :type="showPassword ? 'text' : 'password'"
+                                placeholder="••••••••"
+                                :class="[
+                                    'w-full pl-11 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                    form.errors.password
+                                        ? 'border-red-500 focus:ring-red-200 error-input'
+                                        : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                ]"
+                            />
+                            <div
+                                @click="showPassword = !showPassword"
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-gray-400 hover:text-gray-600"
+                            >
+                                <Icon
+                                    :icon="
+                                        showPassword ? 'mdi:eye-off' : 'mdi:eye'
+                                    "
+                                    class="text-xl"
+                                />
+                            </div>
+                        </div>
+                        <p
+                            v-if="form.errors.password"
+                            class="text-red-500 text-xs mt-1"
+                        >
+                            {{ form.errors.password }}
+                        </p>
+                    </div>
 
-                    <div class="flex items-center justify-between mt-2">
-                        <v-checkbox
-                            v-model="form.remember"
-                            label="Ingat saya"
-                            color="primary"
-                            density="compact"
-                            hide-details
-                        />
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center cursor-pointer">
+                            <input
+                                v-model="form.remember"
+                                type="checkbox"
+                                class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2 cursor-pointer"
+                            />
+                            <span class="ml-2 text-sm text-gray-600"
+                                >Ingat saya</span
+                            >
+                        </label>
+
                         <Link
                             href="/forgot-password"
                             class="text-sm font-medium text-primary hover:underline"
@@ -156,18 +203,16 @@ const loginWithGoogle = () => {
                         </Link>
                     </div>
 
-                    <v-btn
+                    <button
                         type="submit"
-                        color="primary"
-                        size="large"
-                        block
-                        class="rounded-xl normal-case text-lg font-bold shadow-lg mt-6"
-                        :loading="form.processing"
+                        :disabled="form.processing"
+                        class="w-full py-3.5 bg-primary text-white bg-[#004D31] rounded-xl text-lg font-bold shadow-lg hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-2"
                     >
-                        Masuk Sekarang
-                    </v-btn>
+                        <span v-if="form.processing">Memproses...</span>
+                        <span v-else>Masuk Sekarang</span>
+                    </button>
 
-                    <div class="relative py-6">
+                    <div class="relative py-4">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-gray-200"></div>
                         </div>
@@ -178,23 +223,15 @@ const loginWithGoogle = () => {
                         </div>
                     </div>
 
-                    <v-btn
-                        variant="outlined"
-                        size="large"
-                        block
-                        class="rounded-xl normal-case text-gray-700 border-gray-200 hover:bg-gray-50 transition-colors"
+                    <button
+                        type="button"
                         @click="loginWithGoogle"
+                        class="w-full flex items-center justify-center py-3.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 active:scale-[0.98] transition-all"
                     >
-                        <template #prepend>
-                            <Icon
-                                icon="logos:google-icon"
-                                width="20"
-                                class="mr-2"
-                            />
-                        </template>
+                        <Icon icon="logos:google-icon" class="text-xl mr-3" />
                         Lanjutkan dengan Google
-                    </v-btn>
-                </v-form>
+                    </button>
+                </form>
 
                 <p class="text-center mt-10 text-gray-600">
                     Belum punya akun?
@@ -206,15 +243,6 @@ const loginWithGoogle = () => {
                     </Link>
                 </p>
             </div>
-        </v-card>
+        </div>
     </div>
 </template>
-
-<style scoped>
-:deep(.v-field__outline) {
-    --v-field-border-opacity: 0.1;
-}
-:deep(.v-field--focused .v-field__outline) {
-    --v-field-border-opacity: 1;
-}
-</style>
