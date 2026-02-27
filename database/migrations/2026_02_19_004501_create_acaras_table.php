@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->string('nama_acara'); // Resepsi, Ngunduh Mantu
+            $table->date('tanggal_acara');
             $table->time('waktu_acara');
             $table->text('detail_lokasi_acara');
             $table->geography('lokasi_acara', subtype: 'POINT', srid: 4326)->nullable();

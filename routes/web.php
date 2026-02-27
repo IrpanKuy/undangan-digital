@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\KategoriUndangan;
 use App\Http\Controllers\Admin\TemplateUndangan;
 use App\Http\Controllers\Admin\TemplateContentUndanganController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\UndanganController;
 use Laravel\Socialite\Socialite;
 
 Route::get('/', function () {
@@ -16,7 +18,7 @@ Route::get('/auth/google', [AuthController::class, 'redirectToGoogleRegister'])-
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // Auth Routes
-Route::middleware('guest')->group(function () {
+Route::middleware('notAuth')->group(function () {
     Route::get('login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
     Route::get('register', [AuthController::class, 'showRegister'])->name('register');
@@ -54,6 +56,10 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
         ->name('template-content-undangan.toggle-status');
     Route::post('template-content-undangan/check-url', [TemplateContentUndanganController::class, 'checkUrl'])
         ->name('template-content-undangan.check-url');
+});
+
+Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
+    Route::get('undangan', [UndanganController::class, 'index'])->name('undangan');
 });
 
 

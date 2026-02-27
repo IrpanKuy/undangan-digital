@@ -76,6 +76,7 @@ class UndanganSeeder extends Seeder
         Acara::create([
             'undangan_id' => $undangan->id,
             'nama_acara' => 'Akad Nikah',
+            'tanggal_acara' => now()->addDays(30)->format('Y-m-d'),
             'waktu_acara' => now()->addDays(30)->format('H:i:s'),
             'detail_lokasi_acara' => 'Alamat Lengkap Akad',
         ]);
@@ -83,6 +84,7 @@ class UndanganSeeder extends Seeder
         Acara::create([
             'undangan_id' => $undangan->id,
             'nama_acara' => 'Resepsi',
+            'tanggal_acara' => now()->addDays(30)->format('Y-m-d'),
             'waktu_acara' => now()->addDays(30)->addHours(2)->format('H:i:s'),
             'detail_lokasi_acara' => 'Alamat Lengkap Resepsi',
         ]);

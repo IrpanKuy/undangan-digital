@@ -17,9 +17,9 @@ const submit = () => {
     form.post(route("register"), {
         onFinish: () => form.reset("password", "password_confirmation"),
         onError: () => {
-            // Scroll to first error as per READMERULES.md
+            // Scroll to first error
             setTimeout(() => {
-                const firstError = document.querySelector(".v-input--error");
+                const firstError = document.querySelector(".error-input");
                 if (firstError) {
                     firstError.scrollIntoView({
                         behavior: "smooth",
@@ -40,26 +40,24 @@ const loginWithGoogle = () => {
     <div
         class="min-h-screen flex items-center justify-center bg-gray-50 font-sans p-4"
     >
-        <v-card
-            class="max-w-6xl w-full shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row"
+        <div
+            class="max-w-6xl w-full bg-white shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row"
         >
-            <!-- Left Side: Promotional Image (Desktop Only) -->
             <div
                 class="hidden md:flex md:w-1/2 relative bg-primary items-center justify-center p-12 overflow-hidden"
             >
                 <div class="absolute inset-0 z-0">
-                    <v-img
+                    <img
                         src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop"
-                        cover
-                        height="100%"
-                        class="opacity-60 grayscale-20"
+                        class="object-cover w-full h-full opacity-60 grayscale-20"
+                        alt="Wedding Background"
                     />
                     <div
                         class="absolute inset-0 bg-linear-to-tr from-primary/80 to-transparent"
                     ></div>
                 </div>
 
-                <div class="relative z-10 text-white">
+                <div class="relative z-10 text-white w-full">
                     <h1 class="text-4xl font-extrabold mb-4 leading-tight">
                         Mulai Perjalanan Kabar<br />Bahagia Anda di Sini.
                     </h1>
@@ -67,58 +65,47 @@ const loginWithGoogle = () => {
                         Gabung bersama komunitas kami dan buat desain undangan
                         digital yang merepresentasikan keunikan cinta Anda.
                     </p>
-                    <v-list bg-color="transparent" class="text-white">
-                        <v-list-item density="compact">
-                            <template #prepend>
-                                <Icon
-                                    icon="mdi:check-circle"
-                                    class="mr-3 text-cyan-300"
-                                />
-                            </template>
-                            <v-list-item-title class="font-light"
-                                >Akses Ratusan Template
-                                Eksklusif</v-list-item-title
+
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <Icon
+                                icon="mdi:check-circle"
+                                class="text-cyan-300 text-2xl mr-3 shrink-0"
+                            />
+                            <span class="font-light text-lg"
+                                >Akses Ratusan Template Eksklusif</span
                             >
-                        </v-list-item>
-                        <v-list-item density="compact">
-                            <template #prepend>
-                                <Icon
-                                    icon="mdi:check-circle"
-                                    class="mr-3 text-cyan-300"
-                                />
-                            </template>
-                            <v-list-item-title class="font-light"
-                                >Custom Domain & Musik
-                                Pilihan</v-list-item-title
+                        </li>
+                        <li class="flex items-center">
+                            <Icon
+                                icon="mdi:check-circle"
+                                class="text-cyan-300 text-2xl mr-3 shrink-0"
+                            />
+                            <span class="font-light text-lg"
+                                >Custom Domain & Musik Pilihan</span
                             >
-                        </v-list-item>
-                        <v-list-item density="compact">
-                            <template #prepend>
-                                <Icon
-                                    icon="mdi:check-circle"
-                                    class="mr-3 text-cyan-300"
-                                />
-                            </template>
-                            <v-list-item-title class="font-light"
-                                >Fitur Buku Tamu & RSVP
-                                Digital</v-list-item-title
+                        </li>
+                        <li class="flex items-center">
+                            <Icon
+                                icon="mdi:check-circle"
+                                class="text-cyan-300 text-2xl mr-3 shrink-0"
+                            />
+                            <span class="font-light text-lg"
+                                >Fitur Buku Tamu & RSVP Digital</span
                             >
-                        </v-list-item>
-                    </v-list>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Right Side: Register Form -->
             <div
-                class="w-full md:w-1/2 p-8 md:p-12 bg-white flex flex-col justify-center"
+                class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center"
             >
-                <!-- Logo -->
                 <div class="flex justify-center md:justify-start mb-8">
-                    <v-img
+                    <img
                         src="/assets/logo_up.png"
-                        width="140"
-                        max-width="160"
-                        contain
+                        alt="Logo"
+                        class="w-36 object-contain"
                     />
                 </div>
 
@@ -131,125 +118,206 @@ const loginWithGoogle = () => {
                     </p>
                 </div>
 
-                <v-form @submit.prevent="submit" class="space-y-3">
-                    <v-text-field
-                        v-model="form.name"
-                        label="Nama Lengkap"
-                        placeholder="Masukkan nama lengkap"
-                        variant="outlined"
-                        density="comfortable"
-                        prepend-inner-icon="mdi-account-outline"
-                        :error-messages="form.errors.name"
-                        rounded="lg"
-                        hide-details="auto"
-                    />
-
-                    <v-row dense>
-                        <v-col cols="12" sm="6">
-                            <v-text-field
-                                v-model="form.email"
-                                label="Email"
-                                placeholder="email@contoh.com"
-                                type="email"
-                                variant="outlined"
-                                density="comfortable"
-                                prepend-inner-icon="mdi-email-outline"
-                                :error-messages="form.errors.email"
-                                rounded="lg"
-                                hide-details="auto"
+                <form @submit.prevent="submit" class="space-y-4">
+                    <div>
+                        <div class="relative">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                            >
+                                <Icon
+                                    icon="mdi:account-outline"
+                                    class="text-gray-400 text-xl"
+                                />
+                            </div>
+                            <input
+                                v-model="form.name"
+                                type="text"
+                                placeholder="Nama Lengkap"
+                                :class="[
+                                    'w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                    form.errors.name
+                                        ? 'border-red-500 focus:ring-red-200 error-input'
+                                        : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                ]"
                             />
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                            <v-text-field
-                                v-model="form.no_hp"
-                                label="No. WhatsApp"
-                                placeholder="0812xxxxxxxx"
-                                variant="outlined"
-                                density="comfortable"
-                                prepend-inner-icon="mdi-whatsapp"
-                                :error-messages="form.errors.no_hp"
-                                rounded="lg"
-                                hide-details="auto"
+                        </div>
+                        <p
+                            v-if="form.errors.name"
+                            class="text-red-500 text-xs mt-1"
+                        >
+                            {{ form.errors.name }}
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                                >
+                                    <Icon
+                                        icon="mdi:email-outline"
+                                        class="text-gray-400 text-xl"
+                                    />
+                                </div>
+                                <input
+                                    v-model="form.email"
+                                    type="email"
+                                    placeholder="Email"
+                                    :class="[
+                                        'w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                        form.errors.email
+                                            ? 'border-red-500 focus:ring-red-200 error-input'
+                                            : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                    ]"
+                                />
+                            </div>
+                            <p
+                                v-if="form.errors.email"
+                                class="text-red-500 text-xs mt-1"
+                            >
+                                {{ form.errors.email }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <div class="relative">
+                                <div
+                                    class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                                >
+                                    <Icon
+                                        icon="mdi:whatsapp"
+                                        class="text-gray-400 text-xl"
+                                    />
+                                </div>
+                                <input
+                                    v-model="form.no_hp"
+                                    type="text"
+                                    placeholder="No. WhatsApp"
+                                    :class="[
+                                        'w-full pl-11 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                        form.errors.no_hp
+                                            ? 'border-red-500 focus:ring-red-200 error-input'
+                                            : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                    ]"
+                                />
+                            </div>
+                            <p
+                                v-if="form.errors.no_hp"
+                                class="text-red-500 text-xs mt-1"
+                            >
+                                {{ form.errors.no_hp }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="relative">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                            >
+                                <Icon
+                                    icon="mdi:lock-outline"
+                                    class="text-gray-400 text-xl"
+                                />
+                            </div>
+                            <input
+                                v-model="form.password"
+                                :type="showPassword ? 'text' : 'password'"
+                                placeholder="Kata Sandi (Min. 8 karakter)"
+                                :class="[
+                                    'w-full pl-11 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                    form.errors.password
+                                        ? 'border-red-500 focus:ring-red-200 error-input'
+                                        : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                ]"
                             />
-                        </v-col>
-                    </v-row>
+                            <div
+                                @click="showPassword = !showPassword"
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer text-gray-400 hover:text-gray-600"
+                            >
+                                <Icon
+                                    :icon="
+                                        showPassword ? 'mdi:eye-off' : 'mdi:eye'
+                                    "
+                                    class="text-xl"
+                                />
+                            </div>
+                        </div>
+                        <p
+                            v-if="form.errors.password"
+                            class="text-red-500 text-xs mt-1"
+                        >
+                            {{ form.errors.password }}
+                        </p>
+                    </div>
 
-                    <v-text-field
-                        v-model="form.password"
-                        label="Kata Sandi"
-                        placeholder="Min. 8 karakter"
-                        :type="showPassword ? 'text' : 'password'"
-                        variant="outlined"
-                        density="comfortable"
-                        prepend-inner-icon="mdi-lock-outline"
-                        :append-inner-icon="
-                            showPassword ? 'mdi-eye-off' : 'mdi-eye'
-                        "
-                        @click:append-inner="showPassword = !showPassword"
-                        :error-messages="form.errors.password"
-                        rounded="lg"
-                        hide-details="auto"
-                    />
+                    <div>
+                        <div class="relative">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                            >
+                                <Icon
+                                    icon="mdi:lock-check-outline"
+                                    class="text-gray-400 text-xl"
+                                />
+                            </div>
+                            <input
+                                v-model="form.password_confirmation"
+                                :type="showPassword ? 'text' : 'password'"
+                                placeholder="Konfirmasi Kata Sandi"
+                                :class="[
+                                    'w-full pl-11 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition duration-200',
+                                    form.errors.password_confirmation
+                                        ? 'border-red-500 focus:ring-red-200 error-input'
+                                        : 'border-gray-300 focus:ring-primary/30 focus:border-primary',
+                                ]"
+                            />
+                        </div>
+                        <p
+                            v-if="form.errors.password_confirmation"
+                            class="text-red-500 text-xs mt-1"
+                        >
+                            {{ form.errors.password_confirmation }}
+                        </p>
+                    </div>
 
-                    <v-text-field
-                        v-model="form.password_confirmation"
-                        label="Konfirmasi Kata Sandi"
-                        placeholder="Ulangi kata sandi"
-                        :type="showPassword ? 'text' : 'password'"
-                        variant="outlined"
-                        density="comfortable"
-                        prepend-inner-icon="mdi-lock-check-outline"
-                        :error-messages="form.errors.password_confirmation"
-                        rounded="lg"
-                        hide-details="auto"
-                    />
-
-                    <p class="text-[10px] text-gray-400 mt-2 px-1 italic">
+                    <p class="text-[11px] text-gray-500 mt-1 px-1 italic">
                         *Dengan mendaftar, Anda menyetujui Ketentuan Layanan dan
                         Kebijakan Privasi kami.
                     </p>
 
-                    <v-btn
+                    <button
                         type="submit"
-                        color="primary"
-                        size="large"
-                        block
-                        class="rounded-xl normal-case text-lg font-bold shadow-lg mt-4"
-                        :loading="form.processing"
+                        :disabled="form.processing"
+                        class="w-full py-3.5 bg-primary text-white rounded-xl text-lg font-bold shadow-lg hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-2"
                     >
-                        Daftar Akun
-                    </v-btn>
+                        <span v-if="form.processing">Memproses...</span>
+                        <span v-else>Daftar Akun</span>
+                    </button>
 
-                    <div class="relative py-4">
+                    <div class="relative py-3">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-gray-200"></div>
                         </div>
                         <div class="relative flex justify-center text-xs">
-                            <span class="px-3 bg-white text-gray-400"
+                            <span class="px-3 bg-white text-gray-500"
                                 >Atau daftar dengan</span
                             >
                         </div>
                     </div>
 
-                    <v-btn
-                        variant="outlined"
-                        size="large"
-                        block
-                        class="rounded-xl normal-case text-gray-700 border-gray-200 hover:bg-gray-50 transition-colors"
+                    <button
+                        type="button"
                         @click="loginWithGoogle"
+                        class="w-full flex items-center justify-center py-3.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 active:scale-[0.98] transition-all"
                     >
-                        <template #prepend>
-                            <Icon
-                                icon="logos:google-icon"
-                                width="18"
-                                class="mr-2"
-                            />
-                        </template>
+                        <Icon icon="logos:google-icon" class="text-xl mr-3" />
                         Daftar dengan Google
-                    </v-btn>
-                </v-form>
+                    </button>
+                </form>
 
-                <p class="text-center mt-8 text-gray-600">
+                <p class="text-center mt-6 text-gray-600">
                     Sudah punya akun?
                     <Link
                         :href="route('login')"
@@ -259,15 +327,6 @@ const loginWithGoogle = () => {
                     </Link>
                 </p>
             </div>
-        </v-card>
+        </div>
     </div>
 </template>
-
-<style scoped>
-:deep(.v-field__outline) {
-    --v-field-border-opacity: 0.1;
-}
-:deep(.v-field--focused .v-field__outline) {
-    --v-field-border-opacity: 1;
-}
-</style>

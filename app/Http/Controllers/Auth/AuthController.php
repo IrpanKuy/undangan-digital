@@ -68,7 +68,11 @@ class AuthController extends Controller
 
         Auth::login($newUser);
 
-        return redirect()->route('admin.kategori-undangan.index');
+        if ($newUser->role === 'admin') {
+            return redirect()->route('admin.kategori-undangan.index');
+        } else {
+            return redirect()->route('user.undangan');
+        }
 
     }catch (\Exception $e){
         return dd($e);
@@ -90,8 +94,11 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-
-            return redirect()->intended(route('admin.kategori-undangan.index'));
+            if (Auth::user()->role === 'admin') {
+                return redirect()->intended(route('admin.kategori-undangan.index'));
+            } else {
+                return redirect()->intended(route('user.undangan'));
+            }
         }
 
         throw ValidationException::withMessages([
@@ -137,7 +144,11 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('admin.kategori-undangan.index');
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.kategori-undangan.index');
+        } else {
+            return redirect()->route('user.undangan');
+        }
     }
 
     /**

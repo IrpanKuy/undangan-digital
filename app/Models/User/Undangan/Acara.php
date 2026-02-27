@@ -10,6 +10,7 @@ class Acara extends Model
     protected $fillable = [
         'undangan_id',
         'nama_acara',
+        'tanggal_acara',
         'waktu_acara',
         'detail_lokasi_acara',
         'lokasi_acara',

@@ -15,7 +15,9 @@
 
     --font-alex-brush: "Alex Brush", cursive;
     --font-lora: "Lora", cursive;
-    --font-montserrat: "" Montserrat ", sans-serif";
+    --font-montserrat: "Montserrat", sans-serif;
+
+    --color-primary: #004d31;
 
     --color-gray-50: #f9fafb;
     --color-gray-100: #f3f4f6;
