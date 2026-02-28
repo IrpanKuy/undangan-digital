@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
         // Admins
         User::create([
             'name' => 'Admin Utama',
-            'email' => 'admin@antigravity.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'langganan_id' => 1,
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Admin Support',
-            'email' => 'support@antigravity.com',
+            'email' => 'support@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'langganan_id' => 1,

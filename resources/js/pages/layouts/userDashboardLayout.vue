@@ -16,56 +16,20 @@ const isLinkActive = (routeName) => {
     <DashboardLayout>
         <template #sidebar-menu>
             <Link
-                :href="route('admin.kategori-undangan.index')"
+                :href="route('user.undangan.index')"
                 :class="{
-                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]!':
-                        isLinkActive('admin.kategori-undangan.index'),
-                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
-                        'admin.kategori-undangan.index',
-                    ),
+                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]':
+                        isLinkActive('user.undangan.index') ||
+                        isLinkActive('user.undangan.pilih-template'),
+                    'hover:bg-gray-200/20! text-white!':
+                        !isLinkActive('user.undangan.index') &&
+                        !isLinkActive('user.undangan.pilih-template'),
                 }"
                 class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
             >
                 <div class="flex items-center gap-3">
                     <Icon icon="dashicons:category" width="24" />
-                    <div class="font-bold text-lg">Kategori Undangan</div>
-                </div>
-            </Link>
-
-            <Link
-                :href="route('admin.template-undangan.index')"
-                :class="{
-                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]!':
-                        isLinkActive('admin.template-undangan.index'),
-                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
-                        'admin.template-undangan.index',
-                    ),
-                }"
-                class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
-            >
-                <div class="flex items-center gap-3">
-                    <Icon icon="ic:round-book" width="24" />
-                    <div class="font-bold text-lg">Template Undangan</div>
-                </div>
-            </Link>
-
-            <Link
-                :href="route('admin.template-content-undangan.index')"
-                :class="{
-                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]!':
-                        isLinkActive('admin.template-content-undangan.index'),
-                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
-                        'admin.template-content-undangan.index',
-                    ),
-                }"
-                class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
-            >
-                <div class="flex items-center gap-3">
-                    <Icon
-                        icon="mdi:book-open-page-variant-outline"
-                        width="24"
-                    />
-                    <div class="font-bold text-lg">ini user</div>
+                    <div class="font-bold text-lg">Undangan Saya</div>
                 </div>
             </Link>
         </template>

@@ -18,7 +18,7 @@ class TemplateUndangan extends Controller
         $categories = \App\Models\Admin\KategoriUndangan::where('status', true)->get();
         $availableUndangans = \App\Models\User\Undangan\Undangan::where('for_template', true)->get();
 
-        return Inertia::render('admin/templateUndangan/index', [
+        return Inertia::render('admin/templateUndangan', [
             'templates' => $templates,
             'categories' => $categories,
             'availableUndangans' => $availableUndangans

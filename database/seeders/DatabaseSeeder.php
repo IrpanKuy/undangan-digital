@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
             LanggananSeeder::class,
             UserSeeder::class,
             KategoriUndanganSeeder::class,
-            PanduanPenggunaanSeeder::class,
-            FeedbackUserSeeder::class,
-            UndanganSeeder::class,
-            TemplateUndanganSeeder::class,
-            TransactionSeeder::class,
+            // PanduanPenggunaanSeeder::class,
+            // FeedbackUserSeeder::class,
+            // UndanganSeeder::class,
+            // TemplateUndanganSeeder::class,
+            // TransactionSeeder::class,
         ]);
     }
 }

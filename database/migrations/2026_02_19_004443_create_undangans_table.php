@@ -20,7 +20,11 @@ return new class extends Migration
             $table->string('salam_pembuka');
             $table->text('text_pembuka');
             $table->string('video_youtube_url')->nullable();
+            $table->string('tiktok_url')->nullable();
+            $table->string('instagram_url')->nullable();
+            $table->string('x_url')->nullable();
             $table->boolean('for_template')->default(false);
+
             $table->timestamps();
         });
     }

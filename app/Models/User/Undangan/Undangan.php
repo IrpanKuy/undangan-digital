@@ -18,6 +18,9 @@ class Undangan extends Model
         'salam_pembuka',
         'text_pembuka',
         'video_youtube_url',
+        'tiktok_url',
+        'instagram_url',
+        'x_url',
     ];
 
     public function user()

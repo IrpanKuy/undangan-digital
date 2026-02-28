@@ -59,7 +59,8 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 });
 
 Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
-    Route::get('undangan', [UndanganController::class, 'index'])->name('undangan');
+    Route::get('undangan/pilih-template', [UndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
+    Route::resource('undangan', UndanganController::class);
 });
 
 

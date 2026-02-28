@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->date('tanggal_mulai_akad');
             $table->time('waktu_mulai_akad');
-            $table->time('waktu_selesai_akad')->nullable();
             $table->text('detail_lokasi_akad_nikah');
-            $table->geography('lokasi_akad_nikah', subtype: 'POINT', srid: 4326)->nullable();
+            $table->string('latitude_akad')->nullable();
+            $table->string('longitude_akad')->nullable();
             $table->text('doa_pengantinn_pria');
             $table->text('doa_pengantin_wanita');
             $table->text('no_rek_amplop')->nullable();

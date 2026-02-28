@@ -71,7 +71,7 @@ class AuthController extends Controller
         if ($newUser->role === 'admin') {
             return redirect()->route('admin.kategori-undangan.index');
         } else {
-            return redirect()->route('user.undangan');
+            return redirect()->route('user.undangan.index');
         }
 
     }catch (\Exception $e){
@@ -147,7 +147,7 @@ class AuthController extends Controller
         if ($user->role === 'admin') {
             return redirect()->route('admin.kategori-undangan.index');
         } else {
-            return redirect()->route('user.undangan');
+            return redirect()->route('user.undangan.index');
         }
     }
 

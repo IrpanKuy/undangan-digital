@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User\Undangan\Undangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class UndanganController extends Controller
@@ -13,16 +15,30 @@ class UndanganController extends Controller
      */
      public function index()
     {
-        return Inertia::render('user/undangan');
+        // Pastikan hanya mengambil undangan milik user yang sedang login
+        // with('templateUndangan') memanggil relasi ke tabel template untuk data gambar/tema
+        $undangans = Undangan::with('templateUndangan')
+            ->where('user_id', Auth::id())
+            ->latest() // Urutkan dari yang terbaru
+            ->get();
+
+        return Inertia::render('user/undangan/undangan', [
+            'undangans' => $undangans
+        ]);
     }
 
-
+    public function pilihTemplate()
+    {
+        return Inertia::render('user/undangan/pilihTemplate');
+    }
     /**
-     * Show the form for creating a new resource.
+     * Catatan: Untuk method create() dan store(), 
+     * kamu bisa menambahkannya di sini untuk logika form pembuatan undangan.
      */
     public function create()
     {
-        //
+        // Arahkan ke halaman pemilihan template/kategori
+        // return Inertia::render('user/pilih_template');
     }
 
     /**

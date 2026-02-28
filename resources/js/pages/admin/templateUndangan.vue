@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import adminDashboardLayout from "../../layouts/adminDashboardLayout.vue";
+import adminDashboardLayout from "../layouts/adminDashboardLayout.vue";
 import { Icon } from "@iconify/vue";
 
 // --- FilePond Imports ---
@@ -191,7 +191,7 @@ const confirmDelete = (item) => {
 
         <!-- Main Content -->
         <template #content>
-            <div class="w-full">
+            <div class="p-5 w-full">
                 <!-- Page Header -->
                 <div
                     class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6"
