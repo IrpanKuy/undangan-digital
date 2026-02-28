@@ -102,6 +102,61 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             placeholder="Putra pertama dari Bapak..."
                         ></textarea>
                     </div>
+
+                    <!-- Social Media Pria -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label
+                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            >
+                                <Icon
+                                    icon="mdi:instagram"
+                                    class="text-pink-600"
+                                />
+                                Instagram
+                            </label>
+                            <input
+                                v-model="modelValue.instagram_url_pria"
+                                type="url"
+                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
+                                placeholder="https://..."
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            >
+                                <Icon
+                                    icon="ic:baseline-tiktok"
+                                    class="text-black"
+                                />
+                                TikTok
+                            </label>
+                            <input
+                                v-model="modelValue.tiktok_url_pria"
+                                type="url"
+                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
+                                placeholder="https://..."
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            >
+                                <Icon
+                                    icon="ri:twitter-x-fill"
+                                    class="text-black"
+                                />
+                                X (Twitter)
+                            </label>
+                            <input
+                                v-model="modelValue.x_url_pria"
+                                type="url"
+                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
+                                placeholder="https://..."
+                            />
+                        </div>
+                    </div>
                     <div>
                         <label
                             class="block text-xs font-bold text-gray-700 uppercase mb-1"
@@ -166,6 +221,61 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                             placeholder="Putri bungsu dari Bapak..."
                         ></textarea>
+                    </div>
+
+                    <!-- Social Media Wanita -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label
+                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            >
+                                <Icon
+                                    icon="mdi:instagram"
+                                    class="text-pink-600"
+                                />
+                                Instagram
+                            </label>
+                            <input
+                                v-model="modelValue.instagram_url_wanita"
+                                type="url"
+                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
+                                placeholder="https://..."
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            >
+                                <Icon
+                                    icon="ic:baseline-tiktok"
+                                    class="text-black"
+                                />
+                                TikTok
+                            </label>
+                            <input
+                                v-model="modelValue.tiktok_url_wanita"
+                                type="url"
+                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
+                                placeholder="https://..."
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            >
+                                <Icon
+                                    icon="ri:twitter-x-fill"
+                                    class="text-black"
+                                />
+                                X (Twitter)
+                            </label>
+                            <input
+                                v-model="modelValue.x_url_wanita"
+                                type="url"
+                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
+                                placeholder="https://..."
+                            />
+                        </div>
                     </div>
                     <div>
                         <label

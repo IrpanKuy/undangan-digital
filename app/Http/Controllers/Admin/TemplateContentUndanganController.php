@@ -107,9 +107,15 @@ class TemplateContentUndanganController extends Controller
                 [
                     'nama_panggilan_pria' => $request->nama_panggilan_pria,
                     'nama_lengkap_pria' => $request->nama_lengkap_pria,
+                    'instagram_url_pria' => $request->instagram_url_pria,
+                    'tiktok_url_pria' => $request->tiktok_url_pria,
+                    'x_url_pria' => $request->x_url_pria,
                     'keterangan_keluarga_pria' => $request->keterangan_keluarga_pria,
                     'nama_panggilan_wanita' => $request->nama_panggilan_wanita,
                     'nama_lengkap_wanita' => $request->nama_lengkap_wanita,
+                    'instagram_url_wanita' => $request->instagram_url_wanita,
+                    'tiktok_url_wanita' => $request->tiktok_url_wanita,
+                    'x_url_wanita' => $request->x_url_wanita,
                     'keterangan_keluarga_wanita' => $request->keterangan_keluarga_wanita,
                     'text_penutup' => $request->text_penutup,
                 ]

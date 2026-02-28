@@ -38,8 +38,14 @@ const form = useForm({
     nama_lengkap_pria: "",
     keterangan_keluarga_pria: "",
     foto_pria: null,
+    instagram_url_pria: "",
+    tiktok_url_pria: "",
+    x_url_pria: "",
     nama_panggilan_wanita: "",
     nama_lengkap_wanita: "",
+    instagram_url_wanita: "",
+    tiktok_url_wanita: "",
+    x_url_wanita: "",
     keterangan_keluarga_wanita: "",
     foto_wanita: null,
     text_penutup: "",
@@ -99,8 +105,14 @@ onMounted(() => {
             form.nama_panggilan_pria = m.nama_panggilan_pria;
             form.nama_lengkap_pria = m.nama_lengkap_pria;
             form.keterangan_keluarga_pria = m.keterangan_keluarga_pria;
+            form.instagram_url_pria = m.instagram_url_pria;
+            form.tiktok_url_pria = m.tiktok_url_pria;
+            form.x_url_pria = m.x_url_pria;
             form.nama_panggilan_wanita = m.nama_panggilan_wanita;
             form.nama_lengkap_wanita = m.nama_lengkap_wanita;
+            form.instagram_url_wanita = m.instagram_url_wanita;
+            form.tiktok_url_wanita = m.tiktok_url_wanita;
+            form.x_url_wanita = m.x_url_wanita;
             form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
             form.text_penutup = m.text_penutup;
         }
