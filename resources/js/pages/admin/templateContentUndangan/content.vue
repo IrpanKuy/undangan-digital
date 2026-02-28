@@ -116,8 +116,8 @@ onMounted(() => {
             form.no_rek_amplop = p.no_rek_amplop;
             form.lokasi_pengiriman_kado = p.lokasi_pengiriman_kado;
 
-            if (p.lokasi_akad_nikah_decoded) {
-                form.lokasi_akad_nikah = p.lokasi_akad_nikah_decoded;
+            if (p.lokasi_akad_nikah) {
+                form.lokasi_akad_nikah = p.lokasi_akad_nikah;
             }
         }
 
@@ -127,7 +127,7 @@ onMounted(() => {
                 nama_acara: a.nama_acara,
                 waktu_acara: a.waktu_acara,
                 detail_lokasi_acara: a.detail_lokasi_acara,
-                lokasi_acara: a.lokasi_acara_decoded || {
+                lokasi_acara: a.lokasi_acara || {
                     lat: -6.2088,
                     lng: 106.8456,
                 },

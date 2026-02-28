@@ -119,10 +119,40 @@ const removeAcara = (index) => {
                     </div>
 
                     <div>
-                        <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                            >Pin Lokasi Peta</label
-                        >
+                        <div class="flex items-center justify-between mb-1">
+                            <label
+                                class="block text-xs font-bold text-gray-700 uppercase"
+                                >Pin Lokasi Peta</label
+                            >
+                            <div class="flex gap-2">
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="text-[10px] font-bold text-gray-500 uppercase"
+                                        >Lat:</span
+                                    >
+                                    <input
+                                        v-model.number="acara.lokasi_acara.lat"
+                                        type="number"
+                                        step="any"
+                                        class="w-24 border border-gray-300 rounded-sm px-2 py-0.5 text-[10px] outline-none focus:border-[#004D31] bg-white"
+                                        placeholder="Latitude"
+                                    />
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span
+                                        class="text-[10px] font-bold text-gray-500 uppercase"
+                                        >Lng:</span
+                                    >
+                                    <input
+                                        v-model.number="acara.lokasi_acara.lng"
+                                        type="number"
+                                        step="any"
+                                        class="w-24 border border-gray-300 rounded-sm px-2 py-0.5 text-[10px] outline-none focus:border-[#004D31] bg-white"
+                                        placeholder="Longitude"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                         <div
                             class="border border-gray-400 rounded-sm overflow-hidden h-64"
                         >

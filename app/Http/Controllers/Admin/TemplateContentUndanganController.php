@@ -141,11 +141,9 @@ class TemplateContentUndanganController extends Controller
                 ]
             );
             
-            // Handle Peta Akad Nikah (Pastikan lat/lng tidak null sebelum disave)
-            if (!empty($request->lokasi_akad_nikah['lat']) && !empty($request->lokasi_akad_nikah['lng'])) {
-                $lat = $request->lokasi_akad_nikah['lat'];
-                $lng = $request->lokasi_akad_nikah['lng'];
-                $pernikahan->lokasi_akad_nikah = DB::raw("ST_GeomFromText('POINT($lng $lat)', 4326)");
+            if (isset($request->lokasi_akad_nikah['lat']) && isset($request->lokasi_akad_nikah['lng'])) {
+                $pernikahan->latitude_akad = $request->lokasi_akad_nikah['lat'];
+                $pernikahan->longitude_akad = $request->lokasi_akad_nikah['lng'];
                 $pernikahan->save();
             }
 
@@ -163,10 +161,9 @@ class TemplateContentUndanganController extends Controller
                     $acara->waktu_acara = $acaraData['waktu_acara'] ?? null;
                     $acara->detail_lokasi_acara = $acaraData['detail_lokasi_acara'] ?? null;
                     
-                    if (!empty($acaraData['lokasi_acara']['lat']) && !empty($acaraData['lokasi_acara']['lng'])) {
-                        $alat = $acaraData['lokasi_acara']['lat'];
-                        $alng = $acaraData['lokasi_acara']['lng'];
-                        $acara->lokasi_acara = DB::raw("ST_GeomFromText('POINT($alng $alat)', 4326)");
+                    if (isset($acaraData['lokasi_acara']['lat']) && isset($acaraData['lokasi_acara']['lng'])) {
+                        $acara->latitude_acara = $acaraData['lokasi_acara']['lat'];
+                        $acara->longitude_acara = $acaraData['lokasi_acara']['lng'];
                     }
                     $acara->save();
                 }
@@ -262,6 +259,22 @@ class TemplateContentUndanganController extends Controller
             'galleryUndangans',
             'kisahCintas'
         ])->findOrFail($id);
+
+        // Transform data for frontend
+        if ($template->templateUndanganPernikahan) {
+            $template->templateUndanganPernikahan->lokasi_akad_nikah = [
+                'lat' => $template->templateUndanganPernikahan->latitude_akad,
+                'lng' => $template->templateUndanganPernikahan->longitude_akad,
+            ];
+        }
+
+        $template->acaras->transform(function ($acara) {
+            $acara->lokasi_acara = [
+                'lat' => $acara->latitude_acara,
+                'lng' => $acara->longitude_acara,
+            ];
+            return $acara;
+        });
 
         return Inertia::render('admin/templateContentUndangan/content', [
             'template' => $template,

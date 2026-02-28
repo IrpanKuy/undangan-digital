@@ -35,6 +35,8 @@ class templateContentUndanganValidate
             'waktu_selesai_akad' => 'nullable',
             'detail_lokasi_akad_nikah' => 'required|string',
             'lokasi_akad_nikah' => 'nullable|array',
+            'lokasi_akad_nikah.lat' => 'nullable|numeric',
+            'lokasi_akad_nikah.lng' => 'nullable|numeric',
             'doa_pengantinn_pria' => 'required|string',
             'doa_pengantin_wanita' => 'required|string',
             'no_rek_amplop' => 'nullable|string',
@@ -46,6 +48,8 @@ class templateContentUndanganValidate
             'acaras.*.waktu_acara' => 'required',
             'acaras.*.detail_lokasi_acara' => 'required|string',
             'acaras.*.lokasi_acara' => 'nullable|array',
+            'acaras.*.lokasi_acara.lat' => 'nullable|numeric',
+            'acaras.*.lokasi_acara.lng' => 'nullable|numeric',
 
             // Gallery
             'galleries' => 'nullable|array',
