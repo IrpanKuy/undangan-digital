@@ -164,6 +164,7 @@ class TemplateContentUndanganController extends Controller
 
                     $acara->undangan_id = $undangan->id;
                     $acara->nama_acara = $acaraData['nama_acara'] ?? null;
+                    $acara->tanggal_acara = $acaraData['tanggal_acara'] ?? null;
                     $acara->waktu_acara = $acaraData['waktu_acara'] ?? null;
                     $acara->detail_lokasi_acara = $acaraData['detail_lokasi_acara'] ?? null;
                     
@@ -180,6 +181,7 @@ class TemplateContentUndanganController extends Controller
             if ($request->has('remove_galleries') && !empty($request->remove_galleries)) {
                 $toRemove = GalleryUndangan::whereIn('id', $request->remove_galleries)->get();
                 foreach ($toRemove as $item) {
+                    /** @var \App\Models\User\Undangan\GalleryUndangan $item */
                     if ($item->image_path) Storage::disk('public')->delete($item->image_path);
                     $item->delete();
                 }

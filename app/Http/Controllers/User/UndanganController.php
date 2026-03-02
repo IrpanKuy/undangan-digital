@@ -26,11 +26,6 @@ class UndanganController extends Controller
             'undangans' => $undangans
         ]);
     }
-
-    public function pilihTemplate()
-    {
-        return Inertia::render('user/undangan/pilihTemplate');
-    }
     /**
      * Catatan: Untuk method create() dan store(), 
      * kamu bisa menambahkannya di sini untuk logika form pembuatan undangan.

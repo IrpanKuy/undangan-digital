@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TemplateUndangan;
 use App\Http\Controllers\Admin\TemplateContentUndanganController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\ListUndanganController;
 use App\Http\Controllers\User\UndanganController;
 use Laravel\Socialite\Socialite;
 
@@ -59,7 +60,7 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 });
 
 Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
-    Route::get('undangan/pilih-template', [UndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
+    Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
 });
 

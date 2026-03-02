@@ -11,6 +11,7 @@ const emit = defineEmits(["update:modelValue"]);
 const addAcara = () => {
     props.modelValue.acaras.push({
         nama_acara: "",
+        tanggal_acara: "",
         waktu_acara: "",
         detail_lokasi_acara: "",
         lokasi_acara: { lat: -6.2088, lng: 106.8456 },
@@ -78,7 +79,7 @@ const removeAcara = (index) => {
                         Acara #{{ index + 1 }}
                     </h4>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label
                                 class="block text-xs font-bold text-gray-700 uppercase mb-1"
@@ -88,7 +89,18 @@ const removeAcara = (index) => {
                                 v-model="acara.nama_acara"
                                 type="text"
                                 class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
-                                placeholder="Contoh: Resepsi / Ngunduh Mantu"
+                                placeholder="Contoh: Resepsi"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                                >Tanggal Acara</label
+                            >
+                            <input
+                                v-model="acara.tanggal_acara"
+                                type="date"
+                                class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                             />
                         </div>
                         <div>
@@ -100,7 +112,6 @@ const removeAcara = (index) => {
                                 v-model="acara.waktu_acara"
                                 type="time"
                                 class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
-                                placeholder="Contoh: 10:00 - Selesai"
                             />
                         </div>
                     </div>

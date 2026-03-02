@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->string('tanggal');
+            $table->string('judul');
             $table->string('peristiwa'); // Ex: Pertama Bertemu
             $table->string('foto_kisah_cinta_path')->nullable();
             $table->timestamps();

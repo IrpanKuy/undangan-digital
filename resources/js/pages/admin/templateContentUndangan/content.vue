@@ -65,6 +65,7 @@ const form = useForm({
     acaras: [
         {
             nama_acara: "Resepsi",
+            tanggal_acara: "",
             waktu_acara: "",
             detail_lokasi_acara: "",
             lokasi_acara: { lat: -6.2088, lng: 106.8456 },
@@ -137,6 +138,7 @@ onMounted(() => {
             form.acaras = props.template.acaras.map((a) => ({
                 id: a.id,
                 nama_acara: a.nama_acara,
+                tanggal_acara: a.tanggal_acara,
                 waktu_acara: a.waktu_acara,
                 detail_lokasi_acara: a.detail_lokasi_acara,
                 lokasi_acara: a.lokasi_acara || {

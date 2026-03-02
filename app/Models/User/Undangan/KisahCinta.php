@@ -10,6 +10,7 @@ class KisahCinta extends Model
     protected $fillable = [
         'undangan_id',
         'tanggal',
+        'judul',
         'peristiwa',
         'foto_kisah_cinta_path',
     ];
