@@ -53,7 +53,6 @@ const form = useForm({
     // Template Undangan Pernikahan
     tanggal_mulai_akad: "",
     waktu_mulai_akad: "",
-    waktu_selesai_akad: "",
     detail_lokasi_akad_nikah: "",
     lokasi_akad_nikah: { lat: -6.2088, lng: 106.8456 },
     doa_pengantinn_pria: "",
@@ -86,6 +85,7 @@ const form = useForm({
     kisah_cintas: [
         {
             tanggal: "",
+            judul: "",
             peristiwa: "",
             foto: null,
         },
@@ -166,6 +166,7 @@ onMounted(() => {
             form.kisah_cintas = props.template.kisah_cintas.map((k) => ({
                 id: k.id,
                 tanggal: k.tanggal,
+                judul: k.judul,
                 peristiwa: k.peristiwa,
                 foto: null,
                 foto_path: k.foto_kisah_cinta_path,

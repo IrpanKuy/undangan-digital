@@ -6,13 +6,14 @@ use App\Http\Controllers\Admin\KategoriUndangan;
 use App\Http\Controllers\Admin\TemplateUndangan;
 use App\Http\Controllers\Admin\TemplateContentUndanganController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\UndanganPreviewController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ListUndanganController;
 use App\Http\Controllers\User\UndanganController;
 use Laravel\Socialite\Socialite;
 
 Route::get('/', function () {
-    return Inertia::render('templateUndangan/undanganPernikahan/template1'); // 'Welcome' merujuk ke Welcome.vue
+    return Inertia::render('templateUndangan/Pernikahan/blue-coral'); // 'Welcome' merujuk ke Welcome.vue
 })->name('home');
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogleRegister'])->name('google.login');
@@ -60,6 +61,7 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 });
 
 Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
+    Route::get('preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('preview');
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
 });

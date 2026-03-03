@@ -1,5 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
+import { usePage, Link, router } from "@inertiajs/vue3";
 import UserDashboardLayout from "../../layouts/userDashboardLayout.vue";
 
 const props = defineProps({
@@ -88,7 +89,14 @@ const props = defineProps({
                                 <div
                                     class="flex flex-col md:flex-row items-center gap-1 mt-auto"
                                 >
-                                    <button
+                                    <Link
+                                        :href="
+                                            route(
+                                                'user.preview',
+                                                item.judul_undangan,
+                                            )
+                                        "
+                                        target="_blank"
                                         class="flex-1 w-full md:w-auto flex items-center justify-center gap-1 py-[6px] px-1 border border-primary/20 bg-primary/5 hover:bg-primary/10 rounded-lg transition-colors group/btn"
                                     >
                                         <Icon
@@ -100,7 +108,7 @@ const props = defineProps({
                                             class="text-[11px] font-bold text-primary"
                                             >Preview</span
                                         >
-                                    </button>
+                                    </Link>
 
                                     <button
                                         class="flex-1 w-full md:w-auto flex items-center justify-center gap-1 py-[6px] px-1 bg-primary hover:bg-primary-dark rounded-lg shadow-sm shadow-primary/30 transition-all active:scale-95"

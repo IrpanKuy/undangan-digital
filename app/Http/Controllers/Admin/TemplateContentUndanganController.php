@@ -138,7 +138,6 @@ class TemplateContentUndanganController extends Controller
                 [
                     'tanggal_mulai_akad' => $request->tanggal_mulai_akad,
                     'waktu_mulai_akad' => $request->waktu_mulai_akad,
-                    'waktu_selesai_akad' => $request->waktu_selesai_akad,
                     'detail_lokasi_akad_nikah' => $request->detail_lokasi_akad_nikah,
                     'doa_pengantinn_pria' => $request->doa_pengantinn_pria, // Mengikuti typo dari DB sebelumnya
                     'doa_pengantin_wanita' => $request->doa_pengantin_wanita,
@@ -211,6 +210,7 @@ class TemplateContentUndanganController extends Controller
 
                     $kisah->undangan_id = $undangan->id;
                     $kisah->tanggal = $kisahData['tanggal'] ?? null;
+                    $kisah->judul = $kisahData['judul'] ?? null;
                     $kisah->peristiwa = $kisahData['peristiwa'] ?? null;
                     
                     // Handle file upload untuk Kisah Cinta

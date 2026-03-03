@@ -45,17 +45,6 @@ const emit = defineEmits(["update:modelValue"]);
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
                     />
                 </div>
-                <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                        >Waktu Selesai</label
-                    >
-                    <input
-                        v-model="modelValue.waktu_selesai_akad"
-                        type="time"
-                        class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                    />
-                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">

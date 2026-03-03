@@ -24,6 +24,7 @@ const addKisah = () => {
     props.modelValue.kisah_cintas.push({
         id: null,
         tanggal: "",
+        judul: "",
         peristiwa: "",
         foto: null,
         foto_path: null,
@@ -103,17 +104,31 @@ const handleFileChange = (fileItems, index) => {
                     </h4>
 
                     <div class="space-y-3">
-                        <div>
-                            <label
-                                class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                                >Tanggal/Bulan/Tahun</label
-                            >
-                            <input
-                                v-model="item.tanggal"
-                                type="text"
-                                class="w-full border border-gray-400 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-[#004D31] bg-white"
-                                placeholder="Contoh: 14 Februari 2020"
-                            />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                                    >Tanggal/Momen</label
+                                >
+                                <input
+                                    v-model="item.tanggal"
+                                    type="text"
+                                    class="w-full border border-gray-400 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-[#004D31] bg-white"
+                                    placeholder="Contoh: 14 Feb 2020"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                                    >Judul Cerita</label
+                                >
+                                <input
+                                    v-model="item.judul"
+                                    type="text"
+                                    class="w-full border border-gray-400 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-[#004D31] bg-white"
+                                    placeholder="Contoh: Pertama Bertemu"
+                                />
+                            </div>
                         </div>
                         <div>
                             <label

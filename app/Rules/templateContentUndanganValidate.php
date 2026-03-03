@@ -38,7 +38,6 @@ class templateContentUndanganValidate
             // Template Undangan Pernikahan
             'tanggal_mulai_akad' => 'required|date',
             'waktu_mulai_akad' => 'required',
-            'waktu_selesai_akad' => 'nullable',
             'detail_lokasi_akad_nikah' => 'required|string',
             'lokasi_akad_nikah' => 'nullable|array',
             'lokasi_akad_nikah.lat' => 'nullable|numeric',
@@ -65,6 +64,7 @@ class templateContentUndanganValidate
             // Kisah Cinta
             'kisah_cintas' => 'required|array|min:1',
             'kisah_cintas.*.tanggal' => 'required|string',
+            'kisah_cintas.*.judul' => 'required|string|max:255',
             'kisah_cintas.*.peristiwa' => 'required|string',
             'kisah_cintas.*.foto' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
@@ -117,6 +117,9 @@ class templateContentUndanganValidate
             'acaras.*.nama_acara' => 'Nama Acara',
             'acaras.*.tanggal_acara' => 'Tanggal Acara',
             'acaras.*.waktu_acara' => 'Waktu Acara',
+            'kisah_cintas.*.tanggal' => 'Tanggal Kisah Cinta',
+            'kisah_cintas.*.judul' => 'Judul Kisah Cinta',
+            'kisah_cintas.*.peristiwa' => 'Peristiwa Kisah Cinta',
         ];
     }
 }
