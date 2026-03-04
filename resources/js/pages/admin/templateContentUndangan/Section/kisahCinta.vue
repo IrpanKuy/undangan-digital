@@ -1,5 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
+import { computed } from "vue";
 
 // --- FilePond Imports ---
 import vueFilePond from "vue-filepond";
@@ -39,10 +40,33 @@ const removeKisah = (index) => {
 // Menerima fileItems dari event FilePond dan index dari loop
 const handleFileChange = (fileItems, index) => {
     if (fileItems && fileItems.length > 0) {
-        props.modelValue.kisah_cintas[index].foto = fileItems[0].file;
+        // Hanya ambil file jika itu file baru (bukan load dari server)
+        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+            props.modelValue.kisah_cintas[index].foto = fileItems[0].file;
+        }
     } else {
         props.modelValue.kisah_cintas[index].foto = null;
     }
+};
+
+const serverOptions = {
+    load: (source, load, error, progress, abort, headers) => {
+        fetch(source)
+            .then((res) => res.blob())
+            .then(load);
+    },
+};
+
+const getInitialFiles = (item) => {
+    if (item.foto_path) {
+        return [
+            {
+                source: `/storage/${item.foto_path}`,
+                options: { type: "local" },
+            },
+        ];
+    }
+    return [];
 };
 </script>
 
@@ -189,27 +213,17 @@ const handleFileChange = (fileItems, index) => {
                             </p>
                         </div>
 
-                        <!-- Preview Gambar dari Database (Jika Ada) -->
-                        <div
-                            v-if="item.foto_path && !item.foto"
-                            class="w-full h-32 bg-gray-200 border border-gray-300 rounded-sm flex items-center justify-center overflow-hidden mb-2 mt-4"
-                        >
-                            <img
-                                :src="`/storage/${item.foto_path}`"
-                                class="w-full h-full object-cover"
-                            />
-                        </div>
-
                         <div>
                             <label
                                 class="block text-xs font-bold text-gray-700 mb-1 mt-2"
-                                >Foto Momen
+                            >
+                                Foto Momen
                                 <span
                                     class="text-gray-400 font-normal normal-case"
                                     >(opsional)</span
-                                ></label
-                            >
-                            <!-- Input FilePond -->
+                                >
+                            </label>
+                            <!-- Input FilePond dengan Preview Internal -->
                             <FilePond
                                 :name="'kisah_cinta_foto_' + index"
                                 label-idle="Tarik & Lepas foto <br/> atau <span class='filepond--label-action'>Telusuri</span>"
@@ -217,6 +231,8 @@ const handleFileChange = (fileItems, index) => {
                                 @updatefiles="
                                     (files) => handleFileChange(files, index)
                                 "
+                                :files="getInitialFiles(item)"
+                                :server="serverOptions"
                                 class="mb-0 custom-filepond"
                             />
                             <p

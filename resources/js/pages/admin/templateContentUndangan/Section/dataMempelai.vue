@@ -21,23 +21,29 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 // Handlers untuk FilePond
+// Handler untuk Foto Pria
 const handleFotoPriaUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
-            props.modelValue.foto_pria = fileItems[0].file;
+        if (fileItems[0].origin === 2) {
+            // 2 = File baru dari user
+            props.modelValue.foto_pria_path = fileItems[0].file;
         }
     } else {
         props.modelValue.foto_pria = null;
+        props.modelValue.foto_pria_path = null;
     }
 };
 
+// Handler untuk Foto Wanita
 const handleFotoWanitaUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
-            props.modelValue.foto_wanita = fileItems[0].file;
+        if (fileItems[0].origin === 2) {
+            // 2 = File baru dari user
+            props.modelValue.foto_wanita_path = fileItems[0].file;
         }
     } else {
         props.modelValue.foto_wanita = null;
+        props.modelValue.foto_wanita_path = null;
     }
 };
 
@@ -50,10 +56,10 @@ const serverOptions = {
 };
 
 const initialFotoPria = computed(() =>
-    props.modelValue.foto_pria_path
+    props.modelValue.foto_pria
         ? [
               {
-                  source: `/storage/${props.modelValue.foto_pria_path}`,
+                  source: `/storage/${props.modelValue.foto_pria}`,
                   options: { type: "local" },
               },
           ]
@@ -61,15 +67,17 @@ const initialFotoPria = computed(() =>
 );
 
 const initialFotoWanita = computed(() =>
-    props.modelValue.foto_wanita_path
+    props.modelValue.foto_wanita
         ? [
               {
-                  source: `/storage/${props.modelValue.foto_wanita_path}`,
+                  source: `/storage/${props.modelValue.foto_wanita}`,
                   options: { type: "local" },
               },
           ]
         : [],
 );
+
+console.log(`/storage/${props.modelValue.foto_wanita}`);
 </script>
 
 <template>

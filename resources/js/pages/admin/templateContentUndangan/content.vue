@@ -134,8 +134,8 @@ onMounted(() => {
             form.x_url_wanita = m.x_url_wanita;
             form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
             form.text_penutup = m.text_penutup;
-            form.foto_pria_path = m.foto_pria_path;
-            form.foto_wanita_path = m.foto_wanita_path;
+            form.foto_pria = m.foto_pria_path;
+            form.foto_wanita = m.foto_wanita_path;
 
             // Doa fields are now in the Data Mempelai section in form
             if (props.template.template_undangan_pernikahan) {
@@ -145,8 +145,6 @@ onMounted(() => {
                     props.template.template_undangan_pernikahan.doa_pengantin_wanita;
             }
         }
-        console.log(form.foto_pria_path);
-        console.log(form.foto_wanita_path);
         if (props.template.template_undangan_pernikahan) {
             const p = props.template.template_undangan_pernikahan;
             form.nama_prosesi = p.nama_prosesi;

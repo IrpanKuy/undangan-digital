@@ -35,12 +35,13 @@ const emit = defineEmits(["update:modelValue"]);
 
 const handleThumbnailUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        // Jika file adalah file baru (bukan dari server load)
-        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+        if (fileItems[0].origin === 2) {
+            // 2 = File baru dari user
             props.modelValue.thumbnail = fileItems[0].file;
         }
     } else {
         props.modelValue.thumbnail = null;
+        props.modelValue.thumbnail_path = null; // Opsional: Beri tahu server kalau file dihapus
     }
 };
 
