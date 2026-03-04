@@ -41,8 +41,10 @@ const removeKisah = (index) => {
 const handleFileChange = (fileItems, index) => {
     if (fileItems && fileItems.length > 0) {
         // Hanya ambil file jika itu file baru (bukan load dari server)
-        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+        if (fileItems[0].origin === 1) {
             props.modelValue.kisah_cintas[index].foto = fileItems[0].file;
+        } else if (fileItems[0].origin === 3) {
+            props.modelValue.kisah_cintas[index].foto = null;
         }
     } else {
         props.modelValue.kisah_cintas[index].foto = null;

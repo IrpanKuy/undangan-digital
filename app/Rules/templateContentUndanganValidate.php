@@ -63,14 +63,14 @@ class templateContentUndanganValidate
 
             // Gallery
             'galleries' => 'nullable|array',
-            'galleries.*.file' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'galleries.*.file' => $id ? 'nullable' : 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
 
             // Kisah Cinta
             'kisah_cintas' => 'required|array|min:1',
             'kisah_cintas.*.tanggal' => 'required|string',
             'kisah_cintas.*.judul' => 'required|string|max:255',
             'kisah_cintas.*.peristiwa' => 'required|string',
-            'kisah_cintas.*.foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'kisah_cintas.*.foto' => $id ? 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240' : 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
         ];
     }
 

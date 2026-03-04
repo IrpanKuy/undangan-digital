@@ -35,13 +35,16 @@ const emit = defineEmits(["update:modelValue"]);
 
 const handleThumbnailUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        if (fileItems[0].origin === 2) {
-            // 2 = File baru dari user
+        if (fileItems[0].origin === 1) {
+            // 1 = File baru dari user
             props.modelValue.thumbnail = fileItems[0].file;
+        } else if (fileItems[0].origin === 3) {
+            // 3 = File local dari server, set null agar tidak dikirim ulang
+            props.modelValue.thumbnail = null;
         }
     } else {
         props.modelValue.thumbnail = null;
-        props.modelValue.thumbnail_path = null; // Opsional: Beri tahu server kalau file dihapus
+        props.modelValue.thumbnail_path = null; // Menghapus gambar
     }
 };
 

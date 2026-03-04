@@ -40,8 +40,10 @@ const removeGallery = (index) => {
 const handleFileChange = (fileItems, index) => {
     if (fileItems && fileItems.length > 0) {
         // Hanya ambil file jika itu file baru (bukan load dari server)
-        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+        if (fileItems[0].origin === 1) {
             props.modelValue.galleries[index].file = fileItems[0].file;
+        } else if (fileItems[0].origin === 3) {
+            props.modelValue.galleries[index].file = null;
         }
     } else {
         props.modelValue.galleries[index].file = null;

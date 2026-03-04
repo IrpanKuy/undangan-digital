@@ -42,7 +42,6 @@ const form = useForm({
     nama_lengkap_pria: "",
     keterangan_keluarga_pria: "",
     doa_pengantin_pria: "Semoga istri saya sehat selalu dan taat beribadah",
-    foto_pria: null,
     foto_pria_path: null,
     instagram_url_pria: "",
     tiktok_url_pria: "",
@@ -53,7 +52,6 @@ const form = useForm({
     tiktok_url_wanita: "",
     x_url_wanita: "",
     keterangan_keluarga_wanita: "",
-    foto_wanita: null,
     foto_wanita_path: null,
     doa_pengantin_wanita: "Semoga suami saya sehat selalu dan taat beribadah",
 
@@ -134,8 +132,8 @@ onMounted(() => {
             form.x_url_wanita = m.x_url_wanita;
             form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
             form.text_penutup = m.text_penutup;
-            form.foto_pria = m.foto_pria_path;
-            form.foto_wanita = m.foto_wanita_path;
+            form.foto_pria_path = m.foto_pria_path;
+            form.foto_wanita_path = m.foto_wanita_path;
 
             // Doa fields are now in the Data Mempelai section in form
             if (props.template.template_undangan_pernikahan) {
