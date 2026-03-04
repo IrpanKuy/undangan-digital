@@ -22,17 +22,44 @@ const emit = defineEmits(["update:modelValue"]);
             </h3>
         </div>
         <div class="p-6 space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                     <label
                         class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                        >Tanggal Akad</label
+                        >Nama Prosesi</label
                     >
                     <input
-                        v-model="modelValue.tanggal_mulai_akad"
+                        v-model="modelValue.nama_prosesi"
+                        type="text"
+                        placeholder="Contoh: Akad Nikah"
+                        class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                    />
+                    <p class="text-[10px] text-gray-500 mt-1">
+                        Nama acara pernikahan sesuai kepercayaaan
+                    </p>
+                    <p
+                        v-if="modelValue.errors.nama_prosesi"
+                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    >
+                        {{ modelValue.errors.nama_prosesi }}
+                    </p>
+                </div>
+                <div>
+                    <label
+                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                        >Tanggal Pernikahan</label
+                    >
+                    <input
+                        v-model="modelValue.tanggal_mulai"
                         type="date"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
                     />
+                    <p
+                        v-if="modelValue.errors.tanggal_mulai"
+                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    >
+                        {{ modelValue.errors.tanggal_mulai }}
+                    </p>
                 </div>
                 <div>
                     <label
@@ -40,37 +67,39 @@ const emit = defineEmits(["update:modelValue"]);
                         >Waktu Mulai</label
                     >
                     <input
-                        v-model="modelValue.waktu_mulai_akad"
+                        v-model="modelValue.waktu_mulai"
                         type="time"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
                     />
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                        >Doa Pengantin Pria (Opsional)</label
+                    <p
+                        v-if="modelValue.errors.waktu_mulai"
+                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
                     >
-                    <textarea
-                        v-model="modelValue.doa_pengantinn_pria"
-                        rows="3"
-                        class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Doa untuk mempelai pria..."
-                    ></textarea>
+                        {{ modelValue.errors.waktu_mulai }}
+                    </p>
                 </div>
                 <div>
                     <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                        >Doa Pengantin Wanita (Opsional)</label
+                        class="block text-[10px] font-bold text-gray-700 uppercase mb-1"
+                        >Waktu Selesai
+                        <span class="text-gray-400 font-normal normal-case"
+                            >(opsional)</span
+                        ></label
                     >
-                    <textarea
-                        v-model="modelValue.doa_pengantin_wanita"
-                        rows="3"
+                    <input
+                        v-model="modelValue.waktu_selesai"
+                        type="time"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Doa untuk mempelai wanita..."
-                    ></textarea>
+                    />
+                    <p class="text-[10px] text-gray-500 mt-1">
+                        kosongkan jika waktu selesai tidak pasti
+                    </p>
+                    <p
+                        v-if="modelValue.errors.waktu_selesai"
+                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    >
+                        {{ modelValue.errors.waktu_selesai }}
+                    </p>
                 </div>
             </div>
 
@@ -80,56 +109,98 @@ const emit = defineEmits(["update:modelValue"]);
                     >Detail Lokasi</label
                 >
                 <textarea
-                    v-model="modelValue.detail_lokasi_akad_nikah"
+                    v-model="modelValue.detail_lokasi_nikah"
                     rows="2"
                     class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
                     placeholder="Nama gedung, jalan, blok, dll..."
                 ></textarea>
+                <p
+                    v-if="modelValue.errors.detail_lokasi_nikah"
+                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                >
+                    {{ modelValue.errors.detail_lokasi_nikah }}
+                </p>
             </div>
 
             <div>
-                <div class="flex items-center justify-between mb-1">
+                <div class="flex mb-3 pb-2 border-b border-gray-200">
                     <label
                         class="block text-xs font-bold text-gray-700 uppercase"
-                        >Pin Lokasi Peta</label
                     >
-                    <div class="flex gap-2">
-                        <div class="flex items-center gap-1">
-                            <span
+                        Lokasi Peta
+                    </label>
+                </div>
+
+                <div
+                    v-if="modelValue.show_map"
+                    class="space-y-3 transition-all duration-300"
+                >
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="items-center cursor-pointer">
+                                <p
+                                    class="text-[10px] mb-1 font-bold text-gray-600"
+                                >
+                                    Tampilkan Peta
+                                </p>
+                                <input
+                                    type="checkbox"
+                                    v-model="modelValue.tampilkan_peta"
+                                    class="sr-only peer"
+                                />
+                                <div
+                                    class="relative w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:inset-s-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#004D31]"
+                                ></div>
+                            </label>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label
                                 class="text-[10px] font-bold text-gray-500 uppercase"
-                                >Lat:</span
+                                >Zoom:</label
                             >
                             <input
-                                v-model.number="
-                                    modelValue.lokasi_akad_nikah.lat
-                                "
+                                v-model.number="modelValue.lokasi_nikah.zoom"
+                                type="number"
+                                min="1"
+                                max="19"
+                                class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs outline-none focus:border-[#004D31] w-full"
+                                placeholder="Zoom"
+                            />
+                        </div>
+
+                        <div class="flex flex-col gap-1">
+                            <label
+                                class="text-[10px] font-bold text-gray-500 uppercase"
+                                >Latitude:</label
+                            >
+                            <input
+                                v-model.number="modelValue.lokasi_nikah.lat"
                                 type="number"
                                 step="any"
-                                class="w-24 border border-gray-300 rounded-sm px-2 py-0.5 text-[10px] outline-none focus:border-[#004D31]"
+                                class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs outline-none focus:border-[#004D31] w-full"
                                 placeholder="Latitude"
                             />
                         </div>
-                        <div class="flex items-center gap-1">
-                            <span
+                        <div class="flex flex-col gap-1">
+                            <label
                                 class="text-[10px] font-bold text-gray-500 uppercase"
-                                >Lng:</span
+                                >Longitude:</label
                             >
                             <input
-                                v-model.number="
-                                    modelValue.lokasi_akad_nikah.lng
-                                "
+                                v-model.number="modelValue.lokasi_nikah.lng"
                                 type="number"
                                 step="any"
-                                class="w-24 border border-gray-300 rounded-sm px-2 py-0.5 text-[10px] outline-none focus:border-[#004D31]"
+                                class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs outline-none focus:border-[#004D31] w-full"
                                 placeholder="Longitude"
                             />
                         </div>
                     </div>
-                </div>
-                <div
-                    class="border border-gray-400 rounded-sm overflow-hidden h-72"
-                >
-                    <LeafletMap v-model="modelValue.lokasi_akad_nikah" />
+
+                    <div
+                        class="border border-gray-400 rounded-sm overflow-hidden h-72 relative z-0"
+                    >
+                        <LeafletMap v-model="modelValue.lokasi_nikah" />
+                    </div>
                 </div>
             </div>
         </div>

@@ -17,6 +17,7 @@ class Acara extends Model
         'show_map',
         'latitude_acara',
         'longitude_acara',
+        'zoom',
     ];
 
     public function undangan()

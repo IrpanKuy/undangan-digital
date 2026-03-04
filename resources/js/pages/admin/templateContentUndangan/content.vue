@@ -40,6 +40,7 @@ const form = useForm({
     nama_panggilan_pria: "",
     nama_lengkap_pria: "",
     keterangan_keluarga_pria: "",
+    doa_pengantin_pria: "Semoga istri saya sehat selalu dan taat beribadah",
     foto_pria: null,
     instagram_url_pria: "",
     tiktok_url_pria: "",
@@ -51,25 +52,35 @@ const form = useForm({
     x_url_wanita: "",
     keterangan_keluarga_wanita: "",
     foto_wanita: null,
+    doa_pengantin_wanita: "Semoga suami saya sehat selalu dan taat beribadah",
 
     // Template Undangan Pernikahan
-    tanggal_mulai_akad: "",
-    waktu_mulai_akad: "",
-    detail_lokasi_akad_nikah: "",
-    lokasi_akad_nikah: { lat: -6.2088, lng: 106.8456 },
-    doa_pengantinn_pria: "",
-    doa_pengantin_wanita: "",
-    no_rek_amplop: "",
-    lokasi_pengiriman_kado: "",
+    nama_prosesi: "Akad Nikah",
+    tanggal_mulai: "",
+    waktu_mulai: "",
+    waktu_selesai: "",
+    detail_lokasi_nikah: "",
+    show_map: true, // Nilai default boolean
+    lokasi_nikah: {
+        lat: -6.2088,
+        lng: 106.8456,
+        zoom: 15,
+    },
+    no_rek_amplop:
+        "Bagi yang ingin memberikan hadiah, silahkan transfer ke rekening berikut: [Bank BCA 123456789 Atas nama Pengantin]",
+    lokasi_pengiriman_kado:
+        "Bagi yang ingin mengirim kado fisik, silahkan kirim ke alamat berikut: [Alamat Pengantin]",
 
     // Acara
     acaras: [
         {
             nama_acara: "Resepsi",
             tanggal_acara: "",
-            waktu_acara: "",
+            waktu_mulai_acara: "",
+            waktu_selesai_acara: "",
             detail_lokasi_acara: "",
-            lokasi_acara: { lat: -6.2088, lng: 106.8456 },
+            show_map: true,
+            lokasi_acara: { lat: -6.2088, lng: 106.8456, zoom: 15 },
         },
     ],
 

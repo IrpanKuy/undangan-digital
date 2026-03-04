@@ -22,7 +22,8 @@ return new class extends Migration
             $table->boolean('show_map')->default(false);
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->text('doa_pengantinn_pria');
+            $table->integer('zoom')->default(13);
+            $table->text('doa_pengantin_pria');
             $table->text('doa_pengantin_wanita');
             $table->text('no_rek_amplop')->nullable();
             $table->text('lokasi_pengiriman_kado')->nullable();

@@ -107,19 +107,22 @@ class MainUndanganController extends Controller
             $pernikahan = TemplateUndanganPernikahan::updateOrCreate(
                 ['undangan_id' => $undangan->id],
                 [
-                    'tanggal_mulai_akad' => $request->tanggal_mulai_akad,
-                    'waktu_mulai_akad' => $request->waktu_mulai_akad,
-                    'detail_lokasi_akad_nikah' => $request->detail_lokasi_akad_nikah,
-                    'doa_pengantinn_pria' => $request->doa_pengantinn_pria, // Mengikuti typo dari DB sebelumnya
+                    'nama_prosesi' => $request->nama_prosesi,
+                    'tanggal_mulai' => $request->tanggal_mulai,
+                    'waktu_mulai' => $request->waktu_mulai,
+                    'waktu_selesai' => $request->waktu_selesai,
+                    'detail_lokasi_nikah' => $request->detail_lokasi_nikah,
+                    'doa_pengantin_pria' => $request->doa_pengantin_pria,
                     'doa_pengantin_wanita' => $request->doa_pengantin_wanita,
                     'no_rek_amplop' => $request->no_rek_amplop,
                     'lokasi_pengiriman_kado' => $request->lokasi_pengiriman_kado,
                 ]
             );
             
-            if (isset($request->lokasi_akad_nikah['lat']) && isset($request->lokasi_akad_nikah['lng'])) {
+            if (isset($request->lokasi_akad_nikah['lat']) && isset($request->lokasi_akad_nikah['lng']) && isset($request->lokasi_akad_nikah['zoom'])) {
                 $pernikahan->latitude_akad = $request->lokasi_akad_nikah['lat'];
                 $pernikahan->longitude_akad = $request->lokasi_akad_nikah['lng'];
+                $pernikahan->zoom_akad = $request->lokasi_akad_nikah['zoom'];
                 $pernikahan->save();
             }
 
@@ -135,12 +138,15 @@ class MainUndanganController extends Controller
                     $acara->undangan_id = $undangan->id;
                     $acara->nama_acara = $acaraData['nama_acara'] ?? null;
                     $acara->tanggal_acara = $acaraData['tanggal_acara'] ?? null;
-                    $acara->waktu_acara = $acaraData['waktu_acara'] ?? null;
+                    $acara->waktu_mulai_acara = $acaraData['waktu_mulai_acara'] ?? null;
+                    $acara->waktu_selesai_acara = $acaraData['waktu_selesai_acara'] ?? null;
                     $acara->detail_lokasi_acara = $acaraData['detail_lokasi_acara'] ?? null;
+                    $acara->show_map = $acaraData['show_map'];
                     
-                    if (isset($acaraData['lokasi_acara']['lat']) && isset($acaraData['lokasi_acara']['lng'])) {
+                    if (isset($acaraData['lokasi_acara']['lat']) && isset($acaraData['lokasi_acara']['lng']) && $acaraData['lokasi_acara']['zoom']) {
                         $acara->latitude_acara = $acaraData['lokasi_acara']['lat'];
                         $acara->longitude_acara = $acaraData['lokasi_acara']['lng'];
+                        $acara->zoom = $acaraData['lokasi_acara']['zoom'];
                     }
                     $acara->save();
                 }

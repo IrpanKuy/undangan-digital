@@ -82,7 +82,9 @@ const handleFileChange = (fileItems, index) => {
             >
                 Belum ada foto galeri.
             </div>
-
+            <p class="text-[10px] mb-2 text-gray-500">
+                Ukuran file maksimal 10MB
+            </p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div
                     v-for="(item, index) in modelValue.galleries"
@@ -91,6 +93,7 @@ const handleFileChange = (fileItems, index) => {
                 >
                     <!-- Tombol Hapus (Silang) -->
                     <button
+                        v-if="index !== 0"
                         @click="removeGallery(index)"
                         type="button"
                         class="absolute top-2 right-2 text-red-500 hover:text-white bg-red-100 hover:bg-red-600 p-1 rounded-sm cursor-pointer transition-colors z-10 shadow-sm"
@@ -121,6 +124,16 @@ const handleFileChange = (fileItems, index) => {
                             class="mb-0 custom-filepond"
                         />
                     </div>
+
+                    <p
+                        v-if="
+                            modelValue.errors &&
+                            modelValue.errors[`galleries.${index}.file`]
+                        "
+                        class="text-[10px] text-red-600 mt-1 font-bold"
+                    >
+                        {{ modelValue.errors[`galleries.${index}.file`] }}
+                    </p>
                 </div>
             </div>
         </div>

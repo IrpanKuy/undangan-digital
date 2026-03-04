@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time('waktu_selesai_acara')->nullable();
             $table->text('detail_lokasi_acara');
             $table->boolean('show_map')->default(false);
+            $table->integer('zoom')->default(13);
             $table->string('latitude_acara')->nullable();
             $table->string('longitude_acara')->nullable();
             $table->timestamps();

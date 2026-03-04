@@ -122,7 +122,21 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             {{ modelValue.errors.keterangan_keluarga_pria }}
                         </p>
                     </div>
-
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Doa Pengantin Pria
+                        </label>
+                        <textarea
+                            v-model="modelValue.doa_pengantin_pria"
+                            rows="3"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                            placeholder="Doa untuk mempelai wanita..."
+                        ></textarea>
+                        <p class="text-[10px] text-gray-500 mt-1">
+                            Doa mempelai pria untuk mempelai wanita
+                        </p>
+                    </div>
                     <!-- Social Media Pria -->
                     <div>
                         <label
@@ -288,6 +302,21 @@ const handleFotoWanitaUpdate = (fileItems) => {
                         </p>
                     </div>
 
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            >Doa Pengantin Wanita
+                        </label>
+                        <textarea
+                            v-model="modelValue.doa_pengantin_wanita"
+                            rows="3"
+                            class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                            placeholder="Doa untuk mempelai pria..."
+                        ></textarea>
+                        <p class="text-[10px] text-gray-500 mt-1">
+                            Doa mempelai wanita untuk mempelai pria
+                        </p>
+                    </div>
                     <!-- Social Media Wanita -->
                     <div>
                         <label

@@ -90,6 +90,7 @@ const handleFileChange = (fileItems, index) => {
                     class="p-4 border border-gray-200 bg-gray-50 rounded-sm relative"
                 >
                     <button
+                        v-if="index !== 0"
                         @click="removeKisah(index)"
                         type="button"
                         class="absolute top-3 right-3 text-red-500 hover:text-white bg-red-100 hover:bg-red-600 p-1 rounded-sm cursor-pointer transition-colors shadow-sm"
@@ -107,7 +108,7 @@ const handleFileChange = (fileItems, index) => {
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                                    class="block text-xs font-bold text-gray-700 mb-1"
                                     >Tanggal/Momen</label
                                 >
                                 <input
@@ -116,10 +117,25 @@ const handleFileChange = (fileItems, index) => {
                                     class="w-full border border-gray-400 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-[#004D31] bg-white"
                                     placeholder="Contoh: 14 Feb 2020"
                                 />
+                                <p
+                                    v-if="
+                                        modelValue.errors &&
+                                        modelValue.errors[
+                                            `kisah_cintas.${index}.tanggal`
+                                        ]
+                                    "
+                                    class="text-[10px] text-red-600 mt-1 font-bold"
+                                >
+                                    {{
+                                        modelValue.errors[
+                                            `kisah_cintas.${index}.tanggal`
+                                        ]
+                                    }}
+                                </p>
                             </div>
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                                    class="block text-xs font-bold text-gray-700 mb-1"
                                     >Judul Cerita</label
                                 >
                                 <input
@@ -128,11 +144,26 @@ const handleFileChange = (fileItems, index) => {
                                     class="w-full border border-gray-400 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-[#004D31] bg-white"
                                     placeholder="Contoh: Pertama Bertemu"
                                 />
+                                <p
+                                    v-if="
+                                        modelValue.errors &&
+                                        modelValue.errors[
+                                            `kisah_cintas.${index}.judul`
+                                        ]
+                                    "
+                                    class="text-[10px] text-red-600 mt-1 font-bold"
+                                >
+                                    {{
+                                        modelValue.errors[
+                                            `kisah_cintas.${index}.judul`
+                                        ]
+                                    }}
+                                </p>
                             </div>
                         </div>
                         <div>
                             <label
-                                class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                                class="block text-xs font-bold text-gray-700 mb-1"
                                 >Isi Cerita / Peristiwa</label
                             >
                             <textarea
@@ -141,6 +172,21 @@ const handleFileChange = (fileItems, index) => {
                                 class="w-full border border-gray-400 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-[#004D31] bg-white"
                                 placeholder="Awal mula kami bertemu..."
                             ></textarea>
+                            <p
+                                v-if="
+                                    modelValue.errors &&
+                                    modelValue.errors[
+                                        `kisah_cintas.${index}.peristiwa`
+                                    ]
+                                "
+                                class="text-[10px] text-red-600 mt-1 font-bold"
+                            >
+                                {{
+                                    modelValue.errors[
+                                        `kisah_cintas.${index}.peristiwa`
+                                    ]
+                                }}
+                            </p>
                         </div>
 
                         <!-- Preview Gambar dari Database (Jika Ada) -->
@@ -156,11 +202,11 @@ const handleFileChange = (fileItems, index) => {
 
                         <div>
                             <label
-                                class="block text-xs font-bold text-gray-700 uppercase mb-1 mt-2"
+                                class="block text-xs font-bold text-gray-700 mb-1 mt-2"
                                 >Foto Momen
                                 <span
                                     class="text-gray-400 font-normal normal-case"
-                                    >(Opsional)</span
+                                    >(opsional)</span
                                 ></label
                             >
                             <!-- Input FilePond -->
@@ -173,6 +219,21 @@ const handleFileChange = (fileItems, index) => {
                                 "
                                 class="mb-0 custom-filepond"
                             />
+                            <p
+                                v-if="
+                                    modelValue.errors &&
+                                    modelValue.errors[
+                                        `kisah_cintas.${index}.foto`
+                                    ]
+                                "
+                                class="text-[10px] text-red-600 mt-1 font-bold"
+                            >
+                                {{
+                                    modelValue.errors[
+                                        `kisah_cintas.${index}.foto`
+                                    ]
+                                }}
+                            </p>
                         </div>
                     </div>
                 </div>
