@@ -129,21 +129,33 @@ onMounted(() => {
             form.x_url_wanita = m.x_url_wanita;
             form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
             form.text_penutup = m.text_penutup;
+
+            // Doa fields are now in the Data Mempelai section in form
+            if (props.template.template_undangan_pernikahan) {
+                form.doa_pengantin_pria =
+                    props.template.template_undangan_pernikahan.doa_pengantin_pria;
+                form.doa_pengantin_wanita =
+                    props.template.template_undangan_pernikahan.doa_pengantin_wanita;
+            }
         }
 
         if (props.template.template_undangan_pernikahan) {
             const p = props.template.template_undangan_pernikahan;
-            form.tanggal_mulai_akad = p.tanggal_mulai_akad;
-            form.waktu_mulai_akad = p.waktu_mulai_akad;
-            form.waktu_selesai_akad = p.waktu_selesai_akad;
-            form.detail_lokasi_akad_nikah = p.detail_lokasi_akad_nikah;
-            form.doa_pengantinn_pria = p.doa_pengantinn_pria;
-            form.doa_pengantin_wanita = p.doa_pengantin_wanita;
+            form.nama_prosesi = p.nama_prosesi;
+            form.tanggal_mulai = p.tanggal_mulai;
+            form.waktu_mulai = p.waktu_mulai;
+            form.waktu_selesai = p.waktu_selesai;
+            form.detail_lokasi_nikah = p.detail_lokasi_nikah;
+            form.show_map = p.show_map === 1 || p.show_map === true;
             form.no_rek_amplop = p.no_rek_amplop;
             form.lokasi_pengiriman_kado = p.lokasi_pengiriman_kado;
 
-            if (p.lokasi_akad_nikah) {
-                form.lokasi_akad_nikah = p.lokasi_akad_nikah;
+            if (p.latitude && p.longitude) {
+                form.lokasi_nikah = {
+                    lat: parseFloat(p.latitude),
+                    lng: parseFloat(p.longitude),
+                    zoom: p.zoom || 15,
+                };
             }
         }
 
@@ -152,11 +164,14 @@ onMounted(() => {
                 id: a.id,
                 nama_acara: a.nama_acara,
                 tanggal_acara: a.tanggal_acara,
-                waktu_acara: a.waktu_acara,
+                waktu_mulai_acara: a.waktu_mulai_acara,
+                waktu_selesai_acara: a.waktu_selesai_acara,
                 detail_lokasi_acara: a.detail_lokasi_acara,
-                lokasi_acara: a.lokasi_acara || {
-                    lat: -6.2088,
-                    lng: 106.8456,
+                show_map: a.show_map === 1 || a.show_map === true,
+                lokasi_acara: {
+                    lat: parseFloat(a.latitude_acara) || -6.2088,
+                    lng: parseFloat(a.longitude_acara) || 106.8456,
+                    zoom: a.zoom || 15,
                 },
             }));
         }

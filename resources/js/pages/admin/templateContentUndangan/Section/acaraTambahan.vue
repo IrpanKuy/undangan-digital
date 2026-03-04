@@ -12,9 +12,11 @@ const addAcara = () => {
     props.modelValue.acaras.push({
         nama_acara: "",
         tanggal_acara: "",
-        waktu_acara: "",
+        waktu_mulai_acara: "",
+        waktu_selesai_acara: "",
         detail_lokasi_acara: "",
-        lokasi_acara: { lat: -6.2088, lng: 106.8456 },
+        show_map: true,
+        lokasi_acara: { lat: -6.2088, lng: 106.8456, zoom: 13 },
     });
 };
 
@@ -232,10 +234,7 @@ const removeAcara = (index) => {
                             </label>
                         </div>
 
-                        <div
-                            v-if="modelValue.show_map"
-                            class="space-y-3 transition-all duration-300"
-                        >
+                        <div class="space-y-3 transition-all duration-300">
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
                                     <label class="items-center cursor-pointer">
@@ -246,7 +245,7 @@ const removeAcara = (index) => {
                                         </p>
                                         <input
                                             type="checkbox"
-                                            v-model="modelValue.tampilkan_peta"
+                                            v-model="acara.show_map"
                                             class="sr-only peer"
                                         />
                                         <div
@@ -260,9 +259,7 @@ const removeAcara = (index) => {
                                         >Zoom:</label
                                     >
                                     <input
-                                        v-model.number="
-                                            modelValue.lokasi_nikah.zoom
-                                        "
+                                        v-model.number="acara.lokasi_acara.zoom"
                                         type="number"
                                         min="1"
                                         max="19"
@@ -277,9 +274,7 @@ const removeAcara = (index) => {
                                         >Latitude:</label
                                     >
                                     <input
-                                        v-model.number="
-                                            modelValue.lokasi_nikah.lat
-                                        "
+                                        v-model.number="acara.lokasi_acara.lat"
                                         type="number"
                                         step="any"
                                         class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs outline-none focus:border-[#004D31] w-full"
@@ -292,9 +287,7 @@ const removeAcara = (index) => {
                                         >Longitude:</label
                                     >
                                     <input
-                                        v-model.number="
-                                            modelValue.lokasi_nikah.lng
-                                        "
+                                        v-model.number="acara.lokasi_acara.lng"
                                         type="number"
                                         step="any"
                                         class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs outline-none focus:border-[#004D31] w-full"
@@ -304,9 +297,10 @@ const removeAcara = (index) => {
                             </div>
 
                             <div
+                                v-if="acara.show_map"
                                 class="border border-gray-400 rounded-sm overflow-hidden h-72 relative z-0"
                             >
-                                <LeafletMap v-model="modelValue.lokasi_nikah" />
+                                <LeafletMap v-model="acara.lokasi_acara" />
                             </div>
                         </div>
                     </div>

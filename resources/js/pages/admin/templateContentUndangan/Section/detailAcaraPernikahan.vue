@@ -131,10 +131,7 @@ const emit = defineEmits(["update:modelValue"]);
                     </label>
                 </div>
 
-                <div
-                    v-if="modelValue.show_map"
-                    class="space-y-3 transition-all duration-300"
-                >
+                <div class="space-y-3 transition-all duration-300">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label class="items-center cursor-pointer">
@@ -145,7 +142,7 @@ const emit = defineEmits(["update:modelValue"]);
                                 </p>
                                 <input
                                     type="checkbox"
-                                    v-model="modelValue.tampilkan_peta"
+                                    v-model="modelValue.show_map"
                                     class="sr-only peer"
                                 />
                                 <div
@@ -197,6 +194,7 @@ const emit = defineEmits(["update:modelValue"]);
                     </div>
 
                     <div
+                        v-if="modelValue.show_map"
                         class="border border-gray-400 rounded-sm overflow-hidden h-72 relative z-0"
                     >
                         <LeafletMap v-model="modelValue.lokasi_nikah" />

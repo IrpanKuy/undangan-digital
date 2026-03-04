@@ -119,10 +119,10 @@ class MainUndanganController extends Controller
                 ]
             );
             
-            if (isset($request->lokasi_akad_nikah['lat']) && isset($request->lokasi_akad_nikah['lng']) && isset($request->lokasi_akad_nikah['zoom'])) {
-                $pernikahan->latitude_akad = $request->lokasi_akad_nikah['lat'];
-                $pernikahan->longitude_akad = $request->lokasi_akad_nikah['lng'];
-                $pernikahan->zoom_akad = $request->lokasi_akad_nikah['zoom'];
+            if (isset($request->lokasi_nikah['lat']) && isset($request->lokasi_nikah['lng']) && isset($request->lokasi_nikah['zoom'])) {
+                $pernikahan->latitude = $request->lokasi_nikah['lat'];
+                $pernikahan->longitude = $request->lokasi_nikah['lng'];
+                $pernikahan->zoom = $request->lokasi_nikah['zoom'];
                 $pernikahan->save();
             }
 
