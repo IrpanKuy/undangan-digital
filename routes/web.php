@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\KategoriUndangan;
 use App\Http\Controllers\Admin\TemplateUndangan;
-use App\Http\Controllers\Admin\TemplateContentUndanganController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\MainUndanganController;
+use App\Http\Controllers\RoutingUndanganController;
 use App\Http\Controllers\UndanganPreviewController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ListUndanganController;
@@ -37,27 +38,28 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
     Route::resource('kategori-undangan', KategoriUndangan::class);
     Route::resource('template-undangan', TemplateUndangan::class);
     
-    // Resource route for template-content-undangan (handles index, store, update, destroy)
-    Route::resource('template-content-undangan', TemplateContentUndanganController::class);
-    
+    // route store
+    Route::get('template-content-undangan', [RoutingUndanganController::class, 'indexAdmin'])->name('template-content-undangan.index');
     // Custom routes for create content and setting
-    Route::get('template-content-undangan/create/content', [TemplateContentUndanganController::class, 'createContent'])
+    Route::get('template-content-undangan/create/content', [RoutingUndanganController::class, 'createContentAdmin'])
         ->name('template-content-undangan.create-content');
-    Route::get('template-content-undangan/create/setting', [TemplateContentUndanganController::class, 'createSetting'])
+    Route::get('template-content-undangan/create/setting', [RoutingUndanganController::class, 'createSettingAdmin'])
         ->name('template-content-undangan.create-setting');
         
     // Custom routes for edit content and setting
-    Route::get('template-content-undangan/{id}/edit/content', [TemplateContentUndanganController::class, 'editContent'])
+    Route::get('template-content-undangan/{id}/edit/content', [RoutingUndanganController::class, 'editContent'])
         ->name('template-content-undangan.edit-content');
-    Route::get('template-content-undangan/{id}/edit/setting', [TemplateContentUndanganController::class, 'editSetting'])
+    Route::get('template-content-undangan/{id}/edit/setting', [RoutingUndanganController::class, 'editSetting'])
         ->name('template-content-undangan.edit-setting');
-    Route::put('template-content-undangan/{id}/update-setting', [TemplateContentUndanganController::class, 'updateSetting'])
+    Route::put('template-content-undangan/{id}/update-setting', [MainUndanganController::class, 'updateSetting'])
         ->name('template-content-undangan.update-setting');
 
-    Route::patch('template-content-undangan/{id}/toggle-status', [TemplateContentUndanganController::class, 'toggleStatus'])
+    Route::patch('template-content-undangan/{id}/toggle-status', [MainUndanganController::class, 'toggleStatus'])
         ->name('template-content-undangan.toggle-status');
-    Route::post('template-content-undangan/check-url', [TemplateContentUndanganController::class, 'checkUrl'])
+    Route::post('template-content-undangan/check-url', [MainUndanganController::class, 'checkUrl'])
         ->name('template-content-undangan.check-url');
+    Route::post('template-content-undangan', [MainUndanganController::class, 'store'])->name('template-content-undangan.store');
+
 });
 
 Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {

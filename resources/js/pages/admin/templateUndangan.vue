@@ -427,7 +427,7 @@ const confirmDelete = (item) => {
             >
                 <div
                     v-if="dialogCreate"
-                    class="fixed inset-0 z-[60] flex items-center justify-center p-4"
+                    class="fixed inset-0 z-60 flex items-center justify-center p-4"
                 >
                     <div
                         class="absolute inset-0 bg-gray-900/60"
@@ -699,7 +699,7 @@ const confirmDelete = (item) => {
             >
                 <div
                     v-if="dialogEdit"
-                    class="fixed inset-0 z-[60] flex items-center justify-center p-4"
+                    class="fixed inset-0 z-60 flex items-center justify-center p-4"
                 >
                     <div
                         class="absolute inset-0 bg-gray-900/60"
@@ -838,7 +838,7 @@ const confirmDelete = (item) => {
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-gray-700 uppercase mb-1 text-blue-700"
+                                    class="block text-xs font-bold text-gray-700 uppercase mb-"
                                     >Ganti Thumbnail (Opsional)</label
                                 >
                                 <file-pond

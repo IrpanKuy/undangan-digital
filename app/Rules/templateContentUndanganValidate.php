@@ -12,8 +12,8 @@ class templateContentUndanganValidate
         return [
             // Undangan
             'judul' => 'required|string|max:255',
-            'url' => 'nullable|string|max:255|unique:undangans,url' . ($id ? ",$id" : ""),
-            'thumbnail' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg',
+            'url' => 'required|string|max:255|unique:undangans,url' . ($id ? ",$id" : ""),
+            'thumbnail' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:10240',
             'salam_pembuka' => 'required|string',
             'text_pembuka' => 'required|string',
             'video_youtube_url' => 'nullable|url',
@@ -21,27 +21,27 @@ class templateContentUndanganValidate
             // Data Mempelai
             'nama_panggilan_pria' => 'required|string|max:255',
             'nama_lengkap_pria' => 'required|string|max:255',
-            'keterangan_keluarga_pria' => 'nullable|string',
-            'foto_pria' => 'nullable|image|mimes:jpeg,png,jpg',
+            'keterangan_keluarga_pria' => 'required|string',
+            'foto_pria' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
             'instagram_url_pria' => 'nullable|url|max:255',
             'tiktok_url_pria' => 'nullable|url|max:255',
             'x_url_pria' => 'nullable|url|max:255',
             'nama_panggilan_wanita' => 'required|string|max:255',
             'nama_lengkap_wanita' => 'required|string|max:255',
-            'keterangan_keluarga_wanita' => 'nullable|string',
-            'foto_wanita' => 'nullable|image|mimes:jpeg,png,jpg',
+            'keterangan_keluarga_wanita' => 'required|string',
+            'foto_wanita' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
             'instagram_url_wanita' => 'nullable|url|max:255',
             'tiktok_url_wanita' => 'nullable|url|max:255',
             'x_url_wanita' => 'nullable|url|max:255',
-            'text_penutup' => 'nullable|string',
+            'text_penutup' => 'required|string',
 
             // Template Undangan Pernikahan
             'tanggal_mulai_akad' => 'required|date',
             'waktu_mulai_akad' => 'required',
             'detail_lokasi_akad_nikah' => 'required|string',
-            'lokasi_akad_nikah' => 'nullable|array',
-            'lokasi_akad_nikah.lat' => 'nullable|numeric',
-            'lokasi_akad_nikah.lng' => 'nullable|numeric',
+            'lokasi_akad_nikah' => 'required|array',
+            'lokasi_akad_nikah.lat' => 'required|numeric',
+            'lokasi_akad_nikah.lng' => 'required|numeric',
             'doa_pengantinn_pria' => 'required|string',
             'doa_pengantin_wanita' => 'required|string',
             'no_rek_amplop' => 'nullable|string',
@@ -53,20 +53,20 @@ class templateContentUndanganValidate
             'acaras.*.tanggal_acara' => 'required|date',
             'acaras.*.waktu_acara' => 'required',
             'acaras.*.detail_lokasi_acara' => 'required|string',
-            'acaras.*.lokasi_acara' => 'nullable|array',
-            'acaras.*.lokasi_acara.lat' => 'nullable|numeric',
-            'acaras.*.lokasi_acara.lng' => 'nullable|numeric',
+            'acaras.*.lokasi_acara' => 'required|array',
+            'acaras.*.lokasi_acara.lat' => 'required|numeric',
+            'acaras.*.lokasi_acara.lng' => 'required|numeric',
 
             // Gallery
             'galleries' => 'nullable|array',
-            'galleries.*.file' => 'nullable|image|mimes:jpeg,png,jpg',
+            'galleries.*.file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
 
             // Kisah Cinta
             'kisah_cintas' => 'required|array|min:1',
             'kisah_cintas.*.tanggal' => 'required|string',
             'kisah_cintas.*.judul' => 'required|string|max:255',
             'kisah_cintas.*.peristiwa' => 'required|string',
-            'kisah_cintas.*.foto' => 'nullable|image|mimes:jpeg,png,jpg',
+            'kisah_cintas.*.foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ];
     }
 
@@ -79,8 +79,8 @@ class templateContentUndanganValidate
             'required' => ':attribute wajib diisi.',
             'unique' => ':attribute sudah digunakan.',
             'image' => ':attribute harus berupa gambar.',
-            'mimes' => ':attribute harus berformat jpeg, png, atau jpg.',
-            'max' => ':attribute maksimal :max KB.',
+            'mimes' => ':attribute harus berformat jpeg, png, webp atau jpg.',
+            'max' => ':attribute maksimal 10 MB.',
             'url' => ':attribute harus berupa URL yang valid.',
             'date' => ':attribute harus berupa tanggal yang valid.',
             'min' => ':attribute minimal harus berisi :min item.',

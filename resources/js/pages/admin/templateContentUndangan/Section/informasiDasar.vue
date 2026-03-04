@@ -14,6 +14,19 @@ const FilePond = vueFilePond(
     FilePondPluginImagePreview,
 );
 
+const updateSlug = () => {
+    if (props.modelValue.judul) {
+        props.modelValue.url = props.modelValue.judul
+            .toLowerCase() // 1. Kecilkan semua (romeo & juliet)
+            .trim() // 2. Buang spasi ujung
+            .replace(/[^\w\s-]/g, "") // 3. Buang simbol (romeo  juliet)
+            .replace(/[\s-]+/g, "-") // 4. Ubah spasi/strip jadi snake_case (romeo_juliet)
+            .replace(/^-+|-+$/g, ""); // 5. Bersihkan sisa _ di awal/akhir
+    } else {
+        props.modelValue.url = ""; // Kosongkan URL jika judul dihapus semua
+    }
+};
+
 const props = defineProps({
     modelValue: Object,
 });
@@ -54,13 +67,14 @@ const handleThumbnailUpdate = (fileItems) => {
                     <label
                         class="block text-xs font-bold text-gray-700 uppercase mb-1"
                     >
-                        Judul Undangan <span class="text-red-500">*</span>
+                        Judul Undangan
                     </label>
                     <input
                         v-model="modelValue.judul"
+                        @input="updateSlug"
                         type="text"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Contoh: Pernikahan Romeo & Juliet"
+                        placeholder="Contoh: Pernikahan Afri & Anisa"
                     />
                     <p
                         v-if="modelValue.errors.judul"
@@ -73,13 +87,13 @@ const handleThumbnailUpdate = (fileItems) => {
                     <label
                         class="block text-xs font-bold text-gray-700 uppercase mb-1"
                     >
-                        URL (Slug) <span class="text-red-500">*</span>
+                        URL (Slug)
                     </label>
                     <input
                         v-model="modelValue.url"
                         type="text"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Contoh: romeo-juliet"
+                        placeholder="Contoh: afri-anisa"
                     />
                     <p
                         v-if="modelValue.errors.url"
@@ -96,9 +110,6 @@ const handleThumbnailUpdate = (fileItems) => {
                     class="block text-xs font-bold text-gray-700 uppercase mb-1"
                 >
                     Thumbnail Undangan
-                    <span class="text-gray-400 font-normal normal-case"
-                        >(Opsional jika tidak ingin diubah)</span
-                    >
                 </label>
                 <FilePond
                     name="thumbnail"
@@ -107,6 +118,9 @@ const handleThumbnailUpdate = (fileItems) => {
                     @updatefiles="handleThumbnailUpdate"
                     class="mb-0 custom-filepond"
                 />
+                <p class="text-[10px] text-gray-600 mt-1 font-light">
+                    Ukuran file maksimal 10MB
+                </p>
                 <p
                     v-if="modelValue.errors.thumbnail"
                     class="text-[10px] text-red-600 mt-1 uppercase font-bold"
@@ -127,14 +141,23 @@ const handleThumbnailUpdate = (fileItems) => {
                         v-model="modelValue.salam_pembuka"
                         type="text"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Contoh: Assalamualaikum Wr. Wb."
+                        placeholder="Contoh: Assalamu’alaikum Wr. Br."
                     />
+                    <p
+                        v-if="modelValue.errors.salam_pembuka"
+                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    >
+                        {{ modelValue.errors.salam_pembuka }}
+                    </p>
                 </div>
                 <div>
                     <label
                         class="block text-xs font-bold text-gray-700 uppercase mb-1"
                     >
-                        URL Video YouTube (Opsional)
+                        URL Video YouTube
+                        <span class="text-gray-400 text-xs capitalize"
+                            >(Opsional)</span
+                        >
                     </label>
                     <input
                         v-model="modelValue.video_youtube_url"
@@ -142,6 +165,15 @@ const handleThumbnailUpdate = (fileItems) => {
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
                         placeholder="https://youtube.com/..."
                     />
+                    <p class="text-[10px] text-gray-600 mt-1 font-light">
+                        Masukkan URL youtube jika live wedding
+                    </p>
+                    <p
+                        v-if="modelValue.errors.video_youtube_url"
+                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    >
+                        {{ modelValue.errors.video_youtube_url }}
+                    </p>
                 </div>
             </div>
 
@@ -158,6 +190,32 @@ const handleThumbnailUpdate = (fileItems) => {
                     class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
                     placeholder="Dengan memohon rahmat dan ridho Allah SWT..."
                 ></textarea>
+                <p
+                    v-if="modelValue.errors.text_pembuka"
+                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                >
+                    {{ modelValue.errors.text_pembuka }}
+                </p>
+            </div>
+
+            <!-- row 5: text penutup -->
+            <div>
+                <label
+                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                    >Teks Penutup</label
+                >
+                <textarea
+                    v-model="modelValue.text_penutup"
+                    rows="3"
+                    class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
+                    placeholder="Merupakan suatu kehormatan dan kebahagiaan bagi kami..."
+                ></textarea>
+                <p
+                    v-if="modelValue.errors.text_penutup"
+                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                >
+                    {{ modelValue.errors.text_penutup }}
+                </p>
             </div>
         </div>
     </div>

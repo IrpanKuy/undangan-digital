@@ -8,11 +8,11 @@ import { Icon } from "@iconify/vue";
 // Import Sections
 import InformasiDasar from "./Section/informasiDasar.vue";
 import DataMempelai from "./Section/dataMempelai.vue";
-import DetailAkad from "./Section/detailAkad.vue";
 import AcaraTambahan from "./Section/acaraTambahan.vue";
 import GalleryFoto from "./Section/galleryFoto.vue";
 import KisahCinta from "./Section/kisahCinta.vue";
 import HadiahAmplop from "./Section/hadiahAmplop.vue";
+import DetailAcaraPernikahan from "./Section/detailAcaraPernikahan.vue";
 
 const props = defineProps({
     template: {
@@ -29,9 +29,12 @@ const form = useForm({
     judul: "",
     url: "",
     thumbnail: null,
-    salam_pembuka: "",
-    text_pembuka: "",
+    salam_pembuka: "Assalamu’alaikum Wr. Br.",
+    text_pembuka:
+        "Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami",
     video_youtube_url: "",
+    text_penutup:
+        "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua pengantin",
 
     // Data Mempelai
     nama_panggilan_pria: "",
@@ -48,7 +51,6 @@ const form = useForm({
     x_url_wanita: "",
     keterangan_keluarga_wanita: "",
     foto_wanita: null,
-    text_penutup: "",
 
     // Template Undangan Pernikahan
     tanggal_mulai_akad: "",
@@ -315,7 +317,7 @@ const submit = () => {
                     <DataMempelai v-model="form" />
 
                     <!-- Section 3: Detail Akad Nikah -->
-                    <DetailAkad v-model="form" />
+                    <DetailAcaraPernikahan v-model="form" />
 
                     <!-- Section 4: Acara Tambahan -->
                     <AcaraTambahan v-model="form" />

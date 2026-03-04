@@ -18,7 +18,7 @@ const emit = defineEmits(["update:modelValue"]);
             <h3
                 class="font-bold text-gray-800 uppercase tracking-tight text-sm"
             >
-                Detail Akad Nikah
+                Detail Acara Pernikahan
             </h3>
         </div>
         <div class="p-6 space-y-4">

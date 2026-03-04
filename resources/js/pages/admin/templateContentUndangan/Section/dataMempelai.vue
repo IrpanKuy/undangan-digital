@@ -76,8 +76,15 @@ const handleFotoWanitaUpdate = (fileItems) => {
                         <input
                             v-model="modelValue.nama_panggilan_pria"
                             type="text"
+                            placeholder="Contoh: Afri"
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                         />
+                        <p
+                            v-if="modelValue.errors.nama_panggilan_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.nama_panggilan_pria }}
+                        </p>
                     </div>
                     <div>
                         <label
@@ -87,8 +94,15 @@ const handleFotoWanitaUpdate = (fileItems) => {
                         <input
                             v-model="modelValue.nama_lengkap_pria"
                             type="text"
+                            placeholder="Contoh: Afri Putra"
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                         />
+                        <p
+                            v-if="modelValue.errors.nama_lengkap_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.nama_lengkap_pria }}
+                        </p>
                     </div>
                     <div>
                         <label
@@ -101,70 +115,92 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                             placeholder="Putra pertama dari Bapak..."
                         ></textarea>
+                        <p
+                            v-if="modelValue.errors.keterangan_keluarga_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.keterangan_keluarga_pria }}
+                        </p>
                     </div>
 
                     <!-- Social Media Pria -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div>
-                            <label
-                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                    <div>
+                        <label
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        >
+                            <Icon icon="mdi:instagram" class="text-red-600" />
+                            Instagram
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
                             >
-                                <Icon
-                                    icon="mdi:instagram"
-                                    class="text-pink-600"
-                                />
-                                Instagram
-                            </label>
-                            <input
-                                v-model="modelValue.instagram_url_pria"
-                                type="url"
-                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
-                                placeholder="https://..."
+                        </label>
+                        <input
+                            v-model="modelValue.instagram_url_pria"
+                            type="url"
+                            class="w-full border border-gray-300 rounded-sm px-2 py-2 text-xs outline-none focus:border-[#004D31] bg-white"
+                            placeholder="https://..."
+                        />
+                        <p
+                            v-if="modelValue.errors.instagram_url_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.instagram_url_pria }}
+                        </p>
+                    </div>
+                    <div>
+                        <label
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        >
+                            <Icon
+                                icon="ic:baseline-tiktok"
+                                class="text-black"
                             />
-                        </div>
-                        <div>
-                            <label
-                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            TikTok
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
                             >
-                                <Icon
-                                    icon="ic:baseline-tiktok"
-                                    class="text-black"
-                                />
-                                TikTok
-                            </label>
-                            <input
-                                v-model="modelValue.tiktok_url_pria"
-                                type="url"
-                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
-                                placeholder="https://..."
-                            />
-                        </div>
-                        <div>
-                            <label
-                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        </label>
+                        <input
+                            v-model="modelValue.tiktok_url_pria"
+                            type="url"
+                            class="w-full border border-gray-300 rounded-sm px-2 py-2 text-xs outline-none focus:border-[#004D31] bg-white"
+                            placeholder="https://..."
+                        />
+                        <p
+                            v-if="modelValue.errors.tiktok_url_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.tiktok_url_pria }}
+                        </p>
+                    </div>
+                    <div>
+                        <label
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        >
+                            <Icon icon="ri:twitter-x-fill" class="text-black" />
+                            X/Twitter
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
                             >
-                                <Icon
-                                    icon="ri:twitter-x-fill"
-                                    class="text-black"
-                                />
-                                X (Twitter)
-                            </label>
-                            <input
-                                v-model="modelValue.x_url_pria"
-                                type="url"
-                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
-                                placeholder="https://..."
-                            />
-                        </div>
+                        </label>
+                        <input
+                            v-model="modelValue.x_url_pria"
+                            type="url"
+                            class="w-full border border-gray-300 rounded-sm px-2 py-2 text-xs outline-none focus:border-[#004D31] bg-white"
+                            placeholder="https://..."
+                        />
+                        <p
+                            v-if="modelValue.errors.x_url_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.x_url_pria }}
+                        </p>
                     </div>
                     <div>
                         <label
                             class="block text-xs font-bold text-gray-700 uppercase mb-1"
                         >
-                            Foto Pria
-                            <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
-                            >
+                            Foto Mempelai Pria
                         </label>
                         <FilePond
                             name="foto_pria"
@@ -173,6 +209,15 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             @updatefiles="handleFotoPriaUpdate"
                             class="mb-0 custom-filepond"
                         />
+                        <p class="text-[10px] text-gray-600 mt-1 font-light">
+                            Ukuran file maksimal 10MB
+                        </p>
+                        <p
+                            v-if="modelValue.errors.foto_pria"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.foto_pria }}
+                        </p>
                     </div>
                 </div>
 
@@ -196,8 +241,15 @@ const handleFotoWanitaUpdate = (fileItems) => {
                         <input
                             v-model="modelValue.nama_panggilan_wanita"
                             type="text"
+                            placeholder="Contoh: Anisa"
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                         />
+                        <p
+                            v-if="modelValue.errors.nama_panggilan_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.nama_panggilan_wanita }}
+                        </p>
                     </div>
                     <div>
                         <label
@@ -207,8 +259,15 @@ const handleFotoWanitaUpdate = (fileItems) => {
                         <input
                             v-model="modelValue.nama_lengkap_wanita"
                             type="text"
+                            placeholder="Contoh: Anisa Putri"
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                         />
+                        <p
+                            v-if="modelValue.errors.nama_lengkap_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.nama_lengkap_wanita }}
+                        </p>
                     </div>
                     <div>
                         <label
@@ -221,70 +280,92 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31] bg-white"
                             placeholder="Putri bungsu dari Bapak..."
                         ></textarea>
+                        <p
+                            v-if="modelValue.errors.keterangan_keluarga_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.keterangan_keluarga_wanita }}
+                        </p>
                     </div>
 
                     <!-- Social Media Wanita -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div>
-                            <label
-                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                    <div>
+                        <label
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        >
+                            <Icon icon="mdi:instagram" class="text-pink-600" />
+                            Instagram
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
                             >
-                                <Icon
-                                    icon="mdi:instagram"
-                                    class="text-pink-600"
-                                />
-                                Instagram
-                            </label>
-                            <input
-                                v-model="modelValue.instagram_url_wanita"
-                                type="url"
-                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
-                                placeholder="https://..."
+                        </label>
+                        <input
+                            v-model="modelValue.instagram_url_wanita"
+                            type="url"
+                            class="w-full border border-gray-300 rounded-sm px-2 py-2 text-xs outline-none focus:border-[#004D31] bg-white"
+                            placeholder="https://..."
+                        />
+                        <p
+                            v-if="modelValue.errors.instagram_url_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.instagram_url_wanita }}
+                        </p>
+                    </div>
+                    <div>
+                        <label
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        >
+                            <Icon
+                                icon="ic:baseline-tiktok"
+                                class="text-black"
                             />
-                        </div>
-                        <div>
-                            <label
-                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            TikTok
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
                             >
-                                <Icon
-                                    icon="ic:baseline-tiktok"
-                                    class="text-black"
-                                />
-                                TikTok
-                            </label>
-                            <input
-                                v-model="modelValue.tiktok_url_wanita"
-                                type="url"
-                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
-                                placeholder="https://..."
-                            />
-                        </div>
-                        <div>
-                            <label
-                                class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        </label>
+                        <input
+                            v-model="modelValue.tiktok_url_wanita"
+                            type="url"
+                            class="w-full border border-gray-300 rounded-sm px-2 py-2 text-xs outline-none focus:border-[#004D31] bg-white"
+                            placeholder="https://..."
+                        />
+                        <p
+                            v-if="modelValue.errors.tiktok_url_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.tiktok_url_wanita }}
+                        </p>
+                    </div>
+                    <div>
+                        <label
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                        >
+                            <Icon icon="ri:twitter-x-fill" class="text-black" />
+                            X/Twitter
+                            <span class="text-gray-400 font-normal normal-case"
+                                >(Opsional)</span
                             >
-                                <Icon
-                                    icon="ri:twitter-x-fill"
-                                    class="text-black"
-                                />
-                                X (Twitter)
-                            </label>
-                            <input
-                                v-model="modelValue.x_url_wanita"
-                                type="url"
-                                class="w-full border border-gray-300 rounded-sm px-2 py-1 text-xs outline-none focus:border-[#004D31] bg-white"
-                                placeholder="https://..."
-                            />
-                        </div>
+                        </label>
+                        <input
+                            v-model="modelValue.x_url_wanita"
+                            type="url"
+                            class="w-full border border-gray-300 rounded-sm px-2 py-2 text-xs outline-none focus:border-[#004D31] bg-white"
+                            placeholder="https://..."
+                        />
+                        <p
+                            v-if="modelValue.errors.x_url_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.x_url_wanita }}
+                        </p>
                     </div>
                     <div>
                         <label
                             class="block text-xs font-bold text-gray-700 uppercase mb-1"
                         >
-                            Foto Wanita
-                            <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
-                            >
+                            Foto Mempelai Wanita
                         </label>
                         <FilePond
                             name="foto_wanita"
@@ -293,21 +374,17 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             @updatefiles="handleFotoWanitaUpdate"
                             class="mb-0 custom-filepond"
                         />
+                        <p class="text-[10px] text-gray-600 mt-1 font-light">
+                            Ukuran file maksimal 10MB
+                        </p>
+                        <p
+                            v-if="modelValue.errors.foto_wanita"
+                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        >
+                            {{ modelValue.errors.foto_wanita }}
+                        </p>
                     </div>
                 </div>
-            </div>
-
-            <div>
-                <label
-                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                    >Teks Penutup</label
-                >
-                <textarea
-                    v-model="modelValue.text_penutup"
-                    rows="3"
-                    class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                    placeholder="Merupakan suatu kehormatan dan kebahagiaan bagi kami..."
-                ></textarea>
             </div>
         </div>
     </div>

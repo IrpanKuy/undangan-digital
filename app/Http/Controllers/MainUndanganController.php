@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User\Undangan\Undangan;
@@ -18,38 +18,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class TemplateContentUndanganController extends Controller
+class MainUndanganController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        $templates = Undangan::with('templateUndanganPernikahan')
-            ->where('for_template', true)
-            ->latest()
-            ->get();
 
-        return Inertia::render('admin/templateContentUndangan/index', [
-            'templates' => $templates,
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource content.
-     */
-    public function createContent()
-    {
-        return Inertia::render('admin/templateContentUndangan/content');
-    }
-
-    /**
-     * Show the form for creating a new resource setting.
-     */
-    public function createSetting()
-    {
-        return Inertia::render('admin/templateContentUndangan/setting');
-    }
 
     /**
      * Check if URL is available.
@@ -258,48 +229,7 @@ class TemplateContentUndanganController extends Controller
     /**
      * Show the form for editing the specified resource content.
      */
-    public function editContent(string $id)
-    {
-        $template = Undangan::with([
-            'templateUndanganPernikahan',
-            'dataMempelai',
-            'acaras',
-            'galleryUndangans',
-            'kisahCintas'
-        ])->findOrFail($id);
 
-        // Transform data for frontend
-        if ($template->templateUndanganPernikahan) {
-            $template->templateUndanganPernikahan->lokasi_akad_nikah = [
-                'lat' => $template->templateUndanganPernikahan->latitude_akad,
-                'lng' => $template->templateUndanganPernikahan->longitude_akad,
-            ];
-        }
-
-        $template->acaras->transform(function ($acara) {
-            $acara->lokasi_acara = [
-                'lat' => $acara->latitude_acara,
-                'lng' => $acara->longitude_acara,
-            ];
-            return $acara;
-        });
-
-        return Inertia::render('admin/templateContentUndangan/content', [
-            'template' => $template,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource setting.
-     */
-    public function editSetting(string $id)
-    {
-        $template = Undangan::with('pengaturanUndangan')->findOrFail($id);
-
-        return Inertia::render('admin/templateContentUndangan/setting', [
-            'template' => $template,
-        ]);
-    }
 
     /**
      * Update the specified resource in storage.
