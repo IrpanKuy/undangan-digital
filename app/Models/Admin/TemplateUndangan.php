@@ -30,11 +30,11 @@ class TemplateUndangan extends Model
         return $this->belongsTo(KategoriUndangan::class, 'kategori_undangan_id');
     }
 
-    public function undanganUser()
+    public function undanganUsers()
     {
-        return $this->hasOne(Undangan::class, 'template_id');
+        return $this->hasMany(Undangan::class, 'template_id');
     }
-    public function undangans()
+    public function undanganPreview()
     {
         return $this->belongsTo(Undangan::class, 'undangan_id');
     }

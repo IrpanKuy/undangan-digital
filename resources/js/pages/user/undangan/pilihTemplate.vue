@@ -110,8 +110,9 @@ const props = defineProps({
                                         >
                                     </Link>
 
-                                    <button
-                                        class="flex-1 w-full md:w-auto flex items-center justify-center gap-1 py-[6px] px-1 bg-primary hover:bg-primary-dark rounded-lg shadow-sm shadow-primary/30 transition-all active:scale-95"
+                                    <Link
+                                        :href="route('user.undangan.content')"
+                                        class="flex-1 w-full md:w-auto flex items-center justify-center gap-1 py-[6px] px-1 bg-primary hover:bg-primary/90 rounded-lg shadow-sm shadow-primary/30 transition-all active:scale-95"
                                     >
                                         <Icon
                                             icon="gridicons:create"
@@ -122,7 +123,7 @@ const props = defineProps({
                                             class="text-[11px] font-bold text-white"
                                             >Gunakan</span
                                         >
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

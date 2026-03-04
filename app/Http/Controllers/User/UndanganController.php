@@ -30,24 +30,29 @@ class UndanganController extends Controller
      * Catatan: Untuk method create() dan store(), 
      * kamu bisa menambahkannya di sini untuk logika form pembuatan undangan.
      */
-    public function create()
+    public function contentForm()
     {
-        // Arahkan ke halaman pemilihan template/kategori
-        // return Inertia::render('user/pilih_template');
+        return Inertia::render('user/undangan/undanganForm/content');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function SettingForm()
     {
-        //
+        return Inertia::render('user/undangan/setting');
+    }
+
+    
+
+    public function show()
+    {
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function store(Request $request)
     {
         //
     }

@@ -704,7 +704,7 @@ const isOpen = ref(false);
                                 </h2>
                                 <p class="font-montserrat text-xl">
                                     {{
-                                        templateUndanganPernikahan?.doa_pengantin_pria ??
+                                        templateUndanganPernikahan?.doa_pengantinn_pria ??
                                         "Belum Diatur"
                                     }}
                                 </p>

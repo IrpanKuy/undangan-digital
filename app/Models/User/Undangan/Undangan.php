@@ -78,18 +78,17 @@ class Undangan extends Model
         return $this->hasMany(Kontak::class, 'undangan_id');
     }
 
-    public function templateUndangan()
+    public function templateUndanganUser()
     {
-        return $this->belongsTo(TemplateUndangan::class, 'template_undangan_id');
+        return $this->belongsTo(TemplateUndangan::class, 'template_id');
+    }
+    public function templatePreview()
+    {
+        return $this->hasOne(TemplateUndangan::class, 'undangan_id');
     }
 
     public function dataMempelai()
     {
         return $this->hasOne(DataMempelai::class, 'undangan_id');
-    }
-
-    public function templateUndangans()
-    {
-        return $this->hasMany(TemplateUndangan::class, 'undangan_id');
     }
 }

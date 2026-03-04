@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('undangans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('template_id')->nullable()->constrained('template_undangans')->onDelete('set null');
             $table->string('judul');
             $table->string('url')->unique()->nullable();
             $table->string('thumbnail_path');

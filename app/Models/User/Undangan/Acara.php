@@ -11,8 +11,10 @@ class Acara extends Model
         'undangan_id',
         'nama_acara',
         'tanggal_acara',
-        'waktu_acara',
+        'waktu_mulai_acara',
+        'waktu_selesai_acara',
         'detail_lokasi_acara',
+        'show_map',
         'latitude_acara',
         'longitude_acara',
     ];

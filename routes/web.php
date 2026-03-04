@@ -61,9 +61,12 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 });
 
 Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
+    Route::get('undangan/content', [UndanganController::class, 'contentForm'])->name('undangan.content');
+    Route::get('undangan/setting', [UndanganController::class, 'SettingForm'])->name('undangan.setting');
     Route::get('preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('preview');
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
+    
 });
 
 
