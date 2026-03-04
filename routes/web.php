@@ -53,7 +53,8 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
         ->name('template-content-undangan.edit-setting');
     Route::put('template-content-undangan/{id}/update-setting', [MainUndanganController::class, 'updateSetting'])
         ->name('template-content-undangan.update-setting');
-
+    Route::delete('template-content-undangan/{id}/destroy', [MainUndanganController::class, 'destroy'])
+        ->name('template-content-undangan.destroy');
     Route::patch('template-content-undangan/{id}/toggle-status', [MainUndanganController::class, 'toggleStatus'])
         ->name('template-content-undangan.toggle-status');
     Route::post('template-content-undangan/check-url', [MainUndanganController::class, 'checkUrl'])

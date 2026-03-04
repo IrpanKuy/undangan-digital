@@ -39,10 +39,33 @@ const removeGallery = (index) => {
 // Menerima fileItems dari event FilePond dan index dari loop
 const handleFileChange = (fileItems, index) => {
     if (fileItems && fileItems.length > 0) {
-        props.modelValue.galleries[index].file = fileItems[0].file;
+        // Hanya ambil file jika itu file baru (bukan load dari server)
+        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+            props.modelValue.galleries[index].file = fileItems[0].file;
+        }
     } else {
         props.modelValue.galleries[index].file = null;
     }
+};
+
+const serverOptions = {
+    load: (source, load, error, progress, abort, headers) => {
+        fetch(source)
+            .then((res) => res.blob())
+            .then(load);
+    },
+};
+
+const getInitialFiles = (item) => {
+    if (item.image_path) {
+        return [
+            {
+                source: `/storage/${item.image_path}`,
+                options: { type: "local" },
+            },
+        ];
+    }
+    return [];
 };
 </script>
 
@@ -101,18 +124,7 @@ const handleFileChange = (fileItems, index) => {
                         <Icon icon="mdi:close" width="14" />
                     </button>
 
-                    <!-- Preview Gambar dari Database (Jika Ada) -->
-                    <div
-                        v-if="item.image_path && !item.file"
-                        class="w-full h-32 bg-gray-200 border border-gray-300 rounded-sm flex items-center justify-center overflow-hidden"
-                    >
-                        <img
-                            :src="`/storage/${item.image_path}`"
-                            class="w-full h-full object-cover"
-                        />
-                    </div>
-
-                    <!-- Input FilePond -->
+                    <!-- Input FilePond dengan Preview Internal -->
                     <div class="flex-1">
                         <FilePond
                             :name="'gallery_foto_' + index"
@@ -121,6 +133,8 @@ const handleFileChange = (fileItems, index) => {
                             @updatefiles="
                                 (files) => handleFileChange(files, index)
                             "
+                            :files="getInitialFiles(item)"
+                            :server="serverOptions"
                             class="mb-0 custom-filepond"
                         />
                     </div>

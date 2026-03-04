@@ -29,6 +29,7 @@ const form = useForm({
     judul: "",
     url: "",
     thumbnail: null,
+    thumbnail_path: null,
     salam_pembuka: "Assalamu’alaikum Wr. Br.",
     text_pembuka:
         "Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami",
@@ -42,6 +43,7 @@ const form = useForm({
     keterangan_keluarga_pria: "",
     doa_pengantin_pria: "Semoga istri saya sehat selalu dan taat beribadah",
     foto_pria: null,
+    foto_pria_path: null,
     instagram_url_pria: "",
     tiktok_url_pria: "",
     x_url_pria: "",
@@ -52,6 +54,7 @@ const form = useForm({
     x_url_wanita: "",
     keterangan_keluarga_wanita: "",
     foto_wanita: null,
+    foto_wanita_path: null,
     doa_pengantin_wanita: "Semoga suami saya sehat selalu dan taat beribadah",
 
     // Template Undangan Pernikahan
@@ -113,9 +116,11 @@ onMounted(() => {
         form.salam_pembuka = props.template.salam_pembuka;
         form.text_pembuka = props.template.text_pembuka;
         form.video_youtube_url = props.template.video_youtube_url;
+        form.thumbnail_path = props.template.thumbnail_path;
 
         if (props.template.data_mempelai) {
             const m = props.template.data_mempelai;
+            console.log(m);
             form.nama_panggilan_pria = m.nama_panggilan_pria;
             form.nama_lengkap_pria = m.nama_lengkap_pria;
             form.keterangan_keluarga_pria = m.keterangan_keluarga_pria;
@@ -129,6 +134,8 @@ onMounted(() => {
             form.x_url_wanita = m.x_url_wanita;
             form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
             form.text_penutup = m.text_penutup;
+            form.foto_pria_path = m.foto_pria_path;
+            form.foto_wanita_path = m.foto_wanita_path;
 
             // Doa fields are now in the Data Mempelai section in form
             if (props.template.template_undangan_pernikahan) {
@@ -138,7 +145,8 @@ onMounted(() => {
                     props.template.template_undangan_pernikahan.doa_pengantin_wanita;
             }
         }
-
+        console.log(form.foto_pria_path);
+        console.log(form.foto_wanita_path);
         if (props.template.template_undangan_pernikahan) {
             const p = props.template.template_undangan_pernikahan;
             form.nama_prosesi = p.nama_prosesi;

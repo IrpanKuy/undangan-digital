@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-
+import { computed } from "vue";
 // --- FilePond Imports ---
 import vueFilePond from "vue-filepond";
 import "filepond/dist/filepond.min.css";
@@ -23,7 +23,9 @@ const emit = defineEmits(["update:modelValue"]);
 // Handlers untuk FilePond
 const handleFotoPriaUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        props.modelValue.foto_pria = fileItems[0].file;
+        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+            props.modelValue.foto_pria = fileItems[0].file;
+        }
     } else {
         props.modelValue.foto_pria = null;
     }
@@ -31,11 +33,43 @@ const handleFotoPriaUpdate = (fileItems) => {
 
 const handleFotoWanitaUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        props.modelValue.foto_wanita = fileItems[0].file;
+        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+            props.modelValue.foto_wanita = fileItems[0].file;
+        }
     } else {
         props.modelValue.foto_wanita = null;
     }
 };
+
+const serverOptions = {
+    load: (source, load, error, progress, abort, headers) => {
+        fetch(source)
+            .then((res) => res.blob())
+            .then(load);
+    },
+};
+
+const initialFotoPria = computed(() =>
+    props.modelValue.foto_pria_path
+        ? [
+              {
+                  source: `/storage/${props.modelValue.foto_pria_path}`,
+                  options: { type: "local" },
+              },
+          ]
+        : [],
+);
+
+const initialFotoWanita = computed(() =>
+    props.modelValue.foto_wanita_path
+        ? [
+              {
+                  source: `/storage/${props.modelValue.foto_wanita_path}`,
+                  options: { type: "local" },
+              },
+          ]
+        : [],
+);
 </script>
 
 <template>
@@ -221,16 +255,18 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             label-idle="Tarik & Lepas gambar atau <span class='filepond--label-action'>Telusuri</span>"
                             accepted-file-types="image/jpeg, image/png, image/jpg"
                             @updatefiles="handleFotoPriaUpdate"
+                            :files="initialFotoPria"
+                            :server="serverOptions"
                             class="mb-0 custom-filepond"
                         />
                         <p class="text-[10px] text-gray-600 mt-1 font-light">
                             Ukuran file maksimal 10MB
                         </p>
                         <p
-                            v-if="modelValue.errors.foto_pria"
+                            v-if="modelValue.errors.foto_pria_path"
                             class="text-[10px] text-red-600 mt-1 uppercase font-bold"
                         >
-                            {{ modelValue.errors.foto_pria }}
+                            {{ modelValue.errors.foto_pria_path }}
                         </p>
                     </div>
                 </div>
@@ -401,16 +437,18 @@ const handleFotoWanitaUpdate = (fileItems) => {
                             label-idle="Tarik & Lepas gambar atau <span class='filepond--label-action'>Telusuri</span>"
                             accepted-file-types="image/jpeg, image/png, image/jpg"
                             @updatefiles="handleFotoWanitaUpdate"
+                            :files="initialFotoWanita"
+                            :server="serverOptions"
                             class="mb-0 custom-filepond"
                         />
                         <p class="text-[10px] text-gray-600 mt-1 font-light">
                             Ukuran file maksimal 10MB
                         </p>
                         <p
-                            v-if="modelValue.errors.foto_wanita"
+                            v-if="modelValue.errors.foto_wanita_path"
                             class="text-[10px] text-red-600 mt-1 uppercase font-bold"
                         >
-                            {{ modelValue.errors.foto_wanita }}
+                            {{ modelValue.errors.foto_wanita_path }}
                         </p>
                     </div>
                 </div>

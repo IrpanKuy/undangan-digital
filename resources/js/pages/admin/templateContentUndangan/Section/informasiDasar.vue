@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-
+import { computed } from "vue";
 // --- FilePond Imports ---
 import vueFilePond from "vue-filepond";
 import "filepond/dist/filepond.min.css";
@@ -33,15 +33,36 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-// Fungsi untuk menangani perubahan file di FilePond
 const handleThumbnailUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
-        // Ambil objek File asli untuk dikirim via Inertia
-        props.modelValue.thumbnail = fileItems[0].file;
+        // Jika file adalah file baru (bukan dari server load)
+        if (fileItems[0].origin === 1 || fileItems[0].origin === 3) {
+            props.modelValue.thumbnail = fileItems[0].file;
+        }
     } else {
         props.modelValue.thumbnail = null;
     }
 };
+
+// Konfigurasi server untuk FilePond load existing
+const serverOptions = {
+    load: (source, load, error, progress, abort, headers) => {
+        fetch(source)
+            .then((res) => res.blob())
+            .then(load);
+    },
+};
+
+const initialFiles = computed(() =>
+    props.modelValue.thumbnail_path
+        ? [
+              {
+                  source: `/storage/${props.modelValue.thumbnail_path}`,
+                  options: { type: "local" },
+              },
+          ]
+        : [],
+);
 </script>
 
 <template>
@@ -116,6 +137,8 @@ const handleThumbnailUpdate = (fileItems) => {
                     label-idle="Tarik & Lepas gambar atau <span class='filepond--label-action'>Telusuri</span>"
                     accepted-file-types="image/jpeg, image/png, image/jpg"
                     @updatefiles="handleThumbnailUpdate"
+                    :files="initialFiles"
+                    :server="serverOptions"
                     class="mb-0 custom-filepond"
                 />
                 <p class="text-[10px] text-gray-600 mt-1 font-light">
