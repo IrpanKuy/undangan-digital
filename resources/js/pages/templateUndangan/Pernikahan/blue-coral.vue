@@ -1,5 +1,8 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, computed } from "vue";
+import { useForm, usePage } from "@inertiajs/vue3";
+import Swal from "sweetalert2";
+import LeafletUndanganMap from "@/components/LeafletUndanganMap.vue";
 
 const props = defineProps({
     undangan: Object,
@@ -9,9 +12,13 @@ const props = defineProps({
     kisahCinta: Object,
     galleryUndangan: Object,
     komentarUndangan: Object,
+    isPreview: {
+        type: Boolean,
+        default: false,
+    },
 });
 
-const isPreview = ref(true);
+const isPreview = ref(props.isPreview);
 console.log("undangan:", props.undangan);
 console.log("acara:", props.acara);
 console.log("dataMempelai:", props.dataMempelai);
@@ -52,13 +59,6 @@ const getImageUrl = (item) => {
     return `/storage/${item.image_path}`;
 };
 
-// const formatJam = (time) => {
-//     if (!time) return "00:00";
-//     // Memecah 12:30:00 menjadi ['12', '30', '00'] lalu ambil 2 pertama
-//     const [hours, minutes] = time.split(":");
-//     return `${hours}:${minutes}`;
-// };
-
 const countdown = reactive({
     hari: 0,
     jam: 0,
@@ -95,8 +95,77 @@ const updateCountdown = () => {
     }
 };
 
+const commentForm = useForm({
+    nama: "",
+    pesan: "",
+});
+
+const submitComment = () => {
+    if (isPreview.value) {
+        Swal.fire({
+            icon: "warning",
+            title: "Mode Preview",
+            text: "Anda tidak dapat mengirim ucapan dalam mode preview.",
+        });
+        return;
+    }
+
+    commentForm.post(route("undangan.komentar.store", props.undangan.id), {
+        onSuccess: () => {
+            commentForm.reset();
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: "Ucapan Anda telah terkirim!",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        },
+    });
+};
+
+const showRsvpForm = ref(false);
+const rsvpForm = useForm({
+    nama: "",
+    jumlah_hadir: 1,
+    status_kehadiran: "Hadir",
+});
+
+const submitRsvp = () => {
+    if (isPreview.value) {
+        Swal.fire({
+            icon: "warning",
+            title: "Mode Preview",
+            text: "Anda tidak dapat melakukan reservasi dalam mode preview.",
+        });
+        return;
+    }
+
+    rsvpForm.post(route("undangan.reservasi.store", props.undangan.id), {
+        onSuccess: () => {
+            showRsvpForm.value = false;
+            rsvpForm.reset();
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: "Reservasi Anda telah terkirim!",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        },
+    });
+};
+
 onMounted(() => {
-    updateCountdown(); // Jalankan sekali saat load
+    // Detect if we are in preview mode based on URL or logic if not passed via props
+    if (window.location.pathname.includes("/preview/")) {
+        isPreview.value = true;
+    }
+    updateCountdown();
     timer = setInterval(updateCountdown, 1000); // Update setiap 1 detik
 });
 
@@ -107,7 +176,7 @@ onUnmounted(() => {
 const namaPengantinPria = "Anisa";
 const namaPengantinWanita = "Jamal";
 const akadNikah = "jum'at, 27 Februari 2026";
-const isOpen = ref(false);
+const isOpen = ref(true);
 </script>
 <template>
     <div
@@ -535,6 +604,25 @@ const isOpen = ref(false);
                                             }}
                                         </h2>
                                     </div>
+                                    <div
+                                        v-if="
+                                            templateUndanganPernikahan.show_map
+                                        "
+                                        class="h-48 w-full my-4"
+                                    >
+                                        <LeafletUndanganMap
+                                            :latitude="
+                                                templateUndanganPernikahan.latitude
+                                            "
+                                            :longitude="
+                                                templateUndanganPernikahan.longitude
+                                            "
+                                            :zoom="
+                                                templateUndanganPernikahan.zoom ||
+                                                15
+                                            "
+                                        />
+                                    </div>
                                     <p class="font-montserrat text-xl">
                                         Di jalan raya bagus Masjid Al-Falaq
                                     </p>
@@ -586,6 +674,19 @@ const isOpen = ref(false);
                                                     "Selesai"
                                                 }}
                                             </h2>
+                                        </div>
+
+                                        <div
+                                            v-if="item.show_map"
+                                            class="h-48 w-full my-4"
+                                        >
+                                            <LeafletUndanganMap
+                                                :latitude="item.latitude_acara"
+                                                :longitude="
+                                                    item.longitude_acara
+                                                "
+                                                :zoom="item.zoom || 15"
+                                            />
                                         </div>
 
                                         <p
@@ -871,23 +972,35 @@ const isOpen = ref(false);
                             >
                                 <label for="name">Nama</label>
                                 <input
+                                    v-model="commentForm.nama"
                                     class="w-full p-3 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6D99BD] focus:border-transparent transition duration-200 resize-y"
                                     type="text"
                                     id="name"
                                     name="nama"
+                                    required
                                 />
                                 <label for="pesan">Pesan</label>
                                 <textarea
+                                    v-model="commentForm.pesan"
                                     class="w-full p-3 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6D99BD] focus:border-transparent transition duration-200 resize-y"
                                     rows="4"
                                     id="pesan"
                                     name="pesan"
+                                    required
                                 />
                                 <button
-                                    class="px-3 py-2 mt-3 cursor-pointer w-fit flex justify-center rounded-md items-center gap-3 bg-[#6D99BD] hover:bg-[#7babd3] active:bg-[#6f9dc2] active:scale-95 transition duration-200 text-white"
+                                    @click="submitComment"
+                                    :disabled="commentForm.processing"
+                                    class="px-3 py-2 mt-3 cursor-pointer w-fit flex justify-center rounded-md items-center gap-3 bg-[#6D99BD] hover:bg-[#7babd3] active:bg-[#6f9dc2] active:scale-95 transition duration-200 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <icon icon="fa:send" width="20" />
-                                    <p>Kirim Ucapan</p>
+                                    <p>
+                                        {{
+                                            commentForm.processing
+                                                ? "Mengirim..."
+                                                : "Kirim Ucapan"
+                                        }}
+                                    </p>
                                 </button>
                             </div>
                             <div class="">
@@ -905,30 +1018,60 @@ const isOpen = ref(false);
                                         class="h-0.5 flex-1 bg-gray-200 rounded-full"
                                     ></div>
                                 </div>
-                                <div class="flex mt-12 gap-2">
-                                    <img
-                                        src="https://placehold.co/400x400"
-                                        alt="foto-profil"
-                                        class="w-9 h-9 rounded-full"
-                                    />
+                                <div
+                                    class="max-h-96 overflow-y-auto mt-6 space-y-6"
+                                >
                                     <div
-                                        class="flex w-full text-left flex-col gap-2"
+                                        v-for="msg in komentarUndangan"
+                                        :key="msg.id"
+                                        class="flex gap-2"
                                     >
-                                        <label for="pesan">Nama Pengguna</label>
-                                        <textarea
-                                            class="w-full p-3 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6D99BD] focus:border-transparent transition duration-200 resize-none"
-                                            rows="4"
-                                            id="pesan"
-                                            name="pesan"
-                                        />
+                                        <div
+                                            class="w-9 h-9 rounded-full bg-[#6D99BD] flex items-center justify-center text-white font-bold shrink-0"
+                                        >
+                                            {{
+                                                msg.nama.charAt(0).toUpperCase()
+                                            }}
+                                        </div>
+                                        <div
+                                            class="flex w-full text-left flex-col gap-1 p-3 bg-gray-50 rounded-lg border border-gray-100"
+                                        >
+                                            <div
+                                                class="flex justify-between items-center"
+                                            >
+                                                <span
+                                                    class="font-bold text-sm text-gray-800"
+                                                    >{{ msg.nama }}</span
+                                                >
+                                                <span
+                                                    class="text-[10px] text-gray-400 italic"
+                                                    >Baru saja</span
+                                                >
+                                            </div>
+                                            <p
+                                                class="text-gray-600 text-sm italic"
+                                            >
+                                                "{{ msg.pesan }}"
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <button
+                                    v-if="komentarUndangan?.length > 5"
                                     class="px-3 mt-8 py-2 cursor-pointer w-full flex justify-center rounded-md items-center gap-3 bg-[#6D99BD] hover:bg-[#7babd3] active:bg-[#6f9dc2] active:scale-95 transition duration-200 text-white"
                                 >
                                     <icon icon="uim:redo" width="20" />
                                     <p>Lihat Lainnya</p>
                                 </button>
+                                <div
+                                    v-if="
+                                        !komentarUndangan ||
+                                        komentarUndangan.length === 0
+                                    "
+                                    class="py-10 text-gray-400 italic"
+                                >
+                                    Belum ada ucapan. Jadilah yang pertama!
+                                </div>
                             </div>
                         </div>
 
@@ -942,6 +1085,7 @@ const isOpen = ref(false);
                             </h2>
                             <div class="w-full">
                                 <button
+                                    @click="showRsvpForm = !showRsvpForm"
                                     class="relative px-3 py-2 w-full cursor-pointer h-24 flex justify-center rounded-md items-center gap-3 bg-[#6D99BD] hover:bg-[#7babd3] active:bg-[#6f9dc2] active:scale-95 transition duration-200 text-white"
                                 >
                                     <icon
@@ -950,10 +1094,77 @@ const isOpen = ref(false);
                                         width="20"
                                     />
                                     <p class="font-bold font-lora text-3xl">
-                                        Reservasi
+                                        {{
+                                            showRsvpForm ? "Batal" : "Reservasi"
+                                        }}
                                     </p>
                                 </button>
                             </div>
+
+                            <transition
+                                enter-active-class="transition ease-out duration-200"
+                                enter-from-class="transform opacity-0 -translate-y-2"
+                                enter-to-class="transform opacity-100 translate-y-0"
+                                leave-active-class="transition ease-in duration-150"
+                                leave-from-class="transform opacity-100 translate-y-0"
+                                leave-to-class="transform opacity-0 -translate-y-2"
+                            >
+                                <div
+                                    v-if="showRsvpForm"
+                                    class="bg-gray-50 p-6 rounded-lg border border-gray-200 text-left space-y-4"
+                                >
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-1"
+                                            >Nama</label
+                                        >
+                                        <input
+                                            v-model="rsvpForm.nama"
+                                            type="text"
+                                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-[#6D99BD] focus:border-[#6D99BD]"
+                                            placeholder="Nama Anda"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-1"
+                                            >Jumlah Hadir</label
+                                        >
+                                        <input
+                                            v-model="rsvpForm.jumlah_hadir"
+                                            type="number"
+                                            min="1"
+                                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-[#6D99BD] focus:border-[#6D99BD]"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-1"
+                                            >Kehadiran</label
+                                        >
+                                        <select
+                                            v-model="rsvpForm.status_kehadiran"
+                                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-[#6D99BD] focus:border-[#6D99BD]"
+                                        >
+                                            <option value="Hadir">Hadir</option>
+                                            <option value="Tidak">
+                                                Tidak Hadir
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button
+                                        @click="submitRsvp"
+                                        :disabled="rsvpForm.processing"
+                                        class="w-full py-2 bg-[#6D99BD] text-white rounded-md font-bold hover:bg-[#7babd3] transition-colors disabled:opacity-50"
+                                    >
+                                        {{
+                                            rsvpForm.processing
+                                                ? "Mengirim..."
+                                                : "Kirim Reservasi"
+                                        }}
+                                    </button>
+                                </div>
+                            </transition>
                             <p class="font-montserrat text-xl">
                                 Isi RSVP Form jika kamu berencana hadir
                             </p>
@@ -1032,9 +1243,14 @@ const isOpen = ref(false);
                             <div
                                 class="flex flex-col text-5xl font-alex-brush space-y-2"
                             >
-                                <h4>Anisa</h4>
+                                <h4>
+                                    {{ dataMempelai.nama_panggilan_pria }}
+                                </h4>
+
                                 <p>&</p>
-                                <h4>Jamal</h4>
+                                <h4>
+                                    {{ dataMempelai.nama_panggilan_wanita }}
+                                </h4>
                             </div>
                         </div>
                     </div>

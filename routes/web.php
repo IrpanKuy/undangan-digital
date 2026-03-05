@@ -69,8 +69,11 @@ Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
     Route::get('preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('preview');
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
-    
 });
+
+// Public Undangan Routes (No Auth Needed)
+Route::post('undangan/{undangan_id}/komentar', [App\Http\Controllers\User\UndanganPublicController::class, 'storeKomentar'])->name('undangan.komentar.store');
+Route::post('undangan/{undangan_id}/reservasi', [App\Http\Controllers\User\UndanganPublicController::class, 'storeReservasi'])->name('undangan.reservasi.store');
 
 
 
