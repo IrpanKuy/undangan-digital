@@ -11,17 +11,18 @@ class UndanganPreviewController extends Controller
     public function preview($judul_undangan){
         $templateUndangan = TemplateUndangan::with([
             'kategoriUndangan', 
-            'undangans',
-            'undangans.acaras',
-            'undangans.dataMempelai',
-            'undangans.templateUndanganPernikahan',
-            'undangans.kisahCintas',
-            'undangans.galleryUndangans',
+            'undanganPreview',
+            'undanganPreview.acaras',
+            'undanganPreview.dataMempelai',
+            'undanganPreview.templateUndanganPernikahan',
+            'undanganPreview.kisahCintas',
+            'undanganPreview.galleryUndangans',
+            'undanganPreview.komentarUndangans',
         ])
         ->where('judul_undangan', $judul_undangan)
         ->first();
 
-        $undangan = $templateUndangan->undangans;
+        $undangan = $templateUndangan->undanganPreview;
         $kategori = $templateUndangan->kategoriUndangan->name;
         return Inertia::render("templateUndangan/{$kategori}/{$templateUndangan->file_name}", [
                 'undangan' => $undangan,
@@ -30,7 +31,7 @@ class UndanganPreviewController extends Controller
                 'templateUndanganPernikahan' => $undangan->templateUndanganPernikahan,
                 'kisahCinta' => $undangan->kisahCintas,
                 'galleryUndangan' => $undangan->galleryUndangans,
-
+                'komentarUndangan' => $undangan->komentarUndangans,
         ]);
     }
     //

@@ -13,7 +13,7 @@ class templateContentUndanganValidate
             // Undangan
             'judul' => 'required|string|max:255',
             'url' => 'required|string|max:255|unique:undangans,url' . ($id ? ",$id" : ""),
-            'thumbnail' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'thumbnail' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:5024',
             'salam_pembuka' => 'required|string',
             'text_pembuka' => 'required|string',
             'video_youtube_url' => 'nullable|url',
@@ -22,14 +22,14 @@ class templateContentUndanganValidate
             'nama_panggilan_pria' => 'required|string|max:255',
             'nama_lengkap_pria' => 'required|string|max:255',
             'keterangan_keluarga_pria' => 'required|string',
-            'foto_pria_path' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'foto_pria' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:5024',
             'instagram_url_pria' => 'nullable|url|max:255',
             'tiktok_url_pria' => 'nullable|url|max:255',
             'x_url_pria' => 'nullable|url|max:255',
             'nama_panggilan_wanita' => 'required|string|max:255',
             'nama_lengkap_wanita' => 'required|string|max:255',
             'keterangan_keluarga_wanita' => 'required|string',
-            'foto_wanita_path' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'foto_wanita' => ($id ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:5024',
             'instagram_url_wanita' => 'nullable|url|max:255',
             'tiktok_url_wanita' => 'nullable|url|max:255',
             'x_url_wanita' => 'nullable|url|max:255',
@@ -63,14 +63,14 @@ class templateContentUndanganValidate
 
             // Gallery
             'galleries' => 'nullable|array',
-            'galleries.*.file' => $id ? 'nullable' : 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'galleries.*.file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5024',
 
             // Kisah Cinta
             'kisah_cintas' => 'required|array|min:1',
             'kisah_cintas.*.tanggal' => 'required|string',
             'kisah_cintas.*.judul' => 'required|string|max:255',
             'kisah_cintas.*.peristiwa' => 'required|string',
-            'kisah_cintas.*.foto' => $id ? 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240' : 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'kisah_cintas.*.foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5024',
         ];
     }
 
@@ -107,8 +107,8 @@ class templateContentUndanganValidate
             'nama_lengkap_pria' => 'Nama Lengkap Pria',
             'nama_panggilan_wanita' => 'Nama panggilan mempelai wanita',
             'nama_lengkap_wanita' => 'Nama Lengkap Wanita',
-            'foto_pria_path' => 'Foto mempelai pria',
-            'foto_wanita_path' => 'Foto mempelai wanita',
+            'foto_pria' => 'Foto mempelai pria',
+            'foto_wanita' => 'Foto mempelai wanita',
             'instagram_url_pria' => 'Instagram Pria',
             'tiktok_url_pria' => 'TikTok Pria',
             'x_url_pria' => 'Twitter/X Pria',

@@ -24,8 +24,7 @@ const emit = defineEmits(["update:modelValue"]);
         <div class="p-6 space-y-4">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                    <label class="block text-xs font-bold text-gray-700 mb-1"
                         >Nama Prosesi</label
                     >
                     <input
@@ -39,14 +38,13 @@ const emit = defineEmits(["update:modelValue"]);
                     </p>
                     <p
                         v-if="modelValue.errors.nama_prosesi"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.nama_prosesi }}
                     </p>
                 </div>
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                    <label class="block text-xs font-bold text-gray-700 mb-1"
                         >Tanggal Pernikahan</label
                     >
                     <input
@@ -56,14 +54,13 @@ const emit = defineEmits(["update:modelValue"]);
                     />
                     <p
                         v-if="modelValue.errors.tanggal_mulai"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.tanggal_mulai }}
                     </p>
                 </div>
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                    <label class="block text-xs font-bold text-gray-700 mb-1"
                         >Waktu Mulai</label
                     >
                     <input
@@ -73,14 +70,14 @@ const emit = defineEmits(["update:modelValue"]);
                     />
                     <p
                         v-if="modelValue.errors.waktu_mulai"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.waktu_mulai }}
                     </p>
                 </div>
                 <div>
                     <label
-                        class="block text-[10px] font-bold text-gray-700 uppercase mb-1"
+                        class="block text-[10px] font-bold text-gray-700 mb-1"
                         >Waktu Selesai
                         <span class="text-gray-400 font-normal normal-case"
                             >(opsional)</span
@@ -96,7 +93,7 @@ const emit = defineEmits(["update:modelValue"]);
                     </p>
                     <p
                         v-if="modelValue.errors.waktu_selesai"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.waktu_selesai }}
                     </p>
@@ -104,8 +101,7 @@ const emit = defineEmits(["update:modelValue"]);
             </div>
 
             <div>
-                <label
-                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                <label class="block text-xs font-bold text-gray-700 mb-1"
                     >Detail Lokasi</label
                 >
                 <textarea
@@ -116,7 +112,7 @@ const emit = defineEmits(["update:modelValue"]);
                 ></textarea>
                 <p
                     v-if="modelValue.errors.detail_lokasi_nikah"
-                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    class="text-[10px] text-red-600 mt-1 font-bold"
                 >
                     {{ modelValue.errors.detail_lokasi_nikah }}
                 </p>
@@ -124,9 +120,7 @@ const emit = defineEmits(["update:modelValue"]);
 
             <div>
                 <div class="flex mb-3 pb-2 border-b border-gray-200">
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase"
-                    >
+                    <label class="block text-xs font-bold text-gray-700">
                         Lokasi Peta
                     </label>
                 </div>
@@ -135,11 +129,10 @@ const emit = defineEmits(["update:modelValue"]);
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label class="items-center cursor-pointer">
-                                <p
-                                    class="text-[10px] mb-1 font-bold text-gray-600"
+                                <label
+                                    class="block text-xs font-bold text-gray-700 mb-1"
+                                    >Tampilkan Peta Undangan</label
                                 >
-                                    Tampilkan Peta
-                                </p>
                                 <input
                                     type="checkbox"
                                     v-model="modelValue.show_map"
@@ -152,7 +145,7 @@ const emit = defineEmits(["update:modelValue"]);
                         </div>
                         <div class="flex flex-col gap-1">
                             <label
-                                class="text-[10px] font-bold text-gray-500 uppercase"
+                                class="block text-xs font-bold text-gray-700 mb-1"
                                 >Zoom:</label
                             >
                             <input
@@ -167,7 +160,7 @@ const emit = defineEmits(["update:modelValue"]);
 
                         <div class="flex flex-col gap-1">
                             <label
-                                class="text-[10px] font-bold text-gray-500 uppercase"
+                                class="block text-xs font-bold text-gray-700 mb-1"
                                 >Latitude:</label
                             >
                             <input
@@ -180,7 +173,7 @@ const emit = defineEmits(["update:modelValue"]);
                         </div>
                         <div class="flex flex-col gap-1">
                             <label
-                                class="text-[10px] font-bold text-gray-500 uppercase"
+                                class="block text-xs font-bold text-gray-700 mb-1"
                                 >Longitude:</label
                             >
                             <input
@@ -194,7 +187,6 @@ const emit = defineEmits(["update:modelValue"]);
                     </div>
 
                     <div
-                        v-if="modelValue.show_map"
                         class="border border-gray-400 rounded-sm overflow-hidden h-72 relative z-0"
                     >
                         <LeafletMap v-model="modelValue.lokasi_nikah" />

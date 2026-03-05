@@ -89,9 +89,7 @@ const initialFiles = computed(() =>
             <!-- Row 1: Judul & Slug -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                    >
+                    <label class="block text-xs font-bold text-gray-700 mb-1">
                         Judul Undangan
                     </label>
                     <input
@@ -103,15 +101,13 @@ const initialFiles = computed(() =>
                     />
                     <p
                         v-if="modelValue.errors.judul"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.judul }}
                     </p>
                 </div>
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                    >
+                    <label class="block text-xs font-bold text-gray-700 mb-1">
                         URL (Slug)
                     </label>
                     <input
@@ -122,7 +118,7 @@ const initialFiles = computed(() =>
                     />
                     <p
                         v-if="modelValue.errors.url"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.url }}
                     </p>
@@ -131,10 +127,8 @@ const initialFiles = computed(() =>
 
             <!-- Row 2: Thumbnail Upload (FilePond) -->
             <div>
-                <label
-                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                >
-                    Thumbnail Undangan
+                <label class="block text-xs font-bold text-gray-700 mb-1">
+                    Thumbnail Foto Undangan
                 </label>
                 <FilePond
                     name="thumbnail"
@@ -146,11 +140,11 @@ const initialFiles = computed(() =>
                     class="mb-0 custom-filepond"
                 />
                 <p class="text-[10px] text-gray-600 mt-1 font-light">
-                    Ukuran file maksimal 10MB
+                    Ukuran file maksimal 5MB
                 </p>
                 <p
                     v-if="modelValue.errors.thumbnail"
-                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    class="text-[10px] text-red-600 mt-1 font-bold"
                 >
                     {{ modelValue.errors.thumbnail }}
                 </p>
@@ -159,9 +153,7 @@ const initialFiles = computed(() =>
             <!-- Row 3: Salam Pembuka & Youtube -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                    >
+                    <label class="block text-xs font-bold text-gray-700 mb-1">
                         Salam Pembuka
                     </label>
                     <input
@@ -172,19 +164,15 @@ const initialFiles = computed(() =>
                     />
                     <p
                         v-if="modelValue.errors.salam_pembuka"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.salam_pembuka }}
                     </p>
                 </div>
                 <div>
-                    <label
-                        class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                    >
+                    <label class="block text-xs font-bold text-gray-700 mb-1">
                         URL Video YouTube
-                        <span class="text-gray-400 text-xs capitalize"
-                            >(Opsional)</span
-                        >
+                        <span class="text-gray-400 text-xs">(opsional)</span>
                     </label>
                     <input
                         v-model="modelValue.video_youtube_url"
@@ -197,7 +185,7 @@ const initialFiles = computed(() =>
                     </p>
                     <p
                         v-if="modelValue.errors.video_youtube_url"
-                        class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                        class="text-[10px] text-red-600 mt-1 font-bold"
                     >
                         {{ modelValue.errors.video_youtube_url }}
                     </p>
@@ -206,9 +194,7 @@ const initialFiles = computed(() =>
 
             <!-- Row 4: Teks Pembuka -->
             <div>
-                <label
-                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
-                >
+                <label class="block text-xs font-bold text-gray-700 mb-1">
                     Teks Pembuka
                 </label>
                 <textarea
@@ -219,7 +205,7 @@ const initialFiles = computed(() =>
                 ></textarea>
                 <p
                     v-if="modelValue.errors.text_pembuka"
-                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    class="text-[10px] text-red-600 mt-1 font-bold"
                 >
                     {{ modelValue.errors.text_pembuka }}
                 </p>
@@ -227,8 +213,7 @@ const initialFiles = computed(() =>
 
             <!-- row 5: text penutup -->
             <div>
-                <label
-                    class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                <label class="block text-xs font-bold text-gray-700 mb-1"
                     >Teks Penutup</label
                 >
                 <textarea
@@ -239,7 +224,7 @@ const initialFiles = computed(() =>
                 ></textarea>
                 <p
                     v-if="modelValue.errors.text_penutup"
-                    class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                    class="text-[10px] text-red-600 mt-1 font-bold"
                 >
                     {{ modelValue.errors.text_penutup }}
                 </p>

@@ -29,6 +29,7 @@ const addKisah = () => {
         peristiwa: "",
         foto: null,
         foto_path: null,
+        initial_files: [], // TAMBAHKAN INI JUGA
     });
 };
 
@@ -112,7 +113,7 @@ const getInitialFiles = (item) => {
             <div class="space-y-4">
                 <div
                     v-for="(item, index) in modelValue.kisah_cintas"
-                    :key="item"
+                    :key="index"
                     class="p-4 border border-gray-200 bg-gray-50 rounded-sm relative"
                 >
                     <button
@@ -233,10 +234,13 @@ const getInitialFiles = (item) => {
                                 @updatefiles="
                                     (files) => handleFileChange(files, index)
                                 "
-                                :files="getInitialFiles(item)"
+                                :files="item.initial_files"
                                 :server="serverOptions"
                                 class="mb-0 custom-filepond"
                             />
+                            <p class="text-[10px] mb-2 text-gray-500">
+                                Ukuran file maksimal 5MB
+                            </p>
                             <p
                                 v-if="
                                     modelValue.errors &&

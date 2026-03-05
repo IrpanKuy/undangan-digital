@@ -8,7 +8,16 @@ const props = defineProps({
     templateUndanganPernikahan: Object,
     kisahCinta: Object,
     galleryUndangan: Object,
+    komentarUndangan: Object,
 });
+
+const isPreview = ref(true);
+console.log("undangan:", props.undangan);
+console.log("acara:", props.acara);
+console.log("dataMempelai:", props.dataMempelai);
+console.log("templateUndanganPernikahan:", props.templateUndanganPernikahan);
+console.log("kisahCinta:", props.kisahCinta);
+console.log("galleryUndangan:", props.galleryUndangan);
 
 const galleries = computed(() => {
     if (!props.galleryUndangan) return [];
@@ -43,24 +52,12 @@ const getImageUrl = (item) => {
     return `/storage/${item.image_path}`;
 };
 
-const formatJam = (time) => {
-    if (!time) return "00:00";
-    // Memecah 12:30:00 menjadi ['12', '30', '00'] lalu ambil 2 pertama
-    const [hours, minutes] = time.split(":");
-    return `${hours}:${minutes}`;
-};
-
-const formatTanggal = (dateString) => {
-    if (!dateString) return "Belum diatur";
-
-    const date = new Date(dateString);
-
-    return new Intl.DateTimeFormat("id-ID", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    }).format(date);
-};
+// const formatJam = (time) => {
+//     if (!time) return "00:00";
+//     // Memecah 12:30:00 menjadi ['12', '30', '00'] lalu ambil 2 pertama
+//     const [hours, minutes] = time.split(":");
+//     return `${hours}:${minutes}`;
+// };
 
 const countdown = reactive({
     hari: 0,
@@ -72,7 +69,7 @@ const countdown = reactive({
 let timer = null;
 
 const updateCountdown = () => {
-    const targetDate = props.templateUndanganPernikahan?.tanggal_mulai_akad;
+    const targetDate = props.templateUndanganPernikahan?.tanggal_mulai_indo;
 
     if (!targetDate) return;
 
@@ -249,9 +246,8 @@ const isOpen = ref(false);
                                 </p>
                                 <h2 class="font-bold font-lora text-3xl">
                                     {{
-                                        formatTanggal(
-                                            templateUndanganPernikahan?.tanggal_mulai_akad,
-                                        ) ?? "belum diatur"
+                                        templateUndanganPernikahan?.tanggal_mulai_indo ??
+                                        "belum diatur"
                                     }}
                                 </h2>
                                 <p class="font-montserrat text-xl">
@@ -494,7 +490,7 @@ const isOpen = ref(false);
                                 </button>
                             </div>
 
-                            <!-- acara & akad nikah -->
+                            <!-- acara & proses nikah -->
                             <div class="w-full space-y-6">
                                 <div
                                     class="bg-white w-full space-y-2 p-6 border-2 rounded-lg border-[#6D99BD]"
@@ -502,7 +498,10 @@ const isOpen = ref(false);
                                     <h2
                                         class="font-semibold font-lora text-3xl z-50 italic"
                                     >
-                                        Akad Nikah
+                                        {{
+                                            templateUndanganPernikahan?.nama_prosesi ??
+                                            "belum diatur"
+                                        }}
                                     </h2>
                                     <div
                                         class="flex justify-center items-center gap-2"
@@ -512,9 +511,8 @@ const isOpen = ref(false);
                                             class="font-medium font-lora text-xl z-50 italic"
                                         >
                                             {{
-                                                formatTanggal(
-                                                    templateUndanganPernikahan?.tanggal_mulai_akad,
-                                                ) ?? "belum diatur"
+                                                templateUndanganPernikahan?.tanggal_mulai_indo ??
+                                                "belum diatur"
                                             }}
                                         </h2>
                                     </div>
@@ -527,9 +525,13 @@ const isOpen = ref(false);
                                         >
                                             Pukul
                                             {{
-                                                formatJam(
-                                                    templateUndanganPernikahan?.waktu_mulai_akad,
-                                                )
+                                                templateUndanganPernikahan?.waktu_mulai ??
+                                                "belum diatur"
+                                            }}
+                                            -
+                                            {{
+                                                templateUndanganPernikahan?.waktu_selesai ??
+                                                "Selesai"
                                             }}
                                         </h2>
                                     </div>
@@ -560,9 +562,8 @@ const isOpen = ref(false);
                                                 class="font-medium font-lora text-xl z-50 italic"
                                             >
                                                 {{
-                                                    formatTanggal(
-                                                        item.tanggal_acara,
-                                                    )
+                                                    item.tanggal_acara_indo ??
+                                                    "belum diatur"
                                                 }}
                                             </h2>
                                         </div>
@@ -576,9 +577,14 @@ const isOpen = ref(false);
                                             >
                                                 Pukul
                                                 {{
-                                                    formatJam(item.waktu_acara)
+                                                    item.waktu_mulai_acara ??
+                                                    "belum diatur"
                                                 }}
-                                                - Selesai
+                                                -
+                                                {{
+                                                    item.waktu_selesai_acara ??
+                                                    "Selesai"
+                                                }}
                                             </h2>
                                         </div>
 
@@ -593,9 +599,6 @@ const isOpen = ref(false);
                                     </div>
                                 </div>
                             </div>
-                            <p class="font-montserrat text-xl">
-                                Catatan: Dilarang Merokok
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -661,12 +664,12 @@ const isOpen = ref(false);
                                         class="pb-12 pt-1 space-y-6 w-full text-left"
                                     >
                                         <h2 class="font-bold text-lg">
-                                            {{ formatTanggal(story.tanggal) }}
+                                            {{ story.tanggal }}
                                         </h2>
 
                                         <div
                                             v-if="story.foto_kisah_cinta_path"
-                                            class="relative flex justify-center items-center w-full max-w-[320px] sm:max-w-[380px] mx-auto my-10"
+                                            class="relative flex justify-center items-center w-full max-w-[320px] sm:max-w-[380px] mx-auto my-6"
                                         >
                                             <img
                                                 :src="`/storage/${story.foto_kisah_cinta_path}`"
@@ -704,7 +707,7 @@ const isOpen = ref(false);
                                 </h2>
                                 <p class="font-montserrat text-xl">
                                     {{
-                                        templateUndanganPernikahan?.doa_pengantinn_pria ??
+                                        templateUndanganPernikahan?.doa_pengantin_pria ??
                                         "Belum Diatur"
                                     }}
                                 </p>

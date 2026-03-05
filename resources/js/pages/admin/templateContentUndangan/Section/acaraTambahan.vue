@@ -230,7 +230,7 @@ const removeAcara = (index) => {
                             <label
                                 class="block text-xs font-bold text-gray-700 uppercase"
                             >
-                                Lokasi Peta
+                                Lokasi Peta Undangan
                             </label>
                         </div>
 
@@ -238,11 +238,10 @@ const removeAcara = (index) => {
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
                                     <label class="items-center cursor-pointer">
-                                        <p
-                                            class="text-[10px] mb-1 font-bold text-gray-600"
+                                        <label
+                                            class="block text-xs font-bold text-gray-700 mb-1"
+                                            >Tampilkan Peta Undangan</label
                                         >
-                                            Tampilkan Peta
-                                        </p>
                                         <input
                                             type="checkbox"
                                             v-model="acara.show_map"
@@ -255,7 +254,7 @@ const removeAcara = (index) => {
                                 </div>
                                 <div class="flex flex-col gap-1">
                                     <label
-                                        class="text-[10px] font-bold text-gray-500 uppercase"
+                                        class="block text-xs font-bold text-gray-700 mb-1"
                                         >Zoom:</label
                                     >
                                     <input
@@ -270,7 +269,7 @@ const removeAcara = (index) => {
 
                                 <div class="flex flex-col gap-1">
                                     <label
-                                        class="text-[10px] font-bold text-gray-500 uppercase"
+                                        class="block text-xs font-bold text-gray-700 mb-1"
                                         >Latitude:</label
                                     >
                                     <input
@@ -283,7 +282,7 @@ const removeAcara = (index) => {
                                 </div>
                                 <div class="flex flex-col gap-1">
                                     <label
-                                        class="text-[10px] font-bold text-gray-500 uppercase"
+                                        class="block text-xs font-bold text-gray-700 mb-1"
                                         >Longitude:</label
                                     >
                                     <input

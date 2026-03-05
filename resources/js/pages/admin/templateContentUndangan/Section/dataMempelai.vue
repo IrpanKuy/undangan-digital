@@ -26,9 +26,9 @@ const handleFotoPriaUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
         if (fileItems[0].origin === 1) {
             // 1 = File baru dari user
-            props.modelValue.foto_pria_path = fileItems[0].file;
+            props.modelValue.foto_pria = fileItems[0].file;
         } else if (fileItems[0].origin === 3) {
-            props.modelValue.foto_pria_path = null;
+            props.modelValue.foto_pria = null;
         }
     } else {
         props.modelValue.foto_pria = null;
@@ -41,9 +41,9 @@ const handleFotoWanitaUpdate = (fileItems) => {
     if (fileItems && fileItems.length > 0) {
         if (fileItems[0].origin === 1) {
             // 1 = File baru dari user
-            props.modelValue.foto_wanita_path = fileItems[0].file;
+            props.modelValue.foto_wanita = fileItems[0].file;
         } else if (fileItems[0].origin === 3) {
-            props.modelValue.foto_wanita_path = null;
+            props.modelValue.foto_wanita = null;
         }
     } else {
         props.modelValue.foto_wanita = null;
@@ -80,9 +80,6 @@ const initialFotoWanita = computed(() =>
           ]
         : [],
 );
-
-console.log(initialFotoPria.value);
-console.log(`/storage/${props.modelValue.foto_wanita_path}`);
 </script>
 
 <template>
@@ -111,13 +108,13 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         class="absolute top-0 left-0 w-1 h-full bg-blue-600"
                     ></div>
                     <h4
-                        class="font-bold text-sm text-blue-800 uppercase border-b border-gray-300 pb-2 mb-3 flex items-center gap-2"
+                        class="font-bold text-sm text-blue-800 border-b border-gray-300 pb-2 mb-3 flex items-center gap-2"
                     >
                         <Icon icon="mdi:gender-male" /> Mempelai Pria
                     </h4>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Nama Panggilan</label
                         >
                         <input
@@ -128,14 +125,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.nama_panggilan_pria"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.nama_panggilan_pria }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Nama Lengkap</label
                         >
                         <input
@@ -146,14 +143,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.nama_lengkap_pria"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.nama_lengkap_pria }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Keterangan Keluarga</label
                         >
                         <textarea
@@ -164,14 +161,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         ></textarea>
                         <p
                             v-if="modelValue.errors.keterangan_keluarga_pria"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.keterangan_keluarga_pria }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Doa Pengantin Pria
                         </label>
                         <textarea
@@ -187,12 +184,12 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                     <!-- Social Media Pria -->
                     <div>
                         <label
-                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 mb-1"
                         >
                             <Icon icon="mdi:instagram" class="text-red-600" />
                             Instagram
                             <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
+                                >(opsional)</span
                             >
                         </label>
                         <input
@@ -203,14 +200,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.instagram_url_pria"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.instagram_url_pria }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 mb-1"
                         >
                             <Icon
                                 icon="ic:baseline-tiktok"
@@ -218,7 +215,7 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                             />
                             TikTok
                             <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
+                                >(opsional)</span
                             >
                         </label>
                         <input
@@ -229,19 +226,19 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.tiktok_url_pria"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.tiktok_url_pria }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 mb-1"
                         >
                             <Icon icon="ri:twitter-x-fill" class="text-black" />
                             X/Twitter
                             <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
+                                >(opsional)</span
                             >
                         </label>
                         <input
@@ -252,14 +249,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.x_url_pria"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.x_url_pria }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                         >
                             Foto Mempelai Pria
                         </label>
@@ -273,13 +270,13 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                             class="mb-0 custom-filepond"
                         />
                         <p class="text-[10px] text-gray-600 mt-1 font-light">
-                            Ukuran file maksimal 10MB
+                            Ukuran file maksimal 5MB
                         </p>
                         <p
-                            v-if="modelValue.errors.foto_pria_path"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            v-if="modelValue.errors.foto_pria"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
-                            {{ modelValue.errors.foto_pria_path }}
+                            {{ modelValue.errors.foto_pria }}
                         </p>
                     </div>
                 </div>
@@ -292,13 +289,13 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         class="absolute top-0 left-0 w-1 h-full bg-pink-500"
                     ></div>
                     <h4
-                        class="font-bold text-sm text-pink-700 uppercase border-b border-gray-300 pb-2 mb-3 flex items-center gap-2"
+                        class="font-bold text-sm text-pink-700 border-b border-gray-300 pb-2 mb-3 flex items-center gap-2"
                     >
                         <Icon icon="mdi:gender-female" /> Mempelai Wanita
                     </h4>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Nama Panggilan</label
                         >
                         <input
@@ -309,14 +306,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.nama_panggilan_wanita"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.nama_panggilan_wanita }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Nama Lengkap</label
                         >
                         <input
@@ -327,14 +324,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.nama_lengkap_wanita"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.nama_lengkap_wanita }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Keterangan Keluarga</label
                         >
                         <textarea
@@ -345,7 +342,7 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         ></textarea>
                         <p
                             v-if="modelValue.errors.keterangan_keluarga_wanita"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.keterangan_keluarga_wanita }}
                         </p>
@@ -353,7 +350,7 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
 
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                             >Doa Pengantin Wanita
                         </label>
                         <textarea
@@ -369,12 +366,12 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                     <!-- Social Media Wanita -->
                     <div>
                         <label
-                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 mb-1"
                         >
                             <Icon icon="mdi:instagram" class="text-pink-600" />
                             Instagram
                             <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
+                                >(opsional)</span
                             >
                         </label>
                         <input
@@ -385,14 +382,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.instagram_url_wanita"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.instagram_url_wanita }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 mb-1"
                         >
                             <Icon
                                 icon="ic:baseline-tiktok"
@@ -400,7 +397,7 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                             />
                             TikTok
                             <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
+                                >(opsional)</span
                             >
                         </label>
                         <input
@@ -411,19 +408,19 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.tiktok_url_wanita"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.tiktok_url_wanita }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 uppercase mb-1"
+                            class="flex items-center gap-1 text-[10px] font-bold text-gray-600 mb-1"
                         >
                             <Icon icon="ri:twitter-x-fill" class="text-black" />
                             X/Twitter
                             <span class="text-gray-400 font-normal normal-case"
-                                >(Opsional)</span
+                                >(opsional)</span
                             >
                         </label>
                         <input
@@ -434,14 +431,14 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                         />
                         <p
                             v-if="modelValue.errors.x_url_wanita"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
                             {{ modelValue.errors.x_url_wanita }}
                         </p>
                     </div>
                     <div>
                         <label
-                            class="block text-xs font-bold text-gray-700 uppercase mb-1"
+                            class="block text-xs font-bold text-gray-700 mb-1"
                         >
                             Foto Mempelai Wanita
                         </label>
@@ -455,13 +452,13 @@ console.log(`/storage/${props.modelValue.foto_wanita_path}`);
                             class="mb-0 custom-filepond"
                         />
                         <p class="text-[10px] text-gray-600 mt-1 font-light">
-                            Ukuran file maksimal 10MB
+                            Ukuran file maksimal 5MB
                         </p>
                         <p
-                            v-if="modelValue.errors.foto_wanita_path"
-                            class="text-[10px] text-red-600 mt-1 uppercase font-bold"
+                            v-if="modelValue.errors.foto_wanita"
+                            class="text-[10px] text-red-600 mt-1 font-bold"
                         >
-                            {{ modelValue.errors.foto_wanita_path }}
+                            {{ modelValue.errors.foto_wanita }}
                         </p>
                     </div>
                 </div>

@@ -14,7 +14,7 @@ class TemplateUndangan extends Controller
      */
     public function index()
     {
-        $templates = \App\Models\Admin\TemplateUndangan::with(['kategoriUndangan', 'undangans'])->get();
+        $templates = \App\Models\Admin\TemplateUndangan::with(['kategoriUndangan', 'undanganPreview'])->get();
         $categories = \App\Models\Admin\KategoriUndangan::where('status', true)->get();
         $availableUndangans = \App\Models\User\Undangan\Undangan::where('for_template', true)->get();
 

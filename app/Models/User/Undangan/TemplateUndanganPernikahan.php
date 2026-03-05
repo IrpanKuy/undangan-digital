@@ -10,12 +10,6 @@ use Carbon\Carbon;
 
 class TemplateUndanganPernikahan extends Model
 {
-    protected $casts = [
-        'tanggal_mulai' => 'date',
-        'waktu_mulai' => 'datetime:H:i',
-        'waktu_selesai' => 'datetime:H:i',
-    ];
-
     protected $fillable = [
         'undangan_id',
         'nama_prosesi',
@@ -32,13 +26,24 @@ class TemplateUndanganPernikahan extends Model
         'no_rek_amplop',
         'lokasi_pengiriman_kado',
     ];
+    protected $casts = [
+        'tanggal_mulai' => 'date:Y-m-d',
+        'waktu_mulai' => 'datetime:H:i',
+        'waktu_selesai' => 'datetime:H:i',
+    ];
 
-    public function namaProsesi(): Attribute
+    protected function tanggalMulaiIndo(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => $value ?: 'Akad Nikah',
+            get: fn () => $this->tanggal_mulai 
+                ? Carbon::parse($this->tanggal_mulai)->translatedFormat('d F, Y') 
+                : null,
         );
     }
+
+    protected $appends = ['tanggal_mulai_indo'];
+    
+
 
     protected function waktuMulai(): Attribute
     {

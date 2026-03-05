@@ -42,6 +42,7 @@ const form = useForm({
     nama_lengkap_pria: "",
     keterangan_keluarga_pria: "",
     doa_pengantin_pria: "Semoga istri saya sehat selalu dan taat beribadah",
+    foto_pria: null,
     foto_pria_path: null,
     instagram_url_pria: "",
     tiktok_url_pria: "",
@@ -52,6 +53,7 @@ const form = useForm({
     tiktok_url_wanita: "",
     x_url_wanita: "",
     keterangan_keluarga_wanita: "",
+    foto_wanita: null,
     foto_wanita_path: null,
     doa_pengantin_wanita: "Semoga suami saya sehat selalu dan taat beribadah",
 
@@ -118,7 +120,6 @@ onMounted(() => {
 
         if (props.template.data_mempelai) {
             const m = props.template.data_mempelai;
-            console.log(m);
             form.nama_panggilan_pria = m.nama_panggilan_pria;
             form.nama_lengkap_pria = m.nama_lengkap_pria;
             form.keterangan_keluarga_pria = m.keterangan_keluarga_pria;
@@ -146,14 +147,15 @@ onMounted(() => {
         if (props.template.template_undangan_pernikahan) {
             const p = props.template.template_undangan_pernikahan;
             form.nama_prosesi = p.nama_prosesi;
-            form.tanggal_mulai = p.tanggal_mulai;
+            form.tanggal_mulai = p.tanggal_mulai
+                ? p.tanggal_mulai.split("T")[0]
+                : "";
             form.waktu_mulai = p.waktu_mulai;
             form.waktu_selesai = p.waktu_selesai;
             form.detail_lokasi_nikah = p.detail_lokasi_nikah;
             form.show_map = p.show_map === 1 || p.show_map === true;
             form.no_rek_amplop = p.no_rek_amplop;
             form.lokasi_pengiriman_kado = p.lokasi_pengiriman_kado;
-
             if (p.latitude && p.longitude) {
                 form.lokasi_nikah = {
                     lat: parseFloat(p.latitude),
@@ -167,7 +169,9 @@ onMounted(() => {
             form.acaras = props.template.acaras.map((a) => ({
                 id: a.id,
                 nama_acara: a.nama_acara,
-                tanggal_acara: a.tanggal_acara,
+                tanggal_acara: a.tanggal_acara
+                    ? a.tanggal_acara.split("T")[0]
+                    : "",
                 waktu_mulai_acara: a.waktu_mulai_acara,
                 waktu_selesai_acara: a.waktu_selesai_acara,
                 detail_lokasi_acara: a.detail_lokasi_acara,
@@ -188,6 +192,14 @@ onMounted(() => {
                 id: g.id,
                 file: null,
                 image_path: g.image_path,
+                initial_files: g.image_path
+                    ? [
+                          {
+                              source: `/storage/${g.image_path}`,
+                              options: { type: "local" },
+                          },
+                      ]
+                    : [],
             }));
         }
 
@@ -202,6 +214,14 @@ onMounted(() => {
                 peristiwa: k.peristiwa,
                 foto: null,
                 foto_path: k.foto_kisah_cinta_path,
+                initial_files: k.foto_kisah_cinta_path
+                    ? [
+                          {
+                              source: `/storage/${k.foto_kisah_cinta_path}`,
+                              options: { type: "local" },
+                          },
+                      ]
+                    : [],
             }));
         }
     }

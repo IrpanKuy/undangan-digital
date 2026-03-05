@@ -25,6 +25,7 @@ const addGallery = () => {
         id: null,
         file: null,
         image_path: null,
+        initial_files: [], // TAMBAHKAN INI JUGA
     });
 };
 
@@ -108,7 +109,7 @@ const getInitialFiles = (item) => {
                 Belum ada foto galeri.
             </div>
             <p class="text-[10px] mb-2 text-gray-500">
-                Ukuran file maksimal 10MB
+                Ukuran file maksimal 5MB
             </p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div
@@ -135,7 +136,7 @@ const getInitialFiles = (item) => {
                             @updatefiles="
                                 (files) => handleFileChange(files, index)
                             "
-                            :files="getInitialFiles(item)"
+                            :files="item.initial_files"
                             :server="serverOptions"
                             class="mb-0 custom-filepond"
                         />

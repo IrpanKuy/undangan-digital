@@ -93,13 +93,13 @@ class MainUndanganController extends Controller
             );
 
             // Handle Foto Mempelai
-            if ($request->hasFile('foto_pria_path')) {
+            if ($request->hasFile('foto_pria')) {
                 if ($mempelai->foto_pria_path) Storage::disk('public')->delete($mempelai->foto_pria_path);
-                $mempelai->foto_pria_path = $request->file('foto_pria_path')->store('mempelai', 'public');
+                $mempelai->foto_pria_path = $request->file('foto_pria')->store('mempelai', 'public');
             }
-            if ($request->hasFile('foto_wanita_path')) {
+            if ($request->hasFile('foto_wanita')) {
                 if ($mempelai->foto_wanita_path) Storage::disk('public')->delete($mempelai->foto_wanita_path);
-                $mempelai->foto_wanita_path = $request->file('foto_wanita_path')->store('mempelai', 'public');
+                $mempelai->foto_wanita_path = $request->file('foto_wanita')->store('mempelai', 'public');
             }
             $mempelai->save();
 
