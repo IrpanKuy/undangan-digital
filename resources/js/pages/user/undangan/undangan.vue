@@ -300,6 +300,12 @@ const formatDate = (dateString) => {
                                     Pengaturan
                                 </Link>
                                 <Link
+                                    :href="
+                                        route(
+                                            'user.undangan.pengaturan-tambahan',
+                                            ['rsvp', undangan.id],
+                                        )
+                                    "
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon
@@ -309,6 +315,12 @@ const formatDate = (dateString) => {
                                     RSVP Form
                                 </Link>
                                 <Link
+                                    :href="
+                                        route(
+                                            'user.undangan.pengaturan-tambahan',
+                                            ['komentar', undangan.id],
+                                        )
+                                    "
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon
@@ -318,6 +330,12 @@ const formatDate = (dateString) => {
                                     Komentar
                                 </Link>
                                 <Link
+                                    :href="
+                                        route(
+                                            'user.undangan.pengaturan-tambahan',
+                                            ['quick-share', undangan.id],
+                                        )
+                                    "
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon

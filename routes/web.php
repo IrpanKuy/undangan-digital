@@ -10,6 +10,7 @@ use App\Http\Controllers\RoutingUndanganController;
 use App\Http\Controllers\UndanganPreviewController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ListUndanganController;
+use App\Http\Controllers\User\PengaturanTambahanController;
 use App\Http\Controllers\User\UndanganController;
 use Laravel\Socialite\Socialite;
 
@@ -73,6 +74,7 @@ Route::middleware('hasAuth')->name('user.')->group(function () {
     Route::get('undangan/preview/{judul_undangan}/{undangan_id}', [UndanganPreviewController::class, 'preview'])->name('undangan.preview');
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
+    Route::get('undangan/{activeMenu}/{undanganId}/pengaturan-tambahan', [PengaturanTambahanController::class, 'index'])->name('undangan.pengaturan-tambahan');
 });
 
 // Public Undangan Routes (No Auth Needed)
