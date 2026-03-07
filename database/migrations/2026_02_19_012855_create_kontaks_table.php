@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('no_hp');
             $table->text('pesan');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
