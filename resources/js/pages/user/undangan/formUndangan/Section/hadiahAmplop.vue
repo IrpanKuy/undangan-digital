@@ -34,11 +34,9 @@ const emit = defineEmits(["update:modelValue"]);
                         v-model="modelValue.no_rek_amplop"
                         rows="4"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Contoh:&#10;BCA 123456789 a/n Nama&#10;Dana 0812345678 a/n Nama"
                     ></textarea>
                     <p class="text-[10px] text-gray-500 mt-1">
-                        Gunakan baris baru (Enter) untuk menambahkan rekening
-                        lebih dari satu.
+                        Kosongi jika tidak ingin ada Amplop Digital
                     </p>
                 </div>
 
@@ -54,8 +52,11 @@ const emit = defineEmits(["update:modelValue"]);
                         v-model="modelValue.lokasi_pengiriman_kado"
                         rows="4"
                         class="w-full border border-gray-400 rounded-sm px-3 py-2 text-sm outline-none focus:border-[#004D31]"
-                        placeholder="Alamat lengkap penerima kado..."
                     ></textarea>
+                    <p class="text-[10px] text-gray-500 mt-1">
+                        Kosongi jika tidak ingin ada Alamat Pengiriman Kado
+                        Fisik
+                    </p>
                 </div>
             </div>
         </div>

@@ -48,13 +48,17 @@ class MainUndanganController extends Controller
             templateContentUndanganValidate::attributes()
         );
 
+        // dd($request->all());
         DB::beginTransaction();
         try {
             // 1. Upsert Undangan
             $undangan = $request->id ? Undangan::findOrFail($request->id) : new Undangan();
             if (!$request->id) {
                 $undangan->user_id = Auth::id() ?? 1;
-                $undangan->for_template = true;
+                $undangan->template_id = $request->template_id;
+                if(Auth::user()->role == 'admin'){
+                    $undangan->for_template = true;
+                }
             }
 
             $undangan->judul = $request->judul;
@@ -222,7 +226,7 @@ class MainUndanganController extends Controller
             }
 
             // Jika buat baru, arahkan ke form pengaturan (Settings)
-            return redirect()->route('admin.template-content-undangan.edit-setting', $undangan->id)
+            return redirect()->route('user.undangan.edit-setting', $undangan->id)
                              ->with('success', 'Konten template berhasil dibuat. Silakan atur fitur tambahan.');
 
         } catch (\Exception $e) {
@@ -262,8 +266,10 @@ class MainUndanganController extends Controller
             ['undangan_id' => $id],
             $request->only(['reservation_form', 'komentar_undangan', 'jumlah_kehadiran', 'music_url'])
         );
-
-        return redirect()->route('admin.template-content-undangan.index')->with('success', 'Pengaturan berhasil diperbarui.');
+        if(Auth::user()->role == 'admin'){
+            return redirect()->route('admin.template-content-undangan.index')->with('success', 'Pengaturan berhasil diperbarui.');
+        }
+        return redirect()->route('user.undangan.edit-setting', $id)->with('success', 'Pengaturan berhasil diperbarui.');
     }
 
     /**

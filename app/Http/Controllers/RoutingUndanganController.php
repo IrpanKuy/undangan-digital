@@ -95,7 +95,7 @@ class RoutingUndanganController extends Controller
             ]);
         } 
 
-        return Inertia::render('user/undangan/undangan/undanganForm/content', [
+        return Inertia::render('user/undangan/formUndangan/content', [
             'template' => $template,
         ]);
     }
@@ -115,7 +115,7 @@ class RoutingUndanganController extends Controller
             ]);
         } 
 
-        return Inertia::render('user/undangan/undangan/undanganForm/setting', [
+        return Inertia::render('user/undangan/formUndangan/setting', [
             'template' => $template,
         ]);
     }

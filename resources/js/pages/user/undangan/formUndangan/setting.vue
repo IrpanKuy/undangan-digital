@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useForm, router } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Swal from "sweetalert2";
-import adminDashboardLayout from "../../../layouts/adminDashboardLayout.vue";
+import userDashboardLayout from "../../../layouts/userDashboardLayout.vue";
 
 const props = defineProps({
     template: Object,
@@ -68,7 +68,7 @@ const submit = () => {
 </script>
 
 <template>
-    <adminDashboardLayout>
+    <userDashboardLayout>
         <!-- Slot Header -->
         <template #headerTitle>
             <div class="flex items-center gap-2">
@@ -266,7 +266,7 @@ const submit = () => {
                                 <!-- Input: Music URL -->
                                 <div>
                                     <label
-                                        class="block text-xs font-bold text-gray-700 uppercase mb-1 flex items-center gap-1"
+                                        class="text-xs font-bold text-gray-700 uppercase mb-1 flex items-center gap-1"
                                     >
                                         <Icon
                                             icon="mdi:music-note"
@@ -301,13 +301,7 @@ const submit = () => {
                     <div class="flex justify-end gap-3 mt-8">
                         <button
                             type="button"
-                            @click="
-                                router.get(
-                                    route(
-                                        'admin.template-content-undangan.index',
-                                    ),
-                                )
-                            "
+                            @click="router.get(route('user.undangan.index'))"
                             class="cursor-pointer px-6 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-400 rounded-sm hover:bg-gray-100 transition-colors uppercase tracking-tighter"
                         >
                             Batal
@@ -334,5 +328,5 @@ const submit = () => {
                 </form>
             </div>
         </template>
-    </adminDashboardLayout>
+    </userDashboardLayout>
 </template>

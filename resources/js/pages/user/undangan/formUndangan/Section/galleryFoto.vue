@@ -25,6 +25,7 @@ const addGallery = () => {
         id: null,
         file: null,
         image_path: null,
+        initial_files: [], // TAMBAHKAN INI JUGA
     });
 };
 
@@ -39,10 +40,35 @@ const removeGallery = (index) => {
 // Menerima fileItems dari event FilePond dan index dari loop
 const handleFileChange = (fileItems, index) => {
     if (fileItems && fileItems.length > 0) {
-        props.modelValue.galleries[index].file = fileItems[0].file;
+        // Hanya ambil file jika itu file baru (bukan load dari server)
+        if (fileItems[0].origin === 1) {
+            props.modelValue.galleries[index].file = fileItems[0].file;
+        } else if (fileItems[0].origin === 3) {
+            props.modelValue.galleries[index].file = null;
+        }
     } else {
         props.modelValue.galleries[index].file = null;
     }
+};
+
+const serverOptions = {
+    load: (source, load, error, progress, abort, headers) => {
+        fetch(source)
+            .then((res) => res.blob())
+            .then(load);
+    },
+};
+
+const getInitialFiles = (item) => {
+    if (item.image_path) {
+        return [
+            {
+                source: `/storage/${item.image_path}`,
+                options: { type: "local" },
+            },
+        ];
+    }
+    return [];
 };
 </script>
 
@@ -82,7 +108,9 @@ const handleFileChange = (fileItems, index) => {
             >
                 Belum ada foto galeri.
             </div>
-
+            <p class="text-[10px] mb-2 text-gray-500">
+                Ukuran file maksimal 5MB
+            </p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div
                     v-for="(item, index) in modelValue.galleries"
@@ -91,6 +119,7 @@ const handleFileChange = (fileItems, index) => {
                 >
                     <!-- Tombol Hapus (Silang) -->
                     <button
+                        v-if="index !== 0"
                         @click="removeGallery(index)"
                         type="button"
                         class="absolute top-2 right-2 text-red-500 hover:text-white bg-red-100 hover:bg-red-600 p-1 rounded-sm cursor-pointer transition-colors z-10 shadow-sm"
@@ -98,18 +127,7 @@ const handleFileChange = (fileItems, index) => {
                         <Icon icon="mdi:close" width="14" />
                     </button>
 
-                    <!-- Preview Gambar dari Database (Jika Ada) -->
-                    <div
-                        v-if="item.image_path && !item.file"
-                        class="w-full h-32 bg-gray-200 border border-gray-300 rounded-sm flex items-center justify-center overflow-hidden"
-                    >
-                        <img
-                            :src="`/storage/${item.image_path}`"
-                            class="w-full h-full object-cover"
-                        />
-                    </div>
-
-                    <!-- Input FilePond -->
+                    <!-- Input FilePond dengan Preview Internal -->
                     <div class="flex-1">
                         <FilePond
                             :name="'gallery_foto_' + index"
@@ -118,9 +136,21 @@ const handleFileChange = (fileItems, index) => {
                             @updatefiles="
                                 (files) => handleFileChange(files, index)
                             "
+                            :files="item.initial_files"
+                            :server="serverOptions"
                             class="mb-0 custom-filepond"
                         />
                     </div>
+
+                    <p
+                        v-if="
+                            modelValue.errors &&
+                            modelValue.errors[`galleries.${index}.file`]
+                        "
+                        class="text-[10px] text-red-600 mt-1 font-bold"
+                    >
+                        {{ modelValue.errors[`galleries.${index}.file`] }}
+                    </p>
                 </div>
             </div>
         </div>

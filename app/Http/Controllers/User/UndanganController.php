@@ -17,11 +17,10 @@ class UndanganController extends Controller
     {
         // Pastikan hanya mengambil undangan milik user yang sedang login
         // with('templateUndangan') memanggil relasi ke tabel template untuk data gambar/tema
-        $undangans = Undangan::with('templateUndangan')
+        $undangans = Undangan::with(['templateUndanganPernikahan', 'templateUndanganUser'])
             ->where('user_id', Auth::id())
             ->latest() // Urutkan dari yang terbaru
             ->get();
-
         return Inertia::render('user/undangan/undangan', [
             'undangans' => $undangans
         ]);
@@ -30,17 +29,21 @@ class UndanganController extends Controller
      * Catatan: Untuk method create() dan store(), 
      * kamu bisa menambahkannya di sini untuk logika form pembuatan undangan.
      */
-    public function contentForm()
+    public function contentForm($template_id)
     {
-        return Inertia::render('user/undangan/undanganForm/content');
+        return Inertia::render('user/undangan/formUndangan/content', [
+            'templateId' => $template_id
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function SettingForm()
+    public function SettingForm($template_id)
     {
-        return Inertia::render('user/undangan/setting');
+        return Inertia::render('user/undangan/setting', [
+            'templateId' => $template_id
+        ]);
     }
 
     

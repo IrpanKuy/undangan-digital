@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useForm, router } from "@inertiajs/vue3";
+import { useForm, router, Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import userDashboardLayout from "../../../layouts/userDashboardLayout.vue";
 import { Icon } from "@iconify/vue";
@@ -8,17 +8,18 @@ import { Icon } from "@iconify/vue";
 // Import Sections
 import InformasiDasar from "./Section/informasiDasar.vue";
 import DataMempelai from "./Section/dataMempelai.vue";
-import DetailAkad from "./Section/detailAkad.vue";
 import AcaraTambahan from "./Section/acaraTambahan.vue";
 import GalleryFoto from "./Section/galleryFoto.vue";
 import KisahCinta from "./Section/kisahCinta.vue";
 import HadiahAmplop from "./Section/hadiahAmplop.vue";
+import DetailAcaraPernikahan from "./Section/detailAcaraPernikahan.vue";
 
 const props = defineProps({
     template: {
         type: Object,
         default: null,
     },
+    templateId: "",
 });
 
 const activeTab = ref("content");
@@ -26,18 +27,25 @@ const activeTab = ref("content");
 const form = useForm({
     id: null,
     // Undangan
+    template_id: props.templateId ?? null,
     judul: "",
     url: "",
     thumbnail: null,
-    salam_pembuka: "",
-    text_pembuka: "",
+    thumbnail_path: null,
+    salam_pembuka: "Assalamu’alaikum Wr. Br.",
+    text_pembuka:
+        "Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia kami",
     video_youtube_url: "",
+    text_penutup:
+        "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua pengantin",
 
     // Data Mempelai
     nama_panggilan_pria: "",
     nama_lengkap_pria: "",
     keterangan_keluarga_pria: "",
+    doa_pengantin_pria: "Semoga istri saya sehat selalu dan taat beribadah",
     foto_pria: null,
+    foto_pria_path: null,
     instagram_url_pria: "",
     tiktok_url_pria: "",
     x_url_pria: "",
@@ -48,26 +56,36 @@ const form = useForm({
     x_url_wanita: "",
     keterangan_keluarga_wanita: "",
     foto_wanita: null,
-    text_penutup: "",
+    foto_wanita_path: null,
+    doa_pengantin_wanita: "Semoga suami saya sehat selalu dan taat beribadah",
 
     // Template Undangan Pernikahan
-    tanggal_mulai_akad: "",
-    waktu_mulai_akad: "",
-    detail_lokasi_akad_nikah: "",
-    lokasi_akad_nikah: { lat: -6.2088, lng: 106.8456 },
-    doa_pengantinn_pria: "",
-    doa_pengantin_wanita: "",
-    no_rek_amplop: "",
-    lokasi_pengiriman_kado: "",
+    nama_prosesi: "Akad Nikah",
+    tanggal_mulai: "",
+    waktu_mulai: "",
+    waktu_selesai: "",
+    detail_lokasi_nikah: "",
+    show_map: true, // Nilai default boolean
+    lokasi_nikah: {
+        lat: -6.2088,
+        lng: 106.8456,
+        zoom: 15,
+    },
+    no_rek_amplop:
+        "Bagi yang ingin memberikan hadiah, silahkan transfer ke rekening berikut: [Bank BCA 123456789 Atas nama Pengantin]",
+    lokasi_pengiriman_kado:
+        "Bagi yang ingin mengirim kado fisik, silahkan kirim ke alamat berikut: [Alamat Pengantin]",
 
     // Acara
     acaras: [
         {
             nama_acara: "Resepsi",
             tanggal_acara: "",
-            waktu_acara: "",
+            waktu_mulai_acara: "",
+            waktu_selesai_acara: "",
             detail_lokasi_acara: "",
-            lokasi_acara: { lat: -6.2088, lng: 106.8456 },
+            show_map: true,
+            lokasi_acara: { lat: -6.2088, lng: 106.8456, zoom: 15 },
         },
     ],
 
@@ -100,6 +118,7 @@ onMounted(() => {
         form.salam_pembuka = props.template.salam_pembuka;
         form.text_pembuka = props.template.text_pembuka;
         form.video_youtube_url = props.template.video_youtube_url;
+        form.thumbnail_path = props.template.thumbnail_path;
 
         if (props.template.data_mempelai) {
             const m = props.template.data_mempelai;
@@ -116,21 +135,35 @@ onMounted(() => {
             form.x_url_wanita = m.x_url_wanita;
             form.keterangan_keluarga_wanita = m.keterangan_keluarga_wanita;
             form.text_penutup = m.text_penutup;
-        }
+            form.foto_pria_path = m.foto_pria_path;
+            form.foto_wanita_path = m.foto_wanita_path;
 
+            // Doa fields are now in the Data Mempelai section in form
+            if (props.template.template_undangan_pernikahan) {
+                form.doa_pengantin_pria =
+                    props.template.template_undangan_pernikahan.doa_pengantin_pria;
+                form.doa_pengantin_wanita =
+                    props.template.template_undangan_pernikahan.doa_pengantin_wanita;
+            }
+        }
         if (props.template.template_undangan_pernikahan) {
             const p = props.template.template_undangan_pernikahan;
-            form.tanggal_mulai_akad = p.tanggal_mulai_akad;
-            form.waktu_mulai_akad = p.waktu_mulai_akad;
-            form.waktu_selesai_akad = p.waktu_selesai_akad;
-            form.detail_lokasi_akad_nikah = p.detail_lokasi_akad_nikah;
-            form.doa_pengantinn_pria = p.doa_pengantinn_pria;
-            form.doa_pengantin_wanita = p.doa_pengantin_wanita;
+            form.nama_prosesi = p.nama_prosesi;
+            form.tanggal_mulai = p.tanggal_mulai
+                ? p.tanggal_mulai.split("T")[0]
+                : "";
+            form.waktu_mulai = p.waktu_mulai;
+            form.waktu_selesai = p.waktu_selesai;
+            form.detail_lokasi_nikah = p.detail_lokasi_nikah;
+            form.show_map = p.show_map === 1 || p.show_map === true;
             form.no_rek_amplop = p.no_rek_amplop;
             form.lokasi_pengiriman_kado = p.lokasi_pengiriman_kado;
-
-            if (p.lokasi_akad_nikah) {
-                form.lokasi_akad_nikah = p.lokasi_akad_nikah;
+            if (p.latitude && p.longitude) {
+                form.lokasi_nikah = {
+                    lat: parseFloat(p.latitude),
+                    lng: parseFloat(p.longitude),
+                    zoom: p.zoom || 15,
+                };
             }
         }
 
@@ -138,12 +171,17 @@ onMounted(() => {
             form.acaras = props.template.acaras.map((a) => ({
                 id: a.id,
                 nama_acara: a.nama_acara,
-                tanggal_acara: a.tanggal_acara,
-                waktu_acara: a.waktu_acara,
+                tanggal_acara: a.tanggal_acara
+                    ? a.tanggal_acara.split("T")[0]
+                    : "",
+                waktu_mulai_acara: a.waktu_mulai_acara,
+                waktu_selesai_acara: a.waktu_selesai_acara,
                 detail_lokasi_acara: a.detail_lokasi_acara,
-                lokasi_acara: a.lokasi_acara || {
-                    lat: -6.2088,
-                    lng: 106.8456,
+                show_map: a.show_map === 1 || a.show_map === true,
+                lokasi_acara: {
+                    lat: parseFloat(a.latitude_acara) || -6.2088,
+                    lng: parseFloat(a.longitude_acara) || 106.8456,
+                    zoom: a.zoom || 15,
                 },
             }));
         }
@@ -156,6 +194,14 @@ onMounted(() => {
                 id: g.id,
                 file: null,
                 image_path: g.image_path,
+                initial_files: g.image_path
+                    ? [
+                          {
+                              source: `/storage/${g.image_path}`,
+                              options: { type: "local" },
+                          },
+                      ]
+                    : [],
             }));
         }
 
@@ -170,6 +216,14 @@ onMounted(() => {
                 peristiwa: k.peristiwa,
                 foto: null,
                 foto_path: k.foto_kisah_cinta_path,
+                initial_files: k.foto_kisah_cinta_path
+                    ? [
+                          {
+                              source: `/storage/${k.foto_kisah_cinta_path}`,
+                              options: { type: "local" },
+                          },
+                      ]
+                    : [],
             }));
         }
     }
@@ -241,40 +295,18 @@ const submit = () => {
             <div class="w-full max-w-7xl pb-10">
                 <!-- Navigation Tabs (Flat UI) -->
                 <div class="flex border-b border-gray-300 mb-6">
-                    <button
-                        type="button"
-                        class="cursor-pointer flex items-center gap-2 px-6 py-3 font-medium text-lg font-semibold transition-colors outline-none"
-                        1
+                    <Link
+                        class="cursor-pointer flex items-center gap-2 px-6 py-3 font-medium text-sm"
                     >
                         <Icon icon="mdi:book-open-variant" width="18" />
                         Konten Undangan
-                    </button>
-                    <!-- <button
-                        type="button"
-                        @click="
-                            form.id
-                                ? router.get(
-                                      route(
-                                          'admin.template-content-undangan.edit-setting',
-                                          form.id,
-                                      ),
-                                  )
-                                : null
-                        "
-                        :disabled="!form.id"
-                        :class="[
-                            'flex items-center gap-2 px-6 py-3 font-medium text-sm transition-colors border-b-2 outline-none',
-                            activeTab === 'setting'
-                                ? 'border-[#004D31] text-[#004D31]'
-                                : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300',
-                            !form.id
-                                ? 'opacity-50 cursor-not-allowed'
-                                : 'cursor-pointer',
-                        ]"
+                    </Link>
+                    <Link
+                        class="cursor-pointer flex items-center gap-2 px-6 py-3 font-medium text-sm"
                     >
-                        <Icon icon="mdi:cog" width="18" />
-                        Pengaturan
-                    </button> -->
+                        <Icon icon="mdi:eye" width="18" />
+                        Lihat Preview
+                    </Link>
                 </div>
 
                 <!-- Error Alert Box -->
@@ -295,7 +327,8 @@ const submit = () => {
                         </h4>
                         <p class="text-xs font-medium text-red-700 mt-1">
                             Ada {{ Object.keys(form.errors).length }} kolom yang
-                            perlu diperbaiki.
+                            perlu diperbaiki. Pastikan semua file yang wajib
+                            diunggah sudah terpilih.
                         </p>
                     </div>
                 </div>
@@ -309,7 +342,7 @@ const submit = () => {
                     <DataMempelai v-model="form" />
 
                     <!-- Section 3: Detail Akad Nikah -->
-                    <DetailAkad v-model="form" />
+                    <DetailAcaraPernikahan v-model="form" />
 
                     <!-- Section 4: Acara Tambahan -->
                     <AcaraTambahan v-model="form" />
@@ -333,13 +366,7 @@ const submit = () => {
                     >
                         <button
                             type="button"
-                            @click="
-                                router.get(
-                                    route(
-                                        'admin.template-content-undangan.index',
-                                    ),
-                                )
-                            "
+                            @click="router.get(route('user.undangan.index'))"
                             class="cursor-pointer px-6 py-2.5 text-sm font-bold text-gray-700 bg-white border border-gray-400 rounded-sm hover:bg-gray-100 transition-colors uppercase tracking-tighter"
                         >
                             Batal

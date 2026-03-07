@@ -63,10 +63,14 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 
 });
 
-Route::prefix('user')->middleware('hasAuth')->name('user.')->group(function () {
-    Route::get('undangan/content', [UndanganController::class, 'contentForm'])->name('undangan.content');
-    Route::get('undangan/setting', [UndanganController::class, 'SettingForm'])->name('undangan.setting');
-    Route::get('preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('preview');
+Route::middleware('hasAuth')->name('user.')->group(function () {
+    Route::get('undangan/{id}/edit/content', [RoutingUndanganController::class, 'editContent'])
+        ->name('undangan.edit-content');
+    Route::get('undangan/{id}/edit/setting', [RoutingUndanganController::class, 'editSetting'])
+        ->name('undangan.edit-setting');
+    Route::get('undangan/create/content/{template_id}', [UndanganController::class, 'contentForm'])->name('undangan.create.content');
+    Route::get('undangan/create/setting', [UndanganController::class, 'SettingForm'])->name('undangan.create.setting');
+    Route::get('undangan/preview/{judul_undangan}/{undangan_id}', [UndanganPreviewController::class, 'preview'])->name('undangan.preview');
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
 });

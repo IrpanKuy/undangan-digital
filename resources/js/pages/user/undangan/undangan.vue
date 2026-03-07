@@ -12,6 +12,7 @@ const props = defineProps({
     },
 });
 
+console.log(props.undangans);
 const copiedSlug = ref(null);
 
 // Fungsi simulasi copy link ke clipboard
@@ -133,10 +134,7 @@ const formatDate = (dateString) => {
                             class="relative aspect-video overflow-hidden bg-gray-100 border-b border-gray-200"
                         >
                             <img
-                                :src="
-                                    undangan.template_undangan?.thumbnail ||
-                                    'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop'
-                                "
+                                :src="`/storage/${undangan.thumbnail_path}`"
                                 alt="Thumbnail"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
@@ -147,7 +145,8 @@ const formatDate = (dateString) => {
                             >
                                 <span
                                     v-if="
-                                        undangan.template_undangan?.is_premium
+                                        undangan.template_undangan_user
+                                            ?.template_premium
                                     "
                                     class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider flex items-center gap-1 shadow-sm"
                                 >
@@ -156,7 +155,7 @@ const formatDate = (dateString) => {
                                 </span>
                             </div>
 
-                            <div class="absolute top-3 right-3">
+                            <!-- <div class="absolute top-3 right-3">
                                 <span
                                     class="text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider shadow-sm border"
                                     :class="
@@ -167,7 +166,7 @@ const formatDate = (dateString) => {
                                 >
                                     {{ undangan.status || "Draft" }}
                                 </span>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- Content -->
@@ -175,9 +174,9 @@ const formatDate = (dateString) => {
                             <h2
                                 class="text-base font-bold text-gray-800 mb-1 truncate"
                             >
-                                {{ undangan.title }}
+                                {{ undangan.judul }}
                             </h2>
-                            <p
+                            <!-- <p
                                 class="text-[11px] text-gray-500 mb-4 flex items-center gap-1"
                             >
                                 <Icon icon="mdi:calendar" width="14" />
@@ -187,7 +186,7 @@ const formatDate = (dateString) => {
                                             undangan.created_at,
                                     )
                                 }}
-                            </p>
+                            </p> -->
 
                             <!-- Quick Stats/Info -->
                             <div class="space-y-2 mb-4">
@@ -198,8 +197,8 @@ const formatDate = (dateString) => {
                                         >Tema</span
                                     >
                                     <span class="font-medium text-gray-700">{{
-                                        undangan.template_undangan?.name ||
-                                        "Standard"
+                                        undangan.template_undangan_user
+                                            ?.judul_undangan
                                     }}</span>
                                 </div>
                                 <div
@@ -212,12 +211,37 @@ const formatDate = (dateString) => {
                                         formatDate(undangan.created_at)
                                     }}</span>
                                 </div>
+                                <div
+                                    class="flex justify-between text-xs py-1.5 border-b border-dashed border-gray-200"
+                                >
+                                    <span class="text-gray-500 italic"
+                                        >Mulai
+                                        {{
+                                            undangan
+                                                .template_undangan_pernikahan
+                                                ?.nama_prosesi
+                                        }}</span
+                                    >
+                                    <span class="font-medium text-gray-700">{{
+                                        formatDate(
+                                            undangan
+                                                .template_undangan_pernikahan
+                                                ?.tanggal_mulai,
+                                        )
+                                    }}</span>
+                                </div>
                             </div>
 
                             <!-- Primary Actions -->
                             <div class="flex gap-2">
                                 <a
-                                    :href="`/undangan/${undangan.slug}`"
+                                    :href="
+                                        route('user.undangan.preview', [
+                                            undangan.template_undangan_user
+                                                .judul_undangan,
+                                            undangan.id,
+                                        ])
+                                    "
                                     target="_blank"
                                     class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold py-2 rounded-sm flex items-center justify-center gap-1.5 transition-colors border border-gray-300"
                                 >
@@ -248,7 +272,13 @@ const formatDate = (dateString) => {
                         <!-- Footer Menu -->
                         <div class="bg-gray-50 border-t border-gray-200 p-3">
                             <div class="grid grid-cols-2 gap-2">
-                                <button
+                                <Link
+                                    :href="
+                                        route(
+                                            'user.undangan.edit-content',
+                                            undangan.id,
+                                        )
+                                    "
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon
@@ -256,23 +286,47 @@ const formatDate = (dateString) => {
                                         width="16"
                                     />
                                     Edit Konten
-                                </button>
-                                <button
+                                </Link>
+                                <Link
+                                    :href="
+                                        route(
+                                            'user.undangan.edit-setting',
+                                            undangan.id,
+                                        )
+                                    "
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon icon="mdi:cog-outline" width="16" />
                                     Pengaturan
-                                </button>
-                                <button
+                                </Link>
+                                <Link
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon
                                         icon="mdi:book-open-variant"
                                         width="16"
                                     />
-                                    Buku Tamu
-                                </button>
-                                <button
+                                    RSVP Form
+                                </Link>
+                                <Link
+                                    class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
+                                >
+                                    <Icon
+                                        icon="mdi:comment-outline"
+                                        width="16"
+                                    />
+                                    Komentar
+                                </Link>
+                                <Link
+                                    class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-[#004D31] hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
+                                >
+                                    <Icon
+                                        icon="mdi:share-variant-outline"
+                                        width="16"
+                                    />
+                                    Quick Share
+                                </Link>
+                                <Link
                                     class="flex items-center gap-2 px-3 py-2 text-[11px] font-medium text-gray-600 hover:text-red-600 hover:bg-white rounded-sm transition-all border border-transparent hover:border-gray-200"
                                 >
                                     <Icon
@@ -280,7 +334,7 @@ const formatDate = (dateString) => {
                                         width="16"
                                     />
                                     Hapus
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -111,7 +111,12 @@ const props = defineProps({
                                     </Link>
 
                                     <Link
-                                        :href="route('user.undangan.content')"
+                                        :href="
+                                            route(
+                                                'user.undangan.create.content',
+                                                item.id,
+                                            )
+                                        "
                                         class="flex-1 w-full md:w-auto flex items-center justify-center gap-1 py-[6px] px-1 bg-primary hover:bg-primary/90 rounded-lg shadow-sm shadow-primary/30 transition-all active:scale-95"
                                     >
                                         <Icon
