@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'langganan_id' => 1,
             'no_hp' => '081111111111',
+            'profile_path' => 'assets/handphone.png',
         ]);
 
         User::create([
@@ -27,26 +28,29 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'langganan_id' => 1,
             'no_hp' => '082222222222',
+            'profile_path' => 'handphone.png',
         ]);
 
         // Regular Users (Free & Premium)
         for ($i = 1; $i <= 5; $i++) {
             User::create([
                 'name' => "User Gratis $i",
-                'email' => "user.free$i@example.com",
+                'email' => "userfree$i@gmail.com",
                 'password' => Hash::make('password'),
                 'role' => 'user',
                 'langganan_id' => 1,
                 'no_hp' => '0812345678' . $i,
+                'profile_path' => 'handphone.png',
             ]);
 
             User::create([
                 'name' => "User Premium $i",
-                'email' => "user.premium$i@example.com",
+                'email' => "userpremium$i@gmail.com",
                 'password' => Hash::make('password'),
                 'role' => 'user',
                 'langganan_id' => 2,
                 'no_hp' => '0898765432' . $i,
+                'profile_path' => 'handphone.png',
             ]);
         }
     }

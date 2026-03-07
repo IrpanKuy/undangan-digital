@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('undangan_id')->constrained('undangans')->onDelete('cascade');
             $table->string('nama');
             $table->string('no_hp');
+            $table->text('pesan');
             $table->timestamps();
         });
     }

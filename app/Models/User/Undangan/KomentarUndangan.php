@@ -12,6 +12,7 @@ class KomentarUndangan extends Model
         'nama',
         'pesan',  
         'balasan_pengantin',  
+        'is_liked',
     ];
 
     public function undangan()

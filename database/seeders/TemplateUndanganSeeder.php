@@ -12,7 +12,7 @@ class TemplateUndanganSeeder extends Seeder
     public function run(): void
     {
         $kategoriList = KategoriUndangan::where('status', true)->get();
-        $undanganTemplates = Undangan::where('for_template', true)->get();
+        $undanganTemplates = Undangan::where('for_template', false)->get();
 
         foreach ($undanganTemplates as $index => $undangan) {
             $kat = $kategoriList[$index % $kategoriList->count()];

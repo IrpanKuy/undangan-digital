@@ -11,6 +11,7 @@ class Kontak extends Model
         'undangan_id',
         'nama',
         'no_hp',
+        'pesan',
     ];
 
     public function undangan()

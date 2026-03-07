@@ -12,6 +12,7 @@ class Undangan extends Model
 {
     protected $fillable = [
         'user_id',
+        'template_id',
         'judul',
         'url',
         'thumbnail_path',
@@ -21,6 +22,7 @@ class Undangan extends Model
         'tiktok_url',
         'instagram_url',
         'x_url',
+        'for_template',
     ];
 
     public function user()

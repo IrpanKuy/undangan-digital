@@ -97,7 +97,7 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->intended(route('admin.kategori-undangan.index'));
             } else {
-                return redirect()->intended(route('user.undangan'));
+                return redirect()->intended(route('user.undangan.index'));
             }
         }
 
