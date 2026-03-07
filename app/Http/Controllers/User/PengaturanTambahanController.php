@@ -11,7 +11,8 @@ class PengaturanTambahanController extends Controller
 {
     public function index($activeMenu, $undanganId)
     {
-        $undangan = Undangan::find($undanganId);
+        $undangan = Undangan::find($undanganId)->with(['kontaks', 'reservasiUndangans', 'pengunjungUndangan', 'komentarUndangans'])->first();
+        dd($undangan);
         return Inertia::render('user/undangan/pengaturanTambahan', [
             'activeMenu' => $activeMenu,
             'undangan' => $undangan

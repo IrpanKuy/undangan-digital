@@ -10,7 +10,8 @@ class KomentarUndangan extends Model
     protected $fillable = [
         'undangan_id',
         'nama',
-        'pesan',
+        'pesan',  
+        'balasan_pengantin',  
     ];
 
     public function undangan()

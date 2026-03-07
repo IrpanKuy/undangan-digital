@@ -12,6 +12,7 @@ class ReservasiUndangan extends Model
         'nama',
         'jumlah_hadir',
         'status_kehadiran',
+        'pesan',
     ];
 
     public function undangan()
