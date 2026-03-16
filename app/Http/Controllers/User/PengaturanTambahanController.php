@@ -38,8 +38,8 @@ class PengaturanTambahanController extends Controller
             ->get();
         // Menghitung total orang yang hadir saja
         $totalHadir = ReservasiUndangan::where('undangan_id', $undanganId)
-            ->where('kehadiran', 'hadir')
-            ->sum('jumlah_orang');
+            ->where('status_kehadiran', 'hadir')
+            ->sum('jumlah_hadir');
 
         // 3. Data Komentar
         $komentarData = KomentarUndangan::where('undangan_id', $undanganId)
@@ -50,8 +50,9 @@ class PengaturanTambahanController extends Controller
         $kontakData = Kontak::where('undangan_id', $undanganId)
             ->orderBy('created_at', 'desc')
             ->get();
-
-        return Inertia::render('user/undangan/undanganForm/pengaturanTambahan', [
+            
+        // dd('data kontak', $kontakData, 'total hadir', $totalHadir, 'data rsvp', $rsvpData, 'data komentar', $komentarData, 'data chart', $chartData);
+        return Inertia::render('user/undangan/pengaturanTambahan', [
             'undanganId' => $undanganId,
             'chartData' => $chartData,
             'rsvpData' => $rsvpData,

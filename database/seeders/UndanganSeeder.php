@@ -151,12 +151,14 @@ class UndanganSeeder extends Seeder
         Kontak::create([
             'undangan_id' => $undangan->id,
             'nama' => 'Bpk. Ahmad (Keluarga Pria)',
+            'pesan' => 'Bpk. Ahmad (Keluarga Pria)',
             'no_hp' => '081234567890',
         ]);
 
         Kontak::create([
             'undangan_id' => $undangan->id,
             'nama' => 'Bpk. Bambang (Keluarga Wanita)',
+            'pesan' => 'Bpk. Bambang (Keluarga Wanita)',
             'no_hp' => '089876543210',
         ]);
 
