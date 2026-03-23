@@ -210,7 +210,7 @@ const isDesktopAndSidebarOpen = computed(() => {
         <!-- ═══════════════ HEADER ═══════════════ -->
         <header
             :class="[
-                'fixed top-0 right-0 h-20 bg-white shadow-sm z-1001 flex items-center px-4 md:px-6 transition-all duration-300 ease-in-out',
+                'fixed top-0 right-0 h-20 bg-white shadow-sm z-50 flex items-center px-4 md:px-6 transition-all duration-300 ease-in-out',
                 isDesktopAndSidebarOpen ? 'left-72' : 'left-0',
             ]"
         >

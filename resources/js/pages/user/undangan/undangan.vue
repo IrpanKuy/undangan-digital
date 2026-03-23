@@ -13,13 +13,13 @@ const props = defineProps({
 });
 
 console.log(props.undangans);
-const copiedSlug = ref(null);
+const copiedUrl = ref(null);
 
 // Fungsi simulasi copy link ke clipboard
-const shareLink = (slug) => {
-    const url = `${window.location.origin}/undangan/${slug}`;
-    navigator.clipboard.writeText(url).then(() => {
-        copiedSlug.value = slug;
+const shareLink = (url) => {
+    const fullUrl = `${window.location.origin}/undangan/${url}`;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+        copiedUrl.value = url;
 
         Swal.fire({
             icon: "success",
@@ -32,7 +32,7 @@ const shareLink = (slug) => {
         });
 
         setTimeout(() => {
-            copiedSlug.value = null;
+            copiedUrl.value = null;
         }, 2000);
     });
 };
@@ -197,8 +197,7 @@ const formatDate = (dateString) => {
                                         >Tema</span
                                     >
                                     <span class="font-medium text-gray-700">{{
-                                        undangan.template_undangan_user
-                                            ?.judul_undangan
+                                        undangan.judul
                                     }}</span>
                                 </div>
                                 <div
@@ -249,19 +248,19 @@ const formatDate = (dateString) => {
                                     Preview
                                 </a>
                                 <button
-                                    @click="shareLink(undangan.slug)"
+                                    @click="shareLink(undangan.url)"
                                     class="flex-1 bg-white hover:bg-gray-50 text-[#004D31] text-xs font-semibold py-2 rounded-sm flex items-center justify-center gap-1.5 transition-colors border border-[#004D31]"
                                 >
                                     <Icon
                                         :icon="
-                                            copiedSlug === undangan.slug
+                                            copiedUrl === undangan.url
                                                 ? 'mdi:check'
                                                 : 'mdi:share-variant-outline'
                                         "
                                         width="16"
                                     />
                                     {{
-                                        copiedSlug === undangan.slug
+                                        copiedUrl === undangan.url
                                             ? "Disalin"
                                             : "Bagikan"
                                     }}

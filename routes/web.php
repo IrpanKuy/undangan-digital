@@ -65,19 +65,29 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 });
 
 Route::middleware('hasAuth')->name('user.')->group(function () {
+    Route::get('undangan/template-preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('undangan.preview');
+    Route::post('undangan/preview', [UndanganPreviewController::class, 'previewCreateEdit'])->name('undangan.preview.create-edit');
+
     Route::get('undangan/{id}/edit/content', [RoutingUndanganController::class, 'editContent'])
         ->name('undangan.edit-content');
     Route::get('undangan/{id}/edit/setting', [RoutingUndanganController::class, 'editSetting'])
         ->name('undangan.edit-setting');
     Route::get('undangan/create/content/{template_id}', [UndanganController::class, 'contentForm'])->name('undangan.create.content');
     Route::get('undangan/create/setting', [UndanganController::class, 'SettingForm'])->name('undangan.create.setting');
-    Route::get('undangan/preview/{judul_undangan}/{undangan_id}', [UndanganPreviewController::class, 'preview'])->name('undangan.preview');
+    
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
     Route::resource('undangan', UndanganController::class);
     Route::get('undangan/{activeMenu}/{undanganId}/pengaturan-tambahan', [PengaturanTambahanController::class, 'index'])->name('undangan.pengaturan-tambahan');
+    Route::post('undangan/{undanganId}/kontak', [PengaturanTambahanController::class, 'storeKontak'])->name('undangan.kontak.store');
+    Route::put('undangan/kontak/{id}', [PengaturanTambahanController::class, 'updateKontak'])->name('undangan.kontak.update');
+    Route::delete('undangan/kontak/{id}', [PengaturanTambahanController::class, 'destroyKontak'])->name('undangan.kontak.destroy');
+    Route::post('undangan/{undanganId}/kontak/mark-sent', [PengaturanTambahanController::class, 'markSentKontak'])->name('undangan.kontak.markSent');
+    Route::post('undangan/{undanganId}/komentar/{komentarId}/reply', [PengaturanTambahanController::class, 'replyKomentar'])->name('undangan.komentar.reply');
+    Route::post('undangan/{undanganId}/komentar/{komentarId}/like', [PengaturanTambahanController::class, 'toggleLike'])->name('undangan.komentar.like');
 });
 
 // Public Undangan Routes (No Auth Needed)
+Route::get('undangans/{url}', [UndanganPreviewController::class, 'previewUser'])->name('undangan.preview.user');
 Route::post('undangan/{undangan_id}/komentar', [App\Http\Controllers\User\UndanganPublicController::class, 'storeKomentar'])->name('undangan.komentar.store');
 Route::post('undangan/{undangan_id}/reservasi', [App\Http\Controllers\User\UndanganPublicController::class, 'storeReservasi'])->name('undangan.reservasi.store');
 

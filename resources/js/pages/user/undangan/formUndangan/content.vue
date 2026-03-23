@@ -229,6 +229,45 @@ onMounted(() => {
     }
 });
 
+const handlePreview = () => {
+    // 1. GUNAKAN NAMA BERBEDA (Misal: previewForm)
+    const previewForm = document.createElement("form");
+    previewForm.method = "POST";
+    previewForm.action = route("user.undangan.preview.create-edit");
+    previewForm.target = "_blank";
+
+    const token = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute("content");
+
+    if (!token) {
+        console.error("CSRF token tidak ditemukan.");
+        return;
+    }
+
+    // 2. Tambahkan CSRF
+    const csrfInput = document.createElement("input");
+    csrfInput.type = "hidden";
+    csrfInput.name = "_token";
+    csrfInput.value = token;
+    previewForm.appendChild(csrfInput);
+
+    // 3. Tambahkan data (Sekarang form.data() merujuk ke useForm dengan benar)
+    const dataInput = document.createElement("input");
+    dataInput.type = "hidden";
+    dataInput.name = "preview_data";
+
+    // Mengambil data murni dari Inertia useForm
+    dataInput.value = JSON.stringify(form.data());
+
+    previewForm.appendChild(dataInput);
+
+    // 4. Submit menggunakan variabel previewForm
+    document.body.appendChild(previewForm);
+    previewForm.submit();
+    document.body.removeChild(previewForm);
+};
+
 const submit = () => {
     form.post(route("admin.template-content-undangan.store"), {
         onSuccess: () => {
@@ -301,12 +340,14 @@ const submit = () => {
                         <Icon icon="mdi:book-open-variant" width="18" />
                         Konten Undangan
                     </Link>
-                    <Link
-                        class="cursor-pointer flex items-center gap-2 px-6 py-3 font-medium text-sm"
+                    <button
+                        type="button"
+                        @click="handlePreview"
+                        class="cursor-pointer flex items-center gap-2 px-6 py-3 font-medium text-sm bg-white border"
                     >
                         <Icon icon="mdi:eye" width="18" />
                         Lihat Preview
-                    </Link>
+                    </button>
                 </div>
 
                 <!-- Error Alert Box -->

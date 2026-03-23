@@ -61,4 +61,84 @@ class PengaturanTambahanController extends Controller
             'kontakData' => $kontakData,
         ]);
     }
+
+    public function replyKomentar(Request $request, $undanganId, $komentarId)
+    {
+        $request->validate([
+            'balasan_pengantin' => 'required|string'
+        ]);
+
+        $komentar = KomentarUndangan::where('undangan_id', $undanganId)->findOrFail($komentarId);
+        $komentar->balasan_pengantin = $request->balasan_pengantin;
+        $komentar->save();
+
+        return redirect()->back();
+    }
+
+    public function toggleLike($undanganId, $komentarId)
+    {
+        $komentar = KomentarUndangan::where('undangan_id', $undanganId)->findOrFail($komentarId);
+        $komentar->is_liked = !$komentar->is_liked;
+        $komentar->save();
+
+        return redirect()->back();
+    }
+
+    public function storeKontak(Request $request, $undanganId)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:20',
+            'pesan' => 'nullable|string'
+        ]);
+
+        Kontak::create([
+            'undangan_id' => $undanganId,
+            'nama' => $validated['nama'],
+            'no_hp' => $validated['no_hp'],
+            'pesan' => $validated['pesan'] ?? '',
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function updateKontak(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:20',
+            'pesan' => 'nullable|string'
+        ]);
+
+        $kontak = Kontak::findOrFail($id);
+        $kontak->update([
+            'nama' => $validated['nama'],
+            'no_hp' => $validated['no_hp'],
+            'pesan' => $validated['pesan'] ?? '',
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function destroyKontak($id)
+    {
+        $kontak = Kontak::findOrFail($id);
+        $kontak->delete();
+
+        return redirect()->back();
+    }
+
+    public function markSentKontak(Request $request, $undanganId)
+    {
+        $request->validate([
+            'kontak_ids' => 'required|array',
+            'kontak_ids.*' => 'exists:kontaks,id'
+        ]);
+
+        Kontak::whereIn('id', $request->kontak_ids)
+            ->where('undangan_id', $undanganId)
+            ->update(['status' => true]);
+
+        return redirect()->back();
+    }
 }

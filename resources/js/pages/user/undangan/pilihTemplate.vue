@@ -92,8 +92,9 @@ const props = defineProps({
                                     <Link
                                         :href="
                                             route(
-                                                'user.preview',
+                                                'user.undangan.preview',
                                                 item.judul_undangan,
+                                                null,
                                             )
                                         "
                                         target="_blank"

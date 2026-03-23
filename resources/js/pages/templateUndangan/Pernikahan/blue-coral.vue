@@ -578,10 +578,16 @@ onUnmounted(() => {
                                 class="space-y-3"
                             >
                                 <h2 class="text-5xl font-alex-brush">
-                                    {{ dataMempelai?.nama_lengkap_pria }}
+                                    {{
+                                        dataMempelai?.nama_lengkap_pria ??
+                                        "belum diatur"
+                                    }}
                                 </h2>
                                 <p class="font-montserrat text-xl">
-                                    {{ dataMempelai?.keterangan_keluarga_pria }}
+                                    {{
+                                        dataMempelai?.keterangan_keluarga_pria ??
+                                        "belum diatur"
+                                    }}
                                 </p>
                                 <div class="flex justify-center gap-4">
                                     <img
@@ -1425,12 +1431,18 @@ onUnmounted(() => {
                                     class="flex flex-col text-5xl font-alex-brush space-y-2"
                                 >
                                     <h4>
-                                        {{ dataMempelai.nama_panggilan_pria }}
+                                        {{
+                                            dataMempelai.nama_panggilan_pria ??
+                                            "belum diatur"
+                                        }}
                                     </h4>
 
                                     <p>&</p>
                                     <h4>
-                                        {{ dataMempelai.nama_panggilan_wanita }}
+                                        {{
+                                            dataMempelai.nama_panggilan_wanita ??
+                                            "belum diatur"
+                                        }}
                                     </h4>
                                 </div>
                             </div>

@@ -4,6 +4,7 @@ import { usePage, Link, router, useForm } from "@inertiajs/vue3";
 import { ref, computed, onMounted } from "vue";
 import UserDashboardLayout from "../../layouts/userDashboardLayout.vue";
 import Chart from "chart.js/auto";
+import Swal from "sweetalert2";
 
 const props = defineProps({
     undanganId: [Number, String],
@@ -123,6 +124,7 @@ const formatNumber = (number) => {
 
 const isModalOpen = ref(false);
 const form = useForm({
+    id: null,
     nama: "",
     no_hp: "",
     pesan: "",
@@ -130,6 +132,18 @@ const form = useForm({
 
 const openModal = () => {
     form.reset();
+    form.clearErrors();
+    form.id = null;
+    isModalOpen.value = true;
+};
+
+const openEditModal = (kontak) => {
+    form.reset();
+    form.clearErrors();
+    form.id = kontak.id;
+    form.nama = kontak.nama;
+    form.no_hp = kontak.no_hp;
+    form.pesan = kontak.pesan;
     isModalOpen.value = true;
 };
 
@@ -139,18 +153,91 @@ const closeModal = () => {
 };
 
 const submitKontak = () => {
-    form.post(route("user.undangan.kontak.store", props.undanganId), {
-        onSuccess: () => closeModal(),
-        preserveScroll: true,
-    });
-};
-
-const deleteKontak = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus kontak ini?")) {
-        router.delete(route("user.undangan.kontak.destroy", id), {
+    if (form.id) {
+        form.put(route("user.undangan.kontak.update", form.id), {
+            onSuccess: () => closeModal(),
+            preserveScroll: true,
+        });
+    } else {
+        form.post(route("user.undangan.kontak.store", props.undanganId), {
+            onSuccess: () => closeModal(),
             preserveScroll: true,
         });
     }
+};
+
+const deleteKontak = (id) => {
+    Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Menghapus kontak ini tidak dapat dibatalkan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.delete(route("user.undangan.kontak.destroy", id), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    Swal.fire(
+                        "Terhapus!",
+                        "Data kontak berhasil dihapus.",
+                        "success",
+                    );
+                },
+            });
+        }
+    });
+};
+
+const isReplyModalOpen = ref(false);
+const selectedKomentar = ref(null);
+const replyForm = useForm({
+    balasan_pengantin: "",
+});
+
+const openReplyModal = (komentar) => {
+    selectedKomentar.value = komentar;
+    replyForm.balasan_pengantin = komentar.balasan_pengantin || "";
+    isReplyModalOpen.value = true;
+};
+
+const closeReplyModal = () => {
+    isReplyModalOpen.value = false;
+    selectedKomentar.value = null;
+    replyForm.reset();
+    replyForm.clearErrors();
+};
+
+const submitReply = () => {
+    if (!selectedKomentar.value) return;
+    replyForm.post(
+        route("user.undangan.komentar.reply", {
+            undanganId: props.undanganId,
+            komentarId: selectedKomentar.value.id,
+        }),
+        {
+            onSuccess: () => {
+                closeReplyModal();
+            },
+            preserveScroll: true,
+        },
+    );
+};
+
+const toggleLike = (komentarId) => {
+    router.post(
+        route("user.undangan.komentar.like", {
+            undanganId: props.undanganId,
+            komentarId: komentarId,
+        }),
+        {},
+        {
+            preserveScroll: true,
+        },
+    );
 };
 
 const markAsSent = () => {
@@ -185,7 +272,9 @@ const formatDate = (dateString) => {
 <template>
     <UserDashboardLayout>
         <template #content>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+            <div
+                class="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6"
+            >
                 <header class="mb-6">
                     <h2
                         class="font-semibold text-xl text-gray-800 leading-tight"
@@ -447,17 +536,30 @@ const formatDate = (dateString) => {
                                             class="flex space-x-3 text-sm w-full sm:w-auto justify-end border-t border-gray-100 sm:border-t-0 pt-3 sm:pt-0 mt-2 sm:mt-0"
                                         >
                                             <button
+                                                @click="
+                                                    openReplyModal(komentar)
+                                                "
                                                 class="text-blue-600 hover:text-blue-900 font-medium transition ease-in-out"
                                             >
                                                 Balas
                                             </button>
                                             <button
-                                                class="text-pink-600 hover:text-pink-900 font-medium transition ease-in-out flex items-center gap-1"
+                                                @click="toggleLike(komentar.id)"
+                                                :class="[
+                                                    komentar.is_liked
+                                                        ? 'text-pink-600 hover:text-pink-900'
+                                                        : 'text-gray-500 hover:text-gray-800',
+                                                    'font-medium transition ease-in-out flex items-center gap-1',
+                                                ]"
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     class="h-4 w-4"
-                                                    fill="none"
+                                                    :fill="
+                                                        komentar.is_liked
+                                                            ? 'currentColor'
+                                                            : 'none'
+                                                    "
                                                     viewBox="0 0 24 24"
                                                     stroke="currentColor"
                                                 >
@@ -468,7 +570,11 @@ const formatDate = (dateString) => {
                                                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                                                     />
                                                 </svg>
-                                                Like
+                                                {{
+                                                    komentar.is_liked
+                                                        ? "Liked"
+                                                        : "Like"
+                                                }}
                                             </button>
                                         </div>
                                     </div>
@@ -476,6 +582,19 @@ const formatDate = (dateString) => {
                                         class="mt-2 text-sm text-gray-700 leading-relaxed"
                                     >
                                         <p>{{ komentar.pesan }}</p>
+                                    </div>
+                                    <div
+                                        v-if="komentar.balasan_pengantin"
+                                        class="mt-3 ml-4 p-3 bg-gray-50 border-l-4 border-blue-400 rounded-r-md"
+                                    >
+                                        <p
+                                            class="text-xs font-semibold text-gray-800 mb-1"
+                                        >
+                                            Balasan Anda:
+                                        </p>
+                                        <p class="text-sm text-gray-600">
+                                            {{ komentar.balasan_pengantin }}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -684,22 +803,17 @@ const formatDate = (dateString) => {
                                         class="px-4 py-3 bg-white border-t border-gray-100 flex justify-end gap-3 text-sm font-medium"
                                     >
                                         <button
+                                            @click="openEditModal(kontak)"
+                                            class="text-blue-600 hover:text-blue-900 transition flex items-center gap-1"
+                                        >
+                                            <Icon icon="mdi:pencil" width="16" />
+                                            Edit
+                                        </button>
+                                        <button
                                             @click="deleteKontak(kontak.id)"
                                             class="text-red-600 hover:text-red-900 transition flex items-center gap-1"
                                         >
-                                            <svg
-                                                class="w-4 h-4"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                                />
-                                            </svg>
+                                            <Icon icon="mdi:delete" width="16" />
                                             Hapus
                                         </button>
                                     </div>
@@ -716,139 +830,305 @@ const formatDate = (dateString) => {
                     </div>
                 </div>
             </div>
-
-            <div
-                v-if="isModalOpen"
-                class="fixed inset-0 z-50 overflow-y-auto"
-                aria-labelledby="modal-title"
-                role="dialog"
-                aria-modal="true"
-            >
-                <div
-                    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+            <!-- Tambah Kontak Modal -->
+            <Teleport to="body">
+                <transition
+                    enter-active-class="transition duration-150 ease-out"
+                    enter-from-class="opacity-0"
+                    enter-to-class="opacity-100"
+                    leave-active-class="transition duration-150 ease-in"
+                    leave-from-class="opacity-100"
+                    leave-to-class="opacity-0"
                 >
                     <div
-                        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                        @click="closeModal"
-                        aria-hidden="true"
-                    ></div>
-                    <span
-                        class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                        aria-hidden="true"
-                        >&#8203;</span
+                        v-if="isModalOpen"
+                        class="fixed inset-0 z-100 flex items-center justify-center p-4"
                     >
+                        <!-- Backdrop -->
+                        <div
+                            class="absolute inset-0 bg-gray-900/60"
+                            @click="!form.processing && closeModal()"
+                        ></div>
 
-                    <div
-                        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full"
-                    >
-                        <form @submit.prevent="submitKontak">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
+                        <!-- Modal Panel -->
+                        <div
+                            class="relative w-full max-w-md bg-white rounded-sm shadow-lg border border-gray-300"
+                        >
+                            <form @submit.prevent="submitKontak">
+                                <!-- Header -->
+                                <div
+                                    class="bg-gray-100 border-b border-gray-300 px-5 py-3 flex items-center justify-between"
+                                >
                                     <div
-                                        class="mt-3 text-center sm:mt-0 sm:text-left w-full"
+                                        class="flex items-center gap-2 text-gray-800"
                                     >
-                                        <h3
-                                            class="text-lg leading-6 font-medium text-gray-900"
-                                            id="modal-title"
-                                        >
-                                            Tambah Kontak WhatsApp
+                                        <Icon
+                                            icon="mdi:account-plus"
+                                            width="20"
+                                        />
+                                        <h3 class="text-base font-semibold">
+                                            {{ form.id ? "Edit Kontak WhatsApp" : "Tambah Kontak WhatsApp" }}
                                         </h3>
-                                        <div class="mt-4 space-y-4">
-                                            <div>
-                                                <label
-                                                    class="block font-medium text-sm text-gray-700"
-                                                    >Nama Kontak
-                                                    <span class="text-red-500"
-                                                        >*</span
-                                                    ></label
+                                    </div>
+                                    <button
+                                        type="button"
+                                        @click="closeModal"
+                                        class="cursor-pointer text-gray-500 hover:text-gray-800"
+                                    >
+                                        <Icon icon="mdi:close" width="20" />
+                                    </button>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="p-5">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 mb-1"
+                                            >
+                                                Nama Kontak
+                                                <span class="text-red-500"
+                                                    >*</span
                                                 >
-                                                <input
-                                                    type="text"
-                                                    v-model="form.nama"
-                                                    required
-                                                    class="mt-1 block w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm sm:text-sm"
-                                                    placeholder="Contoh: Budi Santoso"
-                                                />
-                                                <p
-                                                    v-if="form.errors.nama"
-                                                    class="text-red-500 text-xs mt-1"
+                                            </label>
+                                            <input
+                                                type="text"
+                                                v-model="form.nama"
+                                                required
+                                                placeholder="Contoh: Budi Santoso"
+                                                :class="[
+                                                    'w-full border rounded-sm px-3 py-2 text-sm outline-none transition-colors',
+                                                    form.errors.nama
+                                                        ? 'border-red-500 bg-red-50'
+                                                        : 'border-gray-400 focus:border-blue-500',
+                                                ]"
+                                            />
+                                            <p
+                                                v-if="form.errors.nama"
+                                                class="mt-1 text-xs text-red-600"
+                                            >
+                                                {{ form.errors.nama }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 mb-1"
+                                            >
+                                                No. WhatsApp
+                                                <span class="text-red-500"
+                                                    >*</span
                                                 >
-                                                    {{ form.errors.nama }}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <label
-                                                    class="block font-medium text-sm text-gray-700"
-                                                    >No. WhatsApp
-                                                    <span class="text-red-500"
-                                                        >*</span
-                                                    ></label
-                                                >
-                                                <input
-                                                    type="text"
-                                                    v-model="form.no_hp"
-                                                    required
-                                                    class="mt-1 block w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm sm:text-sm"
-                                                    placeholder="Contoh: 08123456789"
-                                                />
-                                                <p
-                                                    class="text-xs text-gray-500 mt-1"
-                                                >
-                                                    Gunakan format yang valid
-                                                    (contoh: 08... atau 628...).
-                                                </p>
-                                                <p
-                                                    v-if="form.errors.no_hp"
-                                                    class="text-red-500 text-xs mt-1"
-                                                >
-                                                    {{ form.errors.no_hp }}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <label
-                                                    class="block font-medium text-sm text-gray-700"
-                                                    >Pesan Custom
-                                                    (Opsional)</label
-                                                >
-                                                <textarea
-                                                    rows="3"
-                                                    v-model="form.pesan"
-                                                    class="mt-1 block w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm sm:text-sm resize-none"
-                                                    placeholder="Isi pesan khusus untuk kontak ini..."
-                                                ></textarea>
-                                                <p
-                                                    v-if="form.errors.pesan"
-                                                    class="text-red-500 text-xs mt-1"
-                                                >
-                                                    {{ form.errors.pesan }}
-                                                </p>
-                                            </div>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                v-model="form.no_hp"
+                                                required
+                                                placeholder="Contoh: 08123456789"
+                                                :class="[
+                                                    'w-full border rounded-sm px-3 py-2 text-sm outline-none transition-colors',
+                                                    form.errors.no_hp
+                                                        ? 'border-red-500 bg-red-50'
+                                                        : 'border-gray-400 focus:border-blue-500',
+                                                ]"
+                                            />
+                                            <p
+                                                class="text-xs text-gray-500 mt-1"
+                                            >
+                                                Gunakan format yang valid
+                                                (contoh: 08... atau 628...).
+                                            </p>
+                                            <p
+                                                v-if="form.errors.no_hp"
+                                                class="mt-1 text-xs text-red-600"
+                                            >
+                                                {{ form.errors.no_hp }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 mb-1"
+                                            >
+                                                Pesan Custom (Opsional)
+                                            </label>
+                                            <textarea
+                                                rows="3"
+                                                v-model="form.pesan"
+                                                placeholder="Isi pesan khusus untuk kontak ini..."
+                                                :class="[
+                                                    'w-full border rounded-sm px-3 py-2 text-sm outline-none transition-colors resize-none',
+                                                    form.errors.pesan
+                                                        ? 'border-red-500 bg-red-50'
+                                                        : 'border-gray-400 focus:border-blue-500',
+                                                ]"
+                                            ></textarea>
+                                            <p
+                                                v-if="form.errors.pesan"
+                                                class="mt-1 text-xs text-red-600"
+                                            >
+                                                {{ form.errors.pesan }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
-                            >
-                                <button
-                                    type="submit"
-                                    :disabled="form.processing"
-                                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition disabled:opacity-50"
+
+                                <!-- Footer -->
+                                <div
+                                    class="bg-gray-50 px-5 py-3 border-t border-gray-300 flex justify-end gap-2"
                                 >
-                                    Simpan Kontak
-                                </button>
-                                <button
-                                    type="button"
-                                    @click="closeModal"
-                                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition"
-                                >
-                                    Batal
-                                </button>
-                            </div>
-                        </form>
+                                    <button
+                                        type="button"
+                                        @click="closeModal"
+                                        :disabled="form.processing"
+                                        class="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-400 rounded-sm hover:bg-gray-100 disabled:opacity-50 transition-colors"
+                                    >
+                                        Batal
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        :disabled="form.processing"
+                                        class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                                    >
+                                        <Icon
+                                            v-if="form.processing"
+                                            icon="mdi:loading"
+                                            class="animate-spin"
+                                            width="16"
+                                        />
+                                        <Icon
+                                            v-else
+                                            icon="mdi:content-save"
+                                            width="16"
+                                        />
+                                        Simpan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </transition>
+            </Teleport>
+
+            <!-- Reply Modal -->
+            <Teleport to="body">
+                <transition
+                    enter-active-class="transition duration-150 ease-out"
+                    enter-from-class="opacity-0"
+                    enter-to-class="opacity-100"
+                    leave-active-class="transition duration-150 ease-in"
+                    leave-from-class="opacity-100"
+                    leave-to-class="opacity-0"
+                >
+                    <div
+                        v-if="isReplyModalOpen"
+                        class="fixed inset-0 z-100 flex items-center justify-center p-4"
+                    >
+                        <!-- Backdrop -->
+                        <div
+                            class="absolute inset-0 bg-gray-900/60"
+                            @click="!replyForm.processing && closeReplyModal()"
+                        ></div>
+
+                        <!-- Modal Panel -->
+                        <div
+                            class="relative w-full max-w-md bg-white rounded-sm shadow-lg border border-gray-300"
+                        >
+                            <form @submit.prevent="submitReply">
+                                <!-- Header -->
+                                <div
+                                    class="bg-gray-100 border-b border-gray-300 px-5 py-3 flex items-center justify-between"
+                                >
+                                    <div
+                                        class="flex items-center gap-2 text-gray-800"
+                                    >
+                                        <Icon icon="mdi:reply" width="20" />
+                                        <h3 class="text-base font-semibold">
+                                            Balas Komentar
+                                        </h3>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        @click="closeReplyModal"
+                                        class="cursor-pointer text-gray-500 hover:text-gray-800"
+                                    >
+                                        <Icon icon="mdi:close" width="20" />
+                                    </button>
+                                </div>
+
+                                <!-- Body -->
+                                <div class="p-5">
+                                    <div>
+                                        <label
+                                            class="block text-sm font-medium text-gray-700 mb-1"
+                                        >
+                                            Balasan Anda
+                                            <span class="text-red-500">*</span>
+                                        </label>
+                                        <textarea
+                                            rows="3"
+                                            v-model="
+                                                replyForm.balasan_pengantin
+                                            "
+                                            required
+                                            placeholder="Tulis balasan..."
+                                            :class="[
+                                                'w-full border rounded-sm px-3 py-2 text-sm outline-none transition-colors resize-none',
+                                                replyForm.errors
+                                                    .balasan_pengantin
+                                                    ? 'border-red-500 bg-red-50'
+                                                    : 'border-gray-400 focus:border-blue-500',
+                                            ]"
+                                        ></textarea>
+                                        <p
+                                            v-if="
+                                                replyForm.errors
+                                                    .balasan_pengantin
+                                            "
+                                            class="mt-1 text-xs text-red-600"
+                                        >
+                                            {{
+                                                replyForm.errors
+                                                    .balasan_pengantin
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Footer -->
+                                <div
+                                    class="bg-gray-50 px-5 py-3 border-t border-gray-300 flex justify-end gap-2"
+                                >
+                                    <button
+                                        type="button"
+                                        @click="closeReplyModal"
+                                        :disabled="replyForm.processing"
+                                        class="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-400 rounded-sm hover:bg-gray-100 disabled:opacity-50 transition-colors"
+                                    >
+                                        Batal
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        :disabled="replyForm.processing"
+                                        class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-sm hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                                    >
+                                        <Icon
+                                            v-if="replyForm.processing"
+                                            icon="mdi:loading"
+                                            class="animate-spin"
+                                            width="16"
+                                        />
+                                        <Icon
+                                            v-else
+                                            icon="mdi:send"
+                                            width="16"
+                                        />
+                                        Kirim Balasan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </transition>
+            </Teleport>
         </template>
     </UserDashboardLayout>
 </template>
