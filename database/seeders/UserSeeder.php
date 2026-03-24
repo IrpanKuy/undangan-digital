@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
         for ($i = 1; $i <= 5; $i++) {
             User::create([
                 'name' => "User Gratis $i",
-                'email' => "userfree$i@gmail.com",
+                'email' => "free$i@gmail.com",
                 'password' => Hash::make('password'),
                 'role' => 'user',
                 'langganan_id' => 1,
@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
 
             User::create([
                 'name' => "User Premium $i",
-                'email' => "userpremium$i@gmail.com",
+                'email' => "premium$i@gmail.com",
                 'password' => Hash::make('password'),
                 'role' => 'user',
                 'langganan_id' => 2,

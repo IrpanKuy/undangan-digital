@@ -210,27 +210,31 @@ const isDesktopAndSidebarOpen = computed(() => {
         <!-- ═══════════════ HEADER ═══════════════ -->
         <header
             :class="[
-                'fixed top-0 right-0 h-20 bg-white shadow-sm z-50 flex items-center px-4 md:px-6 transition-all duration-300 ease-in-out',
+                'fixed top-0 right-0 h-20 bg-white shadow-sm z-50 flex md:hidden items-center px-4 md:px-6 transition-all duration-300 ease-in-out',
                 isDesktopAndSidebarOpen ? 'left-72' : 'left-0',
             ]"
         >
             <div class="flex justify-between items-center w-full">
-                <div class="flex items-center gap-4">
-                    <!-- Hamburger Button (Murni Tailwind CSS) -->
-                    <button
-                        @click="showSidebar = !showSidebar"
-                        class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#004D31]/30 transition-colors"
-                    >
-                        <Icon icon="ci:hamburger-lg" width="26" />
-                    </button>
+                <img
+                    src="/assets/logo_up.png"
+                    class="w-32 object-contain"
+                    alt="logo-undangan-praktis"
+                />
 
-                    <!-- Header Title Slot (Jika dibutuhkan) -->
-                    <div
+                <!-- Hamburger Button (Murni Tailwind CSS) -->
+                <button
+                    @click="showSidebar = !showSidebar"
+                    class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#004D31]/30 transition-colors"
+                >
+                    <Icon icon="ci:hamburger-lg" width="26" />
+                </button>
+
+                <!-- Header Title Slot (Jika dibutuhkan) -->
+                <!-- <div
                         class="hidden sm:flex items-center gap-2 font-semibold text-gray-700 text-lg"
                     >
                         <slot name="headerTitle" />
-                    </div>
-                </div>
+                    </div> -->
             </div>
         </header>
 

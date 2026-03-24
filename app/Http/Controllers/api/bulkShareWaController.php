@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Api\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -39,5 +40,29 @@ class bulkShareWaController extends Controller
         }
 
         return back()->with('success', count($kontaks) . ' Undangan sedang diproses.');
+    }
+
+    public function createDevice(Request $request)
+    {
+        $token = env('FONNTE_TOKEN');
+
+         $response = Http::withHeaders(['Authorization' => $token])
+            ->post('https://api.fonnte.com/update-device', [
+                'device_name' => $request->name,
+                'package' => 'free'
+            ]);
+            
+        $data = $response->json();
+        
+        if($data['status']) {
+            Device::create([
+                'name' => $request->name,
+                'device_token' => $data['device_token'],
+                'status' => $data['status'],
+                'qr_data' => $data['qr_data'],
+            ]);
+        }
+
+        return back()->with('success', 'Device berhasil dibuat.');
     }
 }

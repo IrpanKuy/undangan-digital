@@ -319,7 +319,7 @@ const formatDate = (dateString) => {
                                 @click="activeTab = 'rsvp'"
                                 :class="[
                                     activeTab === 'rsvp'
-                                        ? 'border-blue-500 text-blue-600'
+                                        ? 'border-green-500 text-green-600'
                                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                                     'w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm whitespace-nowrap focus:outline-none transition',
                                 ]"
@@ -330,7 +330,7 @@ const formatDate = (dateString) => {
                                 @click="activeTab = 'komentar'"
                                 :class="[
                                     activeTab === 'komentar'
-                                        ? 'border-blue-500 text-blue-600'
+                                        ? 'border-green-500 text-green-600'
                                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                                     'w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm whitespace-nowrap focus:outline-none transition',
                                 ]"
@@ -341,7 +341,7 @@ const formatDate = (dateString) => {
                                 @click="activeTab = 'wa'"
                                 :class="[
                                     activeTab === 'wa'
-                                        ? 'border-blue-500 text-blue-600'
+                                        ? 'border-green-500 text-green-600'
                                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                                     'w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm whitespace-nowrap focus:outline-none transition',
                                 ]"
@@ -352,39 +352,42 @@ const formatDate = (dateString) => {
                     </div>
 
                     <div class="p-6">
+                        <!-- rsvp -->
                         <div
                             v-show="activeTab === 'rsvp'"
                             class="animate-fadeIn"
                         >
-                            <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div
+                                class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+                            >
                                 <div
-                                    class="bg-white p-4 rounded-md shadow-sm border border-gray-200 flex flex-col justify-center"
+                                    class="bg-linear-to-br from-yellow-400 to-yellow-600 p-4 rounded-md shadow-sm border border-gray-200 flex flex-col justify-center"
                                 >
                                     <dt
-                                        class="text-sm font-medium text-gray-500 truncate"
+                                        class="text-sm font-medium text-white truncate"
                                     >
                                         Total RSVP Masuk
                                     </dt>
                                     <dd
-                                        class="mt-1 text-3xl font-semibold text-gray-900"
+                                        class="mt-1 text-3xl font-semibold text-white"
                                     >
                                         {{ rsvpData.length }}
                                     </dd>
                                 </div>
                                 <div
-                                    class="bg-white p-4 rounded-md shadow-sm border border-gray-200 flex flex-col justify-center"
+                                    class="bg-linear-to-br from-green-400 to-green-600 p-4 rounded-md shadow-sm border border-gray-200 flex flex-col justify-center"
                                 >
                                     <dt
-                                        class="text-sm font-medium text-gray-500 truncate"
+                                        class="text-sm font-medium text-white truncate"
                                     >
                                         Total Orang Hadir
                                     </dt>
                                     <dd
-                                        class="mt-1 text-3xl font-semibold text-gray-900"
+                                        class="mt-1 text-3xl font-semibold text-white"
                                     >
                                         {{ totalHadir }}
                                         <span
-                                            class="text-sm font-medium text-gray-500"
+                                            class="text-sm font-medium text-white"
                                             >Orang</span
                                         >
                                     </dd>
@@ -410,24 +413,54 @@ const formatDate = (dateString) => {
                                             ></path>
                                         </svg>
                                     </div>
-                                    <input
-                                        v-model="searchRsvp"
-                                        type="text"
-                                        placeholder="Cari nama tamu..."
-                                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
-                                    />
+                                    <div class="relative min-w-[240px]">
+                                        <span
+                                            class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"
+                                        >
+                                            <Icon
+                                                icon="mdi:magnify"
+                                                width="18"
+                                            />
+                                        </span>
+                                        <input
+                                            v-model="searchRsvp"
+                                            type="text"
+                                            placeholder="Cari nama tamu..."
+                                            class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors"
+                                        />
+                                    </div>
                                 </div>
-                                <select
-                                    v-model="filterRsvp"
-                                    class="block w-full sm:w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md transition bg-white"
-                                >
-                                    <option value="">Semua Status</option>
-                                    <option value="hadir">Hadir</option>
-                                    <option value="tidak_hadir">
-                                        Tidak Hadir
-                                    </option>
-                                    <option value="ragu">Masih Ragu</option>
-                                </select>
+                                <div class="relative w-full sm:w-48">
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none"
+                                    >
+                                        <Icon
+                                            icon="mdi:filter-variant"
+                                            width="18"
+                                        />
+                                    </span>
+
+                                    <select
+                                        v-model="filterRsvp"
+                                        class="w-full pl-10 pr-10 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors appearance-none"
+                                    >
+                                        <option value="">Semua Status</option>
+                                        <option value="hadir">Hadir</option>
+                                        <option value="tidak_hadir">
+                                            Tidak Hadir
+                                        </option>
+                                        <option value="ragu">Masih Ragu</option>
+                                    </select>
+
+                                    <span
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 pointer-events-none"
+                                    >
+                                        <Icon
+                                            icon="mdi:chevron-down"
+                                            width="18"
+                                        />
+                                    </span>
+                                </div>
                             </div>
 
                             <div
@@ -449,11 +482,11 @@ const formatDate = (dateString) => {
                                         <span
                                             :class="[
                                                 item.kehadiran === 'hadir'
-                                                    ? 'bg-green-100 text-green-800'
+                                                    ? 'bg-green-500 text-white'
                                                     : item.kehadiran ===
                                                         'tidak_hadir'
-                                                      ? 'bg-red-100 text-red-800'
-                                                      : 'bg-yellow-100 text-yellow-800',
+                                                      ? 'bg-red-500 text-white'
+                                                      : 'bg-yellow-500 text-white',
                                                 'px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
                                             ]"
                                         >
@@ -463,11 +496,11 @@ const formatDate = (dateString) => {
                                         </span>
                                     </div>
                                     <div
-                                        class="text-sm text-gray-600 space-y-2"
+                                        class="text-sm text-gray-600 space-y-2.5"
                                     >
                                         <p class="flex items-center gap-2">
                                             <svg
-                                                class="w-4 h-4 text-gray-400"
+                                                class="w-4 h-4 text-[#004D31]"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -479,8 +512,18 @@ const formatDate = (dateString) => {
                                                     d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                                                 />
                                             </svg>
-                                            {{ item.jumlah_orang }} Orang
+                                            <span class="text-gray-500"
+                                                >Jumlah Hadir:</span
+                                            >
+                                            <span
+                                                class="font-semibold text-gray-800"
+                                                >{{
+                                                    item.jumlah_hadir
+                                                }}
+                                                Orang</span
+                                            >
                                         </p>
+
                                         <p class="flex items-center gap-2">
                                             <svg
                                                 class="w-4 h-4 text-gray-400"
@@ -495,7 +538,12 @@ const formatDate = (dateString) => {
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                                 />
                                             </svg>
-                                            {{ formatDate(item.created_at) }}
+                                            <span class="text-gray-500"
+                                                >Dikirim pada:</span
+                                            >
+                                            <span class="text-gray-700">{{
+                                                formatDate(item.created_at)
+                                            }}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -509,14 +557,55 @@ const formatDate = (dateString) => {
                             </div>
                         </div>
 
+                        <!-- komentar -->
                         <div
                             v-show="activeTab === 'komentar'"
                             class="animate-fadeIn"
                         >
-                            <div class="mb-4">
-                                <h3 class="text-lg font-medium text-gray-900">
-                                    Kelola Komentar & Ucapan
-                                </h3>
+                            <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                                <div class="relative flex-1">
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none"
+                                    >
+                                        <Icon icon="mdi:magnify" width="18" />
+                                    </span>
+                                    <input
+                                        v-model="searchKomentar"
+                                        type="text"
+                                        placeholder="Cari nama pengirim..."
+                                        class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors"
+                                    />
+                                </div>
+                                <div class="relative w-full sm:w-48">
+                                    <span
+                                        class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none"
+                                    >
+                                        <Icon
+                                            icon="mdi:filter-variant"
+                                            width="18"
+                                        />
+                                    </span>
+                                    <select
+                                        v-model="filterBalasan"
+                                        class="w-full pl-10 pr-10 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors appearance-none"
+                                    >
+                                        <option value="">Semua Status</option>
+                                        <option value="sudah">
+                                            Sudah Dibalas
+                                        </option>
+                                        <option value="belum">
+                                            Belum Dibalas
+                                        </option>
+                                    </select>
+                                    <span
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 pointer-events-none"
+                                    >
+                                        <Icon
+                                            icon="mdi:chevron-down"
+                                            width="18"
+                                        />
+                                    </span>
+                                </div>
                             </div>
                             <div class="space-y-4">
                                 <div
@@ -618,99 +707,103 @@ const formatDate = (dateString) => {
                             </div>
                         </div>
 
+                        <!-- wa -->
                         <div v-show="activeTab === 'wa'" class="animate-fadeIn">
                             <div
                                 class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5"
                             >
-                                <h3
-                                    class="text-lg font-medium text-gray-900 hidden sm:block"
-                                >
+                                <h3 class="text-lg font-bold text-gray-900">
                                     Broadcast Undangan
                                 </h3>
                                 <div class="flex w-full sm:w-auto gap-2">
                                     <button
                                         @click="openModal"
-                                        class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+                                        class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-sm font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 transition"
                                     >
                                         + Tambah Kontak
                                     </button>
                                     <button
                                         @click="postBulkShare"
                                         :disabled="selectedKontak.length === 0"
-                                        class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 transition gap-2"
+                                        class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-[#004D31] border border-transparent rounded-sm font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#003622] disabled:opacity-50 transition gap-2"
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
-                                            />
-                                        </svg>
-                                        Kirim Terpilih ({{
-                                            selectedKontak.length
-                                        }})
+                                        <Icon icon="mdi:send" width="14" />
+                                        Kirim ({{ selectedKontak.length }})
                                     </button>
                                 </div>
                             </div>
 
                             <div
-                                class="flex flex-col sm:flex-row gap-3 mb-6 items-center"
+                                class="flex flex-col lg:flex-row gap-4 mb-6 lg:items-center bg-gray-50 p-3 rounded-sm border border-gray-200"
                             >
                                 <div
-                                    class="w-full sm:w-auto flex items-center mb-2 sm:mb-0 mr-4"
+                                    class="flex items-center shrink-0 pr-4 border-gray-300 lg:border-r"
                                 >
                                     <input
                                         id="selectAll"
                                         type="checkbox"
                                         v-model="selectAll"
-                                        class="w-5 h-5 rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500"
+                                        class="w-5 h-5 rounded-sm border-gray-300 text-[#004D31] focus:ring-[#004D31]"
                                     />
                                     <label
                                         for="selectAll"
-                                        class="ml-2 text-sm font-medium text-gray-700"
+                                        class="ml-2 text-sm font-bold text-gray-700 whitespace-nowrap"
                                         >Pilih Semua</label
                                     >
                                 </div>
-                                <div class="relative flex-1 w-full">
-                                    <div
-                                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                                    >
-                                        <svg
-                                            class="h-5 w-5 text-gray-400"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                            ></path>
-                                        </svg>
-                                    </div>
-                                    <input
-                                        v-model="searchWa"
-                                        type="text"
-                                        placeholder="Cari nama kontak..."
-                                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm transition"
-                                    />
-                                </div>
-                                <select
-                                    v-model="filterWa"
-                                    class="block w-full sm:w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md transition bg-white"
+
+                                <div
+                                    class="flex flex-col sm:flex-row flex-1 gap-3"
                                 >
-                                    <option value="">Semua Status</option>
-                                    <option :value="true">
-                                        Sudah Terkirim
-                                    </option>
-                                    <option :value="false">
-                                        Belum Dikirim
-                                    </option>
-                                </select>
+                                    <div class="relative flex-1">
+                                        <span
+                                            class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"
+                                        >
+                                            <Icon
+                                                icon="mdi:magnify"
+                                                width="18"
+                                            />
+                                        </span>
+                                        <input
+                                            v-model="searchWa"
+                                            type="text"
+                                            placeholder="Cari nama kontak..."
+                                            class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors"
+                                        />
+                                    </div>
+                                    <div class="relative w-full sm:w-48">
+                                        <span
+                                            class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none"
+                                        >
+                                            <Icon
+                                                icon="mdi:filter-variant"
+                                                width="18"
+                                            />
+                                        </span>
+                                        <select
+                                            v-model="filterWa"
+                                            class="w-full pl-10 pr-10 py-2 text-sm border border-gray-300 rounded-sm focus:border-[#004D31] outline-none bg-white transition-colors appearance-none"
+                                        >
+                                            <option value="">
+                                                Semua Status
+                                            </option>
+                                            <option :value="true">
+                                                Sudah Terkirim
+                                            </option>
+                                            <option :value="false">
+                                                Belum Dikirim
+                                            </option>
+                                        </select>
+                                        <span
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 pointer-events-none"
+                                        >
+                                            <Icon
+                                                icon="mdi:chevron-down"
+                                                width="18"
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div
@@ -745,20 +838,6 @@ const formatDate = (dateString) => {
                                                 >
                                                     {{ kontak.nama }}
                                                 </h4>
-                                                <span
-                                                    :class="[
-                                                        kontak.status
-                                                            ? 'bg-green-100 text-green-700'
-                                                            : 'bg-gray-100 text-gray-600',
-                                                        'px-2 py-1 inline-flex text-[10px] leading-4 font-semibold rounded-md',
-                                                    ]"
-                                                >
-                                                    {{
-                                                        kontak.status
-                                                            ? "Terkirim"
-                                                            : "Belum Dikirim"
-                                                    }}
-                                                </span>
                                             </div>
                                             <p
                                                 class="text-sm text-gray-500 font-medium mt-1 flex items-center gap-1.5"

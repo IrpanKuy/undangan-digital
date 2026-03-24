@@ -16,7 +16,7 @@ use App\Http\Controllers\User\UndanganController;
 use Laravel\Socialite\Socialite;
 
 Route::get('/', function () {
-    return Inertia::render('templateUndangan/Pernikahan/blue-coral'); // 'Welcome' merujuk ke Welcome.vue
+    return Inertia::render('welcome'); // 'Welcome' merujuk ke Welcome.vue
 })->name('home');
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogleRegister'])->name('google.login');
