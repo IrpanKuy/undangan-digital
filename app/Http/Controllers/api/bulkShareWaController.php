@@ -29,8 +29,8 @@ class bulkShareWaController extends Controller
                 ])->post('https://api.fonnte.com/send', [
                     'target' => $kontak['no_hp'],
                     'message' => $kontak['pesan'],
-                'delay' => '2', 
-                'countryCode' => '62',
+                    'delay' => '2', 
+                    'countryCode' => '62',
                 ]);
 
                 dd($response);

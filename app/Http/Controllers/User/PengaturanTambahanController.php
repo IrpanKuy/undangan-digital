@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Api\Device;
 use App\Models\User\Undangan\Undangan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,17 +11,14 @@ use App\Models\User\Undangan\ReservasiUndangan;
 use App\Models\User\Undangan\KomentarUndangan;
 use App\Models\User\Undangan\PengunjungUndangan;
 use App\Models\User\Undangan\Kontak;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class PengaturanTambahanController extends Controller
 {
     public function index($activeMenu, $undanganId)
     {
-        // $undangan = Undangan::find($undanganId)->with(['kontaks', 'reservasiUndangans', 'pengunjungUndangan', 'komentarUndangans'])->first();
-        // dd($undangan);
-        // return Inertia::render('user/undangan/pengaturanTambahan', [
-        //     'activeMenu' => $activeMenu,
-        //     'undangan' => $undangan
-        // ]);
+
         // Pastikan undangan ada (dan bisa ditambahkan validasi kepemilikan undangan di sini)
         $undangan = Undangan::findOrFail($undanganId);
 
@@ -50,15 +48,21 @@ class PengaturanTambahanController extends Controller
         $kontakData = Kontak::where('undangan_id', $undanganId)
             ->orderBy('created_at', 'desc')
             ->get();
-            
+
+        $userId = Auth::user()->id;
+        // 5. data device
+        $device = Device::where('user_id', $userId)->get();
+        
         // dd('data kontak', $kontakData, 'total hadir', $totalHadir, 'data rsvp', $rsvpData, 'data komentar', $komentarData, 'data chart', $chartData);
-        return Inertia::render('user/undangan/pengaturanTambahan', [
+        return Inertia::render('user/undangan/pengaturanTambahan/index', [
             'undanganId' => $undanganId,
             'chartData' => $chartData,
             'rsvpData' => $rsvpData,
             'totalHadir' => $totalHadir,
             'komentarData' => $komentarData,
             'kontakData' => $kontakData,
+            'device' => $device
+
         ]);
     }
 
@@ -84,6 +88,33 @@ class PengaturanTambahanController extends Controller
         return redirect()->back();
     }
 
+    public function storeDevice(Request $request)
+    {
+        $data = $request->validate([
+            'no_hp' => 'required|string|max:20',
+        ]);
+
+        $name = Auth::user()->name;
+        $userId = Auth::user()->id;
+
+        $accountToken = env('FONNTE_ACCOUNT_TOKEN');
+
+        $response = Http::withHeaders([
+                'Authorization' => $accountToken
+            ])->post('https://api.fonnte.com/add-device', [
+                'name' => $name,
+                'device' => $data['no_hp'],
+            ]);
+
+        $token = $response->json('token');
+        Device::create([
+            'user_id' => $userId,
+            'no_hp' => $data['no_hp'],
+            'device_token' => $token,
+        ]);
+
+        return redirect()->back();
+    }
     public function storeKontak(Request $request, $undanganId)
     {
         $validated = $request->validate([

@@ -71,6 +71,9 @@ Route::middleware('hasAuth')->name('user.')->group(function () {
     Route::get('undangan/template-preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('undangan.preview');
     Route::post('undangan/preview', [UndanganPreviewController::class, 'previewCreateEdit'])->name('undangan.preview.create-edit');
 
+    // device route
+    route::post('device', [PengaturanTambahanController::class, 'storeDevice'])->name('device.store');
+
     Route::get('undangan/{id}/edit/content', [RoutingUndanganController::class, 'editContent'])
         ->name('undangan.edit-content');
     Route::get('undangan/{id}/edit/setting', [RoutingUndanganController::class, 'editSetting'])

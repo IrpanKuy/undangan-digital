@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 // Import model relasi
 use App\Models\Admin\Langganan;
+use App\Models\Api\Device;
 use App\Models\User\Transaction;
 use App\Models\User\Undangan\Undangan;
 
@@ -36,6 +37,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function device()
+    {
+        return $this->hasOne(Device::class, 'user_id');
+    }
     /**
      * Relasi ke paket langganan (Admin).
      */
