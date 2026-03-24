@@ -18,18 +18,52 @@ const isLinkActive = (routeName) => {
             <Link
                 :href="route('user.undangan.index')"
                 :class="{
-                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]':
-                        isLinkActive('user.undangan.index') ||
-                        isLinkActive('user.undangan.pilih-template'),
-                    'hover:bg-gray-200/20! text-white!':
-                        !isLinkActive('user.undangan.index') &&
-                        !isLinkActive('user.undangan.pilih-template'),
+                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]': isLinkActive(
+                        'user.undangan.index',
+                    ),
+                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
+                        'user.undangan.index',
+                    ),
                 }"
                 class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
             >
                 <div class="flex items-center gap-3">
                     <Icon icon="dashicons:category" width="24" />
                     <div class="font-bold text-lg">Undangan Saya</div>
+                </div>
+            </Link>
+            <Link
+                :href="route('user.undangan.pilih-template')"
+                :class="{
+                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]': isLinkActive(
+                        'user.undangan.pilih-template',
+                    ),
+                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
+                        'user.undangan.pilih-template',
+                    ),
+                }"
+                class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
+            >
+                <div class="flex items-center gap-3">
+                    <Icon icon="fa6-solid:envelope-open-text" width="24" />
+                    <div class="font-bold text-lg">Pilih Template</div>
+                </div>
+            </Link>
+            <Link
+                :href="route('user.undangan.pilih-template')"
+                :class="{
+                    'bg-[#F3F4F6]! rounded-r-full text-[#004D31]': isLinkActive(
+                        'user.undangan.laporan',
+                    ),
+                    'hover:bg-gray-200/20! text-white!': !isLinkActive(
+                        'user.undangan.laporan',
+                    ),
+                }"
+                class="font-medium! transition duration-150 flex items-center justify-between px-3 py-3 rounded-r-full cursor-pointer"
+            >
+                <div class="flex items-center gap-3">
+                    <Icon icon="fa6-solid:chart-line" width="24" />
+                    <div class="font-bold text-lg">Laporan</div>
                 </div>
             </Link>
         </template>

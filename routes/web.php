@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\KategoriUndangan;
 use App\Http\Controllers\Admin\TemplateUndangan;
+use App\Http\Controllers\api\bulkShareWaController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\MainUndanganController;
 use App\Http\Controllers\RoutingUndanganController;
@@ -65,6 +66,8 @@ Route::prefix('admin')->middleware('hasAuth')->name('admin.')->group(function ()
 });
 
 Route::middleware('hasAuth')->name('user.')->group(function () {
+    Route::post('bulk-share-wa', [bulkShareWaController::class, 'bulkShareWa'])->name('bulk.share.wa');
+    // preview route
     Route::get('undangan/template-preview/{judul_undangan}', [UndanganPreviewController::class, 'preview'])->name('undangan.preview');
     Route::post('undangan/preview', [UndanganPreviewController::class, 'previewCreateEdit'])->name('undangan.preview.create-edit');
 
@@ -76,7 +79,7 @@ Route::middleware('hasAuth')->name('user.')->group(function () {
     Route::get('undangan/create/setting', [UndanganController::class, 'SettingForm'])->name('undangan.create.setting');
     
     Route::get('undangan/pilih-template', [ListUndanganController::class, 'pilihTemplate'])->name('undangan.pilih-template');
-    Route::resource('undangan', UndanganController::class);
+    Route::get('undangan', [UndanganController::class, 'index'])->name('undangan.index');
     Route::get('undangan/{activeMenu}/{undanganId}/pengaturan-tambahan', [PengaturanTambahanController::class, 'index'])->name('undangan.pengaturan-tambahan');
     Route::post('undangan/{undanganId}/kontak', [PengaturanTambahanController::class, 'storeKontak'])->name('undangan.kontak.store');
     Route::put('undangan/kontak/{id}', [PengaturanTambahanController::class, 'updateKontak'])->name('undangan.kontak.update');
@@ -87,7 +90,7 @@ Route::middleware('hasAuth')->name('user.')->group(function () {
 });
 
 // Public Undangan Routes (No Auth Needed)
-Route::get('undangans/{url}', [UndanganPreviewController::class, 'previewUser'])->name('undangan.preview.user');
+Route::get('undangan/{url}', [UndanganPreviewController::class, 'previewUser'])->name('undangan.preview.user')->middleware('trackVisitor');
 Route::post('undangan/{undangan_id}/komentar', [App\Http\Controllers\User\UndanganPublicController::class, 'storeKomentar'])->name('undangan.komentar.store');
 Route::post('undangan/{undangan_id}/reservasi', [App\Http\Controllers\User\UndanganPublicController::class, 'storeReservasi'])->name('undangan.reservasi.store');
 

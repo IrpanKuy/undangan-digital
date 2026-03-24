@@ -27,13 +27,13 @@ class UndanganPreviewController extends Controller
         $namaFile = $templateUndangan->file_name;
         $undangan = $templateUndangan->undanganPreview;
         $kategori = $templateUndangan->kategoriUndangan->name;
-        dd('undangan =>', $undangan,
-                'acara =>', $undangan->acaras,
-                'dataMempelai =>', $undangan->dataMempelai,
-                'templateUndanganPernikahan =>', $undangan->templateUndanganPernikahan,
-                'kisahCinta =>', $undangan->kisahCintas,
-                'galleryUndangan =>', $undangan->galleryUndangans,
-                'komentarUndangan =>', $undangan->komentarUndangans,);
+        // dd('undangan =>', $undangan,
+        //         'acara =>', $undangan->acaras,
+        //         'dataMempelai =>', $undangan->dataMempelai,
+        //         'templateUndanganPernikahan =>', $undangan->templateUndanganPernikahan,
+        //         'kisahCinta =>', $undangan->kisahCintas,
+        //         'galleryUndangan =>', $undangan->galleryUndangans,
+        //         'komentarUndangan =>', $undangan->komentarUndangans,);
                 
         return Inertia::render("templateUndangan/{$kategori}/{$namaFile}", [
                 'undangan' => $undangan,
@@ -151,6 +151,7 @@ class UndanganPreviewController extends Controller
         $templateUndangan = TemplateUndangan::where('id', $undangan['template_id'])->first();
         $kategori = $templateUndangan->kategoriUndangan->name;
         $namaFile = $templateUndangan->file_name;
+        
 
         // Mengirim data ke komponen Vue
         return Inertia::render("templateUndangan/{$kategori}/{$namaFile}", [

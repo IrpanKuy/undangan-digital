@@ -110,7 +110,11 @@ const selectAll = computed({
         filteredWa.value.length > 0,
     set: (val) => {
         if (val) {
-            selectedKontak.value = filteredWa.value.map((k) => k.id);
+            selectedKontak.value = filteredWa.value.map((k) => ({
+                nama: k.nama,
+                no_hp: k.no_hp,
+                pesan: k.pesan,
+            }));
         } else {
             selectedKontak.value = [];
         }
@@ -240,15 +244,22 @@ const toggleLike = (komentarId) => {
     );
 };
 
-const markAsSent = () => {
+const postBulkShare = () => {
+    console.log(selectedKontak.value);
+
     if (selectedKontak.value.length === 0) return;
 
+    // 1. Panggil route TANPA melempar data ke dalamnya
+    const url = route("user.bulk.share.wa");
+
+    // 2. Kirim data di argumen KEDUA (sebagai body request)
     router.post(
-        route("user.undangan.kontak.markSent", props.undanganId),
+        url,
         {
-            kontak_ids: selectedKontak.value,
+            kontaks: selectedKontak.value, // Data dikirim di sini
         },
         {
+            // 3. Opsi/Hooks ada di argumen KETIGA
             onSuccess: () => {
                 selectedKontak.value = [];
             },
@@ -624,7 +635,7 @@ const formatDate = (dateString) => {
                                         + Tambah Kontak
                                     </button>
                                     <button
-                                        @click="markAsSent"
+                                        @click="postBulkShare"
                                         :disabled="selectedKontak.length === 0"
                                         class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 transition gap-2"
                                     >
@@ -716,7 +727,11 @@ const formatDate = (dateString) => {
                                         <div class="pt-1">
                                             <input
                                                 type="checkbox"
-                                                :value="kontak.id"
+                                                :value="{
+                                                    nama: kontak.nama,
+                                                    no_hp: kontak.no_hp,
+                                                    pesan: kontak.pesan,
+                                                }"
                                                 v-model="selectedKontak"
                                                 class="w-5 h-5 rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500"
                                             />
@@ -806,14 +821,20 @@ const formatDate = (dateString) => {
                                             @click="openEditModal(kontak)"
                                             class="text-blue-600 hover:text-blue-900 transition flex items-center gap-1"
                                         >
-                                            <Icon icon="mdi:pencil" width="16" />
+                                            <Icon
+                                                icon="mdi:pencil"
+                                                width="16"
+                                            />
                                             Edit
                                         </button>
                                         <button
                                             @click="deleteKontak(kontak.id)"
                                             class="text-red-600 hover:text-red-900 transition flex items-center gap-1"
                                         >
-                                            <Icon icon="mdi:delete" width="16" />
+                                            <Icon
+                                                icon="mdi:delete"
+                                                width="16"
+                                            />
                                             Hapus
                                         </button>
                                     </div>
@@ -867,7 +888,11 @@ const formatDate = (dateString) => {
                                             width="20"
                                         />
                                         <h3 class="text-base font-semibold">
-                                            {{ form.id ? "Edit Kontak WhatsApp" : "Tambah Kontak WhatsApp" }}
+                                            {{
+                                                form.id
+                                                    ? "Edit Kontak WhatsApp"
+                                                    : "Tambah Kontak WhatsApp"
+                                            }}
                                         </h3>
                                     </div>
                                     <button
